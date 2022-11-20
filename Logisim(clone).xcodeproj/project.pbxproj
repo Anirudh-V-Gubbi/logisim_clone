@@ -13,6 +13,8 @@
 		8F1F869E2922B7E800CC14E7 /* vendors in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8F1F869D2922B7E800CC14E7 /* vendors */; };
 		8F5639B7292023AE007D80E6 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F5639B6292023AE007D80E6 /* main.cpp */; };
 		8F5639C7292028E6007D80E6 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F5639BE29202435007D80E6 /* OpenGL.framework */; };
+		8FA8809E2929F219004C76D5 /* Shaders in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8F6B3017292800F800E13646 /* Shaders */; };
+		8FA880A52929F2BF004C76D5 /* Textures in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8FA880A42929F2BF004C76D5 /* Textures */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -22,8 +24,10 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				8FA880A52929F2BF004C76D5 /* Textures in CopyFiles */,
 				8F1F869E2922B7E800CC14E7 /* vendors in CopyFiles */,
 				8F1F869C2922B7DE00CC14E7 /* include in CopyFiles */,
+				8FA8809E2929F219004C76D5 /* Shaders in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -48,6 +52,8 @@
 		8F5639BE29202435007D80E6 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		8F5639C029202478007D80E6 /* libGLEW.2.2.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libGLEW.2.2.0.dylib; path = ../../../../../usr/local/Cellar/glew/2.2.0_1/lib/libGLEW.2.2.0.dylib; sourceTree = "<group>"; };
 		8F5639C4292024E8007D80E6 /* libglfw.3.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.3.3.dylib; path = ../../../../../usr/local/Cellar/glfw/3.3.8/lib/libglfw.3.3.dylib; sourceTree = "<group>"; };
+		8F6B3017292800F800E13646 /* Shaders */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Shaders; sourceTree = "<group>"; };
+		8FA880A42929F2BF004C76D5 /* Textures */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Textures; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +92,8 @@
 		8F5639B5292023AE007D80E6 /* Logisim(clone) */ = {
 			isa = PBXGroup;
 			children = (
+				8FA880A42929F2BF004C76D5 /* Textures */,
+				8F6B3017292800F800E13646 /* Shaders */,
 				8F5639B6292023AE007D80E6 /* main.cpp */,
 			);
 			path = "Logisim(clone)";
