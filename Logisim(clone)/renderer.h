@@ -4,12 +4,18 @@
 #include <GL/glew.h>
 
 #include <vector>
+#include <memory>
 #include <map>
 
 class Renderer {
 public:
-    std::map<GLuint, std::vector<Entity*>> m_entities;
+    // A map of Texture Ids and Entitites, to bundle them and render them
+    // under 1 texture bind call to increase performance
+    // ------------------------------------------------------------------
+    std::map<GLuint, std::vector<std::shared_ptr<Entity>>> m_entities;
     
+    // get single instance of the class
+    // --------------------------------
     static Renderer* GetRenderer() {
         if(m_renderer == nullptr)
             m_renderer = new Renderer();
@@ -18,26 +24,36 @@ public:
     }
     ~Renderer() {}
     
+    // add entities to the map - either to an existing list of entites with the same Texture ID or into a new list for a new Texture ID
+    // --------------------------------------------------------------------
     void AddEntityToRender(Entity& entity) {
         
         auto it = m_entities.find(entity.m_texture.ID);
+        // if Texture ID doesn't exist, insert a new pair and return its iterator
+        // -------------------------------------------------------------
         if(it == m_entities.end()) {
             it = m_entities.insert(
-                std::pair<GLuint, std::vector<Entity*>>(
+                std::pair<GLuint, std::vector<std::shared_ptr<Entity>>>(
                      entity.m_texture.ID,
-                     std::vector<Entity*>()
+                     std::vector<std::shared_ptr<Entity>>()
                 )
           ).first;
         }
         
-        it->second.push_back(&entity);
+        // create a new shared ptr to own the instance of the entity and push it into the list
+        // ------------------------------------------------------------------
+        std::shared_ptr<Entity> ptr;
+        ptr.reset(entity.GetInstance());
+        it->second.push_back(ptr);
     }
     
+    // draw the enitites - draw entities with same texture IDs together
+    // ----------------------------------------------------------------
     void Draw() const {
         for(const auto& [texID, entities] : m_entities) {
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, texID);
-            for(const auto entity : entities) {
+            for(const auto& entity : entities) {
                 entity->Draw();
             }
             glBindTexture(GL_TEXTURE_2D, 0);
@@ -47,6 +63,8 @@ public:
 private:
     static inline Renderer* m_renderer = nullptr;
     
+    // private constructor - singleton class
+    // -------------------------------------
     Renderer() {}
 };
 

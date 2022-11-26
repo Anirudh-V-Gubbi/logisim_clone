@@ -8,6 +8,7 @@
 #include "renderer.h"
 
 #include <iostream>
+#include <memory>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -55,10 +56,18 @@ int main()
     Shader shader("Shaders/vertex.vs", "Shaders/frag.fs");
     Texture texture("Textures/demo_image.jpg");
 
-    Renderer* renderer = Renderer::GetRenderer();
-    RectangleEntity r = RectangleEntity(shader, texture);
+    // create a smart pointer to singleton class Renderer
+    // ---------------------------------------------------
+    std::shared_ptr<Renderer> renderer;
+    renderer.reset(Renderer::GetRenderer());
     
-    renderer->AddEntityToRender(r);
+    // create a sample entity to render, deleted later by the renderer
+    // ---------------------------------------------------------------
+    RectangleEntity *r = new RectangleEntity(shader, texture);
+    
+    // add entities to be rendered into the map
+    // ----------------------------------------
+    renderer->AddEntityToRender(*r);
     
     // uncomment this call to draw in wireframe polygons.
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -75,7 +84,6 @@ int main()
         // ------
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-        
         renderer->Draw();
         
         glfwSwapBuffers(window);

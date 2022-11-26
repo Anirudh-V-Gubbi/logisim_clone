@@ -3,6 +3,8 @@
 
 #include "entity.h"
 
+#include <iostream>
+
 class RectangleEntity : public Entity {
 public:
     RectangleEntity(Shader& shader, Texture& texture)
@@ -11,10 +13,15 @@ public:
     }
     
     ~RectangleEntity() {
+        std::cout << "Destroyed Rect";
         glDeleteVertexArrays(1, &m_VAO);
         glDeleteBuffers(1, &m_VBO);
         glDeleteBuffers(1, &m_EBO);
         glDeleteProgram(m_shader.ID);
+    }
+    
+    RectangleEntity* GetInstance() const override {
+        return (RectangleEntity*)this;
     }
     
     void Draw() const override {

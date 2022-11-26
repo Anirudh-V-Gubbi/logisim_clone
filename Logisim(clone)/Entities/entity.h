@@ -13,7 +13,8 @@ public:
     Texture m_texture;
     
     Entity(Shader& shader, Texture& texture) : m_shader{shader}, m_texture{texture} {}
-    ~Entity() { }
+    virtual ~Entity() { }
+    virtual Entity* GetInstance() const = 0;
     
     virtual void Draw() const = 0;
     
