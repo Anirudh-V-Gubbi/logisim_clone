@@ -3,11 +3,12 @@
 
 #include <iostream>
 
+#include <GL/glew.h>
 #include "stbImage.h"
 
 class Texture {
 public:
-    GLuint ID;
+    GLuint ID = 0;
     
     Texture(const char* imagePath, bool persistentData = false) {
         specs = new ImageSpecs();
@@ -20,13 +21,14 @@ public:
             }
             
             delete specs;
+            specs = nullptr;
         }
     }
     ~Texture() {
         
     }
     
-    void bind() {
+    void Bind() {
         stbi_set_flip_vertically_on_load(true);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, ID);

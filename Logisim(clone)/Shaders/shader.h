@@ -21,6 +21,7 @@ public:
     }
     
     ~Shader() {
+        std::cout << "Destroyed";
         glDeleteProgram(this->ID);
     }
     
