@@ -9,19 +9,7 @@
 
 class Renderer {
 public:
-    // A map of Texture Ids and Entitites, to bundle them and render them
-    // under 1 texture bind call to increase performance
-    // ------------------------------------------------------------------
-    std::map<GLuint, std::vector<std::shared_ptr<Entity>>> m_entities;
-    
-    // get single instance of the class
-    // --------------------------------
-    static Renderer* GetRenderer() {
-        if(m_renderer == nullptr)
-            m_renderer = new Renderer();
-        
-        return m_renderer;
-    }
+    Renderer() {}
     ~Renderer() {}
     
     // add entities to the map - either to an existing list of entites with the same Texture ID or into a new list for a new Texture ID
@@ -61,11 +49,10 @@ public:
     }
     
 private:
-    static inline Renderer* m_renderer = nullptr;
-    
-    // private constructor - singleton class
-    // -------------------------------------
-    Renderer() {}
+    // A map of Texture Ids and Entitites, to bundle them and render them
+    // under 1 texture bind call to increase performance
+    // ------------------------------------------------------------------
+    std::map<GLuint, std::vector<std::shared_ptr<Entity>>> m_entities;
 };
 
 #endif

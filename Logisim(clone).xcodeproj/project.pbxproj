@@ -16,6 +16,7 @@
 		8F5639C7292028E6007D80E6 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F5639BE29202435007D80E6 /* OpenGL.framework */; };
 		8FA8809E2929F219004C76D5 /* Shaders in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8F6B3017292800F800E13646 /* Shaders */; };
 		8FA880A52929F2BF004C76D5 /* Textures in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8FA880A42929F2BF004C76D5 /* Textures */; };
+		8FF085FA2934ABF500BFB919 /* ViewportWindows in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8FF085F92934ABE400BFB919 /* ViewportWindows */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +26,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				8FF085FA2934ABF500BFB919 /* ViewportWindows in CopyFiles */,
 				8FA880A52929F2BF004C76D5 /* Textures in CopyFiles */,
 				8F1F869E2922B7E800CC14E7 /* vendors in CopyFiles */,
 				8F1F869C2922B7DE00CC14E7 /* include in CopyFiles */,
@@ -58,6 +60,8 @@
 		8F6B3017292800F800E13646 /* Shaders */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Shaders; sourceTree = "<group>"; };
 		8FA880A42929F2BF004C76D5 /* Textures */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Textures; sourceTree = "<group>"; };
 		8FDC14102931D8C000B5193E /* renderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = renderer.h; sourceTree = "<group>"; };
+		8FF085F82934A2E900BFB919 /* framebuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = framebuffer.h; sourceTree = "<group>"; };
+		8FF085F92934ABE400BFB919 /* ViewportWindows */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ViewportWindows; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,11 +100,13 @@
 		8F5639B5292023AE007D80E6 /* Logisim(clone) */ = {
 			isa = PBXGroup;
 			children = (
+				8FF085F92934ABE400BFB919 /* ViewportWindows */,
 				8F02E1EF2931CD6D001E0417 /* Entities */,
 				8FA880A42929F2BF004C76D5 /* Textures */,
 				8F6B3017292800F800E13646 /* Shaders */,
 				8F5639B6292023AE007D80E6 /* main.cpp */,
 				8FDC14102931D8C000B5193E /* renderer.h */,
+				8FF085F82934A2E900BFB919 /* framebuffer.h */,
 			);
 			path = "Logisim(clone)";
 			sourceTree = "<group>";

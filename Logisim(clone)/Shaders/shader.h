@@ -25,7 +25,7 @@ public:
         glDeleteProgram(this->ID);
     }
     
-    void Use() {
+    void Use() const {
         glUseProgram(this->ID);
     };
     
