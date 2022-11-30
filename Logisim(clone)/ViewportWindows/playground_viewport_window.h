@@ -6,8 +6,9 @@
 
 class PlaygroundViewportWindow : public ViewportWindow {
 public:
-    PlaygroundViewportWindow(unsigned int width, unsigned int height, Shader& m_frameBufferShader)
-        : ViewportWindow(width, height, m_frameBufferShader) {
+    PlaygroundViewportWindow(glm::ivec2 windowDimensions, glm::vec2 fractionalPosition,
+        glm::ivec2 screenDimensions, Shader& shader)
+        : ViewportWindow(windowDimensions, fractionalPosition, screenDimensions, shader) {
         
     }
     ~PlaygroundViewportWindow() override {

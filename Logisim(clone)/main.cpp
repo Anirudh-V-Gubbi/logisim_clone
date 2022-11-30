@@ -1,6 +1,7 @@
 #define GLEW_STATIC
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <glm/vec2.hpp>
 
 #include "Shaders/shader.h"
 #include "Textures/texture.h"
@@ -67,7 +68,7 @@ int main()
     // create a playground viewport window, where logic gates are expected to
     // be rendered
     // ----------------------------------------------------------------------
-    PlaygroundViewportWindow* pWindow = new PlaygroundViewportWindow(SCR_WIDTH, SCR_HEIGHT, frameBufferShader);
+    PlaygroundViewportWindow* pWindow = new PlaygroundViewportWindow(glm::ivec2(SCR_WIDTH/2, SCR_HEIGHT/2), glm::vec2(0.25f, 0.25f), glm::ivec2(SCR_WIDTH, SCR_HEIGHT), frameBufferShader);
     
     // add entities to the playground
     // ------------------------------
