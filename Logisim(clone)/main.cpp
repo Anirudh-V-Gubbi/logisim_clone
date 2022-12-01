@@ -66,6 +66,18 @@ int main()
     // ---------------------------------------------------------------
     RectangleEntity *r = new RectangleEntity(shader, texture);
     
+    // an enum to access viewport windows
+    // ----------------------------------
+    enum ViewortWindows{
+        TOOLBAR = 0,
+        PROJECT_SPACE = 1,
+        PLAYGROUND = 2
+    };
+    
+    // static array that manages the viewport windows
+    // ----------------------------------------------
+    std::unique_ptr<ViewportWindow> viewports[3];
+    
     // create a toolbar viewport window, where tools and menu options will be rendered
     // -------------------------------------------------------------------------------
     ToolbarViewportWindow* tWindow = new ToolbarViewportWindow(glm::vec2(1.0,0.1), glm::vec2(0.0f, 0.0f), SCREEN_DIMENSIONS, frameBufferShader);
@@ -79,9 +91,15 @@ int main()
     // ----------------------------------------------------------------------
     PlaygroundViewportWindow* pWindow = new PlaygroundViewportWindow(glm::vec2(0.8, 0.9), glm::vec2(0.2f, 0.1f), SCREEN_DIMENSIONS, frameBufferShader);
     
+    // push the window pointers onto the static array
+    // ----------------------------------------------
+    viewports[ViewortWindows::TOOLBAR].reset(tWindow);
+    viewports[ViewortWindows::PROJECT_SPACE].reset(psWindow);
+    viewports[ViewortWindows::PLAYGROUND].reset(pWindow);
+    
     // add entities to the playground
     // ------------------------------
-    pWindow->AddEntititesToViewport(*r);
+    viewports[ViewortWindows::PLAYGROUND]->AddEntititesToViewport(*r);
     
     
     // uncomment this call to draw in wireframe polygons.
@@ -99,9 +117,9 @@ int main()
         // ------
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-        pWindow->Render();
-        tWindow->Render();
-        psWindow->Render();
+        for(auto& vWindow : viewports) {
+            vWindow->Render();
+        }
         
         glfwSwapBuffers(window);
         glfwPollEvents();
