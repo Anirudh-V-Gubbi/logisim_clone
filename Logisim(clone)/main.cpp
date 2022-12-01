@@ -10,6 +10,8 @@
 #include "ViewportWindows/viewport_window.h"
 #include "ViewportWindows/playground_viewport_window.h"
 #include "framebuffer.h"
+#include "ViewportWindows/toolbar_viewport_window.h"
+#include "ViewportWindows/projectspace_viewport_window.h"
 
 #include <iostream>
 #include <memory>
@@ -18,8 +20,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
 
 // settings
-const unsigned int SCR_WIDTH = 1000;
-const unsigned int SCR_HEIGHT = 675;
+const glm::ivec2 SCREEN_DIMENSIONS(1000, 675);
 
 int main()
 {
@@ -37,7 +38,7 @@ int main()
 
     // glfw window creation
     // --------------------
-    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(SCREEN_DIMENSIONS.x, SCREEN_DIMENSIONS.y, "LearnOpenGL", NULL, NULL);
     if (window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -65,10 +66,18 @@ int main()
     // ---------------------------------------------------------------
     RectangleEntity *r = new RectangleEntity(shader, texture);
     
+    // create a toolbar viewport window, where tools and menu options will be rendered
+    // -------------------------------------------------------------------------------
+    ToolbarViewportWindow* tWindow = new ToolbarViewportWindow(glm::vec2(1.0,0.1), glm::vec2(0.0f, 0.0f), SCREEN_DIMENSIONS, frameBufferShader);
+    
+    // create a project space viewport window, where circuit projects will be rendered
+    // -------------------------------------------------------------------------------
+    ProjectspaceViewportWindow* psWindow = new ProjectspaceViewportWindow(glm::vec2(0.2, 0.9), glm::vec2(0.0f, 0.1f), SCREEN_DIMENSIONS, frameBufferShader);
+    
     // create a playground viewport window, where logic gates are expected to
     // be rendered
     // ----------------------------------------------------------------------
-    PlaygroundViewportWindow* pWindow = new PlaygroundViewportWindow(glm::ivec2(SCR_WIDTH/2, SCR_HEIGHT/2), glm::vec2(0.25f, 0.25f), glm::ivec2(SCR_WIDTH, SCR_HEIGHT), frameBufferShader);
+    PlaygroundViewportWindow* pWindow = new PlaygroundViewportWindow(glm::vec2(0.8, 0.9), glm::vec2(0.2f, 0.1f), SCREEN_DIMENSIONS, frameBufferShader);
     
     // add entities to the playground
     // ------------------------------
@@ -91,6 +100,8 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         pWindow->Render();
+        tWindow->Render();
+        psWindow->Render();
         
         glfwSwapBuffers(window);
         glfwPollEvents();

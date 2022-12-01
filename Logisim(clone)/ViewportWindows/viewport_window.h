@@ -11,9 +11,9 @@
 
 class ViewportWindow {
 public:
-    ViewportWindow(glm::ivec2 windowDimensions, glm::vec2 fractionalPosition,
-                   glm::ivec2 screenDimensions, Shader& shader)
-    : m_windowDimensions{windowDimensions}, m_position{fractionalPosition},
+    ViewportWindow(glm::vec2 fractionalWindowDimensions, glm::vec2 fractionalPosition,
+                   const glm::ivec2& screenDimensions, Shader& shader)
+    : m_windowDimensions{fractionalWindowDimensions}, m_position{fractionalPosition},
     m_screenDimensions{screenDimensions}, m_frameBufferShader{shader} {
         // create a new framebuffer and a new renderer
         // -------------------------------------------
@@ -30,7 +30,7 @@ public:
         // bind to the framebuffer and clear it
         // ------------------------------------
         m_frameBuffer->Bind();
-        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+        glClearColor(m_position.x * 5, m_windowDimensions.x, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
         // render the entities
@@ -51,7 +51,7 @@ public:
     }
     
 private:
-    glm::ivec2 m_windowDimensions;
+    glm::vec2 m_windowDimensions;
     glm::ivec2 m_screenDimensions;
     glm::vec2 m_position;
     std::unique_ptr<FrameBuffer> m_frameBuffer;
@@ -75,8 +75,8 @@ private:
         // calculate X and Y offsets by multiplying fractional width and height by 2.0f
         // due to the conversion fo coordinates from [0, 1] -> [-1, 1]
         // ----------------------------------------------------------------------------
-        float offsetX = 2.0f * (float)m_windowDimensions.x / (float)m_screenDimensions.x;
-        float offsetY = 2.0f * (float)m_windowDimensions.y / (float)m_screenDimensions.y;
+        float offsetX = 2.0f * m_windowDimensions.x;
+        float offsetY = 2.0f * m_windowDimensions.y;
         
         float vertices[] = {
             // positions   // texture coords
