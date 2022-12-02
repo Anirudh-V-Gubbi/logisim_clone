@@ -17,7 +17,7 @@ public:
     m_screenDimensions{screenDimensions}, m_frameBufferShader{shader} {
         // create a new framebuffer and a new renderer
         // -------------------------------------------
-        m_frameBuffer = std::make_unique<FrameBuffer>(m_screenDimensions.x, m_screenDimensions.y);
+        m_frameBuffer = std::make_unique<FrameBuffer>(m_windowDimensions.x * m_screenDimensions.x, m_windowDimensions.y * m_screenDimensions.y);
         m_renderer = std::make_unique<Renderer>();
         
         // setup the array objects and buffers for the framebuffer rectangle
