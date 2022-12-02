@@ -12,6 +12,7 @@
 #include "framebuffer.h"
 #include "ViewportWindows/toolbar_viewport_window.h"
 #include "ViewportWindows/projectspace_viewport_window.h"
+#include "Logger/logger.h"
 
 #include <iostream>
 #include <memory>
@@ -101,6 +102,7 @@ int main()
     // ------------------------------
     viewports[ViewortWindows::PLAYGROUND]->AddEntititesToViewport(*r);
     
+    Logger* logger = new Logger("Logger");
     
     // uncomment this call to draw in wireframe polygons.
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
