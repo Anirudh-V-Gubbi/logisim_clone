@@ -12,7 +12,7 @@ public:
         
     }
     ~PlaygroundViewportWindow() override {
-        std::cout << "Deleted Playground Viewport" << std::endl;
+        Logger::GetInstance()->info("Deleted Playground Viewport");
     }
     
 };

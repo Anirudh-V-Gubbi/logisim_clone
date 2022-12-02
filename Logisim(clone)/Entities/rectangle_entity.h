@@ -13,11 +13,12 @@ public:
     }
     
     ~RectangleEntity() {
-        std::cout << "Destroyed Rect";
         glDeleteVertexArrays(1, &m_VAO);
         glDeleteBuffers(1, &m_VBO);
         glDeleteBuffers(1, &m_EBO);
         glDeleteProgram(m_shader.ID);
+        
+        Logger::GetInstance()->info("Deleted Rectangle");
     }
     
     RectangleEntity* GetInstance() const override {

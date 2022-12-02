@@ -7,6 +7,7 @@
 #include <fstream>
 
 #include <GL/glew.h>
+#include "../Logger/logger.h"
 
 class Shader {
 public:
@@ -21,7 +22,7 @@ public:
     }
     
     ~Shader() {
-        std::cout << "Destroyed Shader";
+        Logger::GetInstance()->info("Destroyed Shader");
         glDeleteProgram(this->ID);
     }
     

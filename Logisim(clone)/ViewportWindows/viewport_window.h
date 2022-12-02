@@ -6,6 +6,7 @@
 #include "../renderer.h"
 #include "../Entities/entity.h"
 #include "../Shaders/shader.h"
+#include "../Logger/logger.h"
 
 #include <memory>
 

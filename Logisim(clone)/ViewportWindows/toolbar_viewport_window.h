@@ -12,7 +12,7 @@ public:
         
     }
     ~ToolbarViewportWindow() override {
-        std::cout << "Deleted Toolbar Viewport" << std::endl;
+        Logger::GetInstance()->info("Deleted Toolbar Viewport");
     }
     
 };

@@ -4,6 +4,7 @@
 #include <GL/glew.h>
 #include "../Shaders/shader.h"
 #include "../Textures/texture.h"
+#include "../Logger/logger.h"
 
 #include <iostream>
 

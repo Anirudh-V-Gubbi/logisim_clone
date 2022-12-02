@@ -12,7 +12,7 @@ public:
         
     }
     ~ProjectspaceViewportWindow() override {
-        std::cout << "Deleted Projectspace Viewport" << std::endl;
+        Logger::GetInstance()->info("Deleted Projectspace Viewport");
     }
     
 };
