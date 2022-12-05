@@ -1,5 +1,5 @@
-# logisim_clone
-An attempt to recreate the famous Logisim software used to design and simulate digital circuits. 
+# Introduction
+This is an attempt to recreate the famous Logisim software used to design and simulate digital circuits. The project will utilise modern C++ and modern OpenGL(3.3) along with GLFW to handle graphic related load. The main goal of the project is to realise the applications of Object-Oriented Programming with memory-safe constructs in C++, while creating a solid(flexible upto some extent) rendering frameworkj in OpenGL to apply various graphic conces(object picking for example).
 
 # Progress
 - [x] Create a basic framework, involving shaders, textures, renderers, entities and viewport windows(framebuffers).
