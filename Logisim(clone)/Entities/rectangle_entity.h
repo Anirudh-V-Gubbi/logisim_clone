@@ -2,13 +2,12 @@
 #define RECTANGLE_ENTITY_H
 
 #include "entity.h"
-
-#include <iostream>
+#include <glm/gtc/matrix_transform.hpp>
 
 class RectangleEntity : public Entity {
 public:
-    RectangleEntity(Shader& shader, Texture& texture)
-    : Entity(shader, texture) {
+    RectangleEntity(Shader& shader, Texture& texture, glm::vec3 position)
+    : Entity(shader, texture, position) {
         this->setup();
     }
     
@@ -25,9 +24,12 @@ public:
         return (RectangleEntity*)this;
     }
     
-    void Draw() const override {
+    void Draw(const glm::mat4& view, const glm::mat4& projection) const override {
         m_shader.Use();
         glBindVertexArray(m_VAO);
+        m_shader.SetMatrix4f("model", glm::translate(glm::mat4(1.0f), m_position));
+        m_shader.SetMatrix4f("view", view);
+        m_shader.SetMatrix4f("projection", projection);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
     }
@@ -62,7 +64,7 @@ private:
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
         glEnableVertexAttribArray(0);
         glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-        glEnableVertexAttribArray(0);
+        glEnableVertexAttribArray(1);
         glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
         glEnableVertexAttribArray(2);
         

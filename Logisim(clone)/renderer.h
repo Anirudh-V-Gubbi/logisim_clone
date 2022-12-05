@@ -2,6 +2,7 @@
 #define RENDERER_H
 
 #include <GL/glew.h>
+#include <glm/mat4x4.hpp>
 
 #include <vector>
 #include <memory>
@@ -37,12 +38,12 @@ public:
     
     // draw the enitites - draw entities with same texture IDs together
     // ----------------------------------------------------------------
-    void Draw() const {
+    void Draw(const glm::mat4& view, const glm::mat4& projection) const {
         for(const auto& [texID, entities] : m_entities) {
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, texID);
             for(const auto& entity : entities) {
-                entity->Draw();
+                entity->Draw(view, projection);
             }
             glBindTexture(GL_TEXTURE_2D, 0);
         }

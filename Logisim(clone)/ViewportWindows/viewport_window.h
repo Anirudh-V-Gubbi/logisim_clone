@@ -2,6 +2,7 @@
 #define VIEWPORT_WINDOW_H
 
 #include <glm/vec2.hpp>
+#include <glm/mat4x4.hpp>
 #include "../framebuffer.h"
 #include "../renderer.h"
 #include "../Entities/entity.h"
@@ -27,16 +28,22 @@ public:
     }
     virtual ~ViewportWindow() { };
     
-    virtual void Render() const {
+    virtual void Render(const glm::mat4& view, const glm::mat4& projection) const {
         // bind to the framebuffer and clear it
         // ------------------------------------
         m_frameBuffer->Bind();
-        glClearColor(m_position.x * 5, m_windowDimensions.x, 1.0f, 1.0f);
+        
+        // set white background for the playground viewport
+        // ------------------------------------------------
+        if(m_position.x >= 0.19 && m_position.y >= 0.09)
+            glClearColor(1.0, 1.0, 1.0, 1.0);
+        else
+            glClearColor(m_position.x * 5, m_windowDimensions.x, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
         // render the entities
         // -------------------
-        m_renderer->Draw();
+        m_renderer->Draw(view, projection);
         
         // bind to default framebuffer
         // ---------------------------
@@ -49,6 +56,10 @@ public:
     
     virtual void AddEntititesToViewport(Entity& entity) {
         m_renderer->AddEntityToRender(entity);
+    }
+    
+    glm::vec2 GetWindowDimensions() const {
+        return this->m_windowDimensions;
     }
     
 private:

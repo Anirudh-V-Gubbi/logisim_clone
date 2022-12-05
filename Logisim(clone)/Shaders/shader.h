@@ -7,6 +7,8 @@
 #include <fstream>
 
 #include <GL/glew.h>
+#include <glm/mat4x4.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include "../Logger/logger.h"
 
 class Shader {
@@ -29,6 +31,14 @@ public:
     void Use() const {
         glUseProgram(this->ID);
     };
+    
+    void SetMatrix4f(const char* name, glm::mat4 matrix) const {
+        glUniformMatrix4fv(glGetUniformLocation(this->ID, name), 1, GL_FALSE, glm::value_ptr(matrix));
+    }
+    
+    void SetVector3f(const char* name, glm::vec3 vector) const {
+        glUniform3fv(glGetUniformLocation(this->ID, name), 1, glm::value_ptr(vector));
+    }
     
 private:
 

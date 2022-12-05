@@ -13,6 +13,7 @@
 #include "ViewportWindows/toolbar_viewport_window.h"
 #include "ViewportWindows/projectspace_viewport_window.h"
 #include "Logger/logger.h"
+#include "Entities/global_grid.h"
 
 #include <iostream>
 #include <memory>
@@ -20,8 +21,10 @@
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
 
-// settings
+// screen dimensions and view and projection matrices
 const glm::ivec2 SCREEN_DIMENSIONS(1000, 675);
+const glm::mat4 viewMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, -1.0f));
+const glm::mat4 projectionMatrix = glm::ortho<float>(0.0f, SCREEN_DIMENSIONS.x, SCREEN_DIMENSIONS.y, 0.0f, -0.1f, 100.0f);
 
 int main()
 {
@@ -61,15 +64,17 @@ int main()
     // --------------
     Shader shader("Shaders/vertex.vs", "Shaders/frag.fs");
     Texture texture("Textures/demo_image.jpg");
+    Texture dummyTexture("Textures/dummy.jpg");
     Shader frameBufferShader("Shaders/framebuffer_vertex.vs", "Shaders/framebuffer_fragment.fs");
+    Shader gridShader("Shaders/grid_vertex.vs", "Shaders/grid_fragment.fs");
     
     // create a sample entity to render, deleted later by the renderer
     // ---------------------------------------------------------------
-    RectangleEntity *r = new RectangleEntity(shader, texture);
+    //RectangleEntity *r = new RectangleEntity(shader, texture, glm::vec3(100.0, 100.0, 0.0));
     
     // an enum to access viewport windows
     // ----------------------------------
-    enum ViewortWindows{
+    enum ViewportWindows{
         TOOLBAR = 0,
         PROJECT_SPACE = 1,
         PLAYGROUND = 2
@@ -94,13 +99,18 @@ int main()
     
     // push the window pointers onto the static array
     // ----------------------------------------------
-    viewports[ViewortWindows::TOOLBAR].reset(tWindow);
-    viewports[ViewortWindows::PROJECT_SPACE].reset(psWindow);
-    viewports[ViewortWindows::PLAYGROUND].reset(pWindow);
+    viewports[ViewportWindows::TOOLBAR].reset(tWindow);
+    viewports[ViewportWindows::PROJECT_SPACE].reset(psWindow);
+    viewports[ViewportWindows::PLAYGROUND].reset(pWindow);
+    
+    // create a grid system
+    // --------------------
+    GlobalGrid *grid = new GlobalGrid(gridShader, dummyTexture, glm::vec3(0.0, 0.0, 0.0), glm::vec2(pWindow->GetWindowDimensions().x * SCREEN_DIMENSIONS.x, pWindow->GetWindowDimensions().y * SCREEN_DIMENSIONS.y));
     
     // add entities to the playground
     // ------------------------------
-    viewports[ViewortWindows::PLAYGROUND]->AddEntititesToViewport(*r);
+    //viewports[ViewportWindows::PLAYGROUND]->AddEntititesToViewport(*r);
+    viewports[ViewportWindows::PLAYGROUND]->AddEntititesToViewport(*grid);
     
     Logger* logger = new Logger("Logger");
     
@@ -120,7 +130,7 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         for(auto& vWindow : viewports) {
-            vWindow->Render();
+            vWindow->Render(viewMatrix, projectionMatrix);
         }
         
         glfwSwapBuffers(window);
