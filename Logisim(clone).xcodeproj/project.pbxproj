@@ -17,6 +17,7 @@
 		8F5639C7292028E6007D80E6 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F5639BE29202435007D80E6 /* OpenGL.framework */; };
 		8FA8809E2929F219004C76D5 /* Shaders in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8F6B3017292800F800E13646 /* Shaders */; };
 		8FA880A52929F2BF004C76D5 /* Textures in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8FA880A42929F2BF004C76D5 /* Textures */; };
+		8FAA87CA2943484800B1B9F7 /* Event in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8FAA87C92943484100B1B9F7 /* Event */; };
 		8FF085FA2934ABF500BFB919 /* ViewportWindows in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8FF085F92934ABE400BFB919 /* ViewportWindows */; };
 /* End PBXBuildFile section */
 
@@ -34,6 +35,7 @@
 				8F1F869C2922B7DE00CC14E7 /* include in CopyFiles */,
 				8FA8809E2929F219004C76D5 /* Shaders in CopyFiles */,
 				8F02E1F02931CD81001E0417 /* Entities in CopyFiles */,
+				8FAA87CA2943484800B1B9F7 /* Event in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -62,6 +64,7 @@
 		8F5639C4292024E8007D80E6 /* libglfw.3.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.3.3.dylib; path = ../../../../../usr/local/Cellar/glfw/3.3.8/lib/libglfw.3.3.dylib; sourceTree = "<group>"; };
 		8F6B3017292800F800E13646 /* Shaders */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Shaders; sourceTree = "<group>"; };
 		8FA880A42929F2BF004C76D5 /* Textures */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Textures; sourceTree = "<group>"; };
+		8FAA87C92943484100B1B9F7 /* Event */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Event; sourceTree = "<group>"; };
 		8FDC14102931D8C000B5193E /* renderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = renderer.h; sourceTree = "<group>"; };
 		8FF085F82934A2E900BFB919 /* framebuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = framebuffer.h; sourceTree = "<group>"; };
 		8FF085F92934ABE400BFB919 /* ViewportWindows */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ViewportWindows; sourceTree = "<group>"; };
@@ -103,6 +106,7 @@
 		8F5639B5292023AE007D80E6 /* Logisim(clone) */ = {
 			isa = PBXGroup;
 			children = (
+				8FAA87C92943484100B1B9F7 /* Event */,
 				8F52560B293A08F1003C7416 /* Logger */,
 				8FF085F92934ABE400BFB919 /* ViewportWindows */,
 				8F02E1EF2931CD6D001E0417 /* Entities */,
