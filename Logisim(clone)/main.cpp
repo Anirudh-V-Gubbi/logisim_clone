@@ -16,13 +16,13 @@
 #include "Entities/global_grid.h"
 #include "Event/key_event.h"
 #include "Event/application_event.h"
-#include "Event/key_event.h"
+#include "Event/mouse_event.h"
+#include "Event/event_handler.h"
 
 #include <iostream>
 #include <memory>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void processInput(GLFWwindow *window);
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
@@ -134,7 +134,6 @@ int main()
     {
         // input
         // -----
-        processInput(window);
 
         // render
         // ------
@@ -162,29 +161,46 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     glViewport(0, 0, width, height);
 }
 
-// process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
-// ---------------------------------------------------------------------------------------------------------
+// process key inputs
+// ------------------
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-    
+    if(action == GLFW_PRESS || action == GLFW_REPEAT) {
+        KeyPressedEvent event(key, 1);
+        EventHandler::DispatchEvent(event);
+    }
+    else if(action == GLFW_RELEASE) {
+        KeyReleasedEvent event(key);
+        EventHandler::DispatchEvent(event);
+    }
 }
 
-// process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
-// ---------------------------------------------------------------------------------------------------------
+// process mouse movements
+// -----------------------
 void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
 {
+    MouseMovedEvent event(xpos, ypos);
+    EventHandler::DispatchEvent(event);
 }
 
-// process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
-// ---------------------------------------------------------------------------------------------------------
+// process mouse button clicks
+// ---------------------------
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
-    
+    if(action == GLFW_PRESS) {
+        MouseButtonPressedEvent event(button);
+        EventHandler::DispatchEvent(event);
+    }
+    else if(action == GLFW_RELEASE) {
+        MouseButtonReleasedEvent event(button);
+        EventHandler::DispatchEvent(event);
+    }
 }
 
-// process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
-// ---------------------------------------------------------------------------------------------------------
+// process mouse scrolls
+// ---------------------
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
-    
+    MouseScrolledEvent event(xoffset, yoffset);
+    EventHandler::DispatchEvent(event);
 }
