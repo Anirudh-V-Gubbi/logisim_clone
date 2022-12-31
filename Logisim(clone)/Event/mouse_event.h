@@ -45,23 +45,26 @@ class MouseButtonEvent : public Event
 {
 public:
     inline int GetMouseButton() const { return m_button; }
+    inline float GetX() { return m_mouseX; }
+    inline float GetY() { return m_mouseY; }
 
     EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryMouseButton | EventCategoryInput)
 protected:
-    MouseButtonEvent(int button)
-        : m_button(button)
+    MouseButtonEvent(int button, float x, float y)
+        : m_button(button), m_mouseX(x), m_mouseY(y)
     {
 
     }
 
     int m_button;
+    float m_mouseX, m_mouseY;
 };
 
 class MouseButtonPressedEvent : public MouseButtonEvent
 {
 public:
-    MouseButtonPressedEvent(int button)
-        : MouseButtonEvent(button)
+    MouseButtonPressedEvent(int button, float x, float y)
+        : MouseButtonEvent(button, x, y)
     {
 
     }
@@ -72,8 +75,8 @@ public:
 class MouseButtonReleasedEvent : public MouseButtonEvent
 {
 public:
-    MouseButtonReleasedEvent(int button)
-        : MouseButtonEvent(button)
+    MouseButtonReleasedEvent(int button, float x, float y)
+        : MouseButtonEvent(button, x, y)
     {
 
     }

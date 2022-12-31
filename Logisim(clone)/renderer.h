@@ -49,6 +49,8 @@ public:
         }
     }
     
+    
+    
 private:
     // A map of Texture Ids and Entitites, to bundle them and render them
     // under 1 texture bind call to increase performance

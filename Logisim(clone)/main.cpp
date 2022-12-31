@@ -21,6 +21,7 @@
 
 #include <iostream>
 #include <memory>
+#include <vector>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
@@ -32,6 +33,10 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 const glm::ivec2 SCREEN_DIMENSIONS(1000, 675);
 const glm::mat4 viewMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, -1.0f));
 const glm::mat4 projectionMatrix = glm::ortho<float>(0.0f, SCREEN_DIMENSIONS.x, SCREEN_DIMENSIONS.y, 0.0f, -0.1f, 100.0f);
+
+// static array that manages the viewport windows
+// ----------------------------------------------
+std::vector<std::unique_ptr<ViewportWindow>> viewports(3);
 
 int main()
 {
@@ -90,10 +95,6 @@ int main()
         PROJECT_SPACE = 1,
         PLAYGROUND = 2
     };
-    
-    // static array that manages the viewport windows
-    // ----------------------------------------------
-    std::unique_ptr<ViewportWindow> viewports[3];
     
     // create a toolbar viewport window, where tools and menu options will be rendered
     // -------------------------------------------------------------------------------
@@ -166,12 +167,17 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     if(action == GLFW_PRESS || action == GLFW_REPEAT) {
-        KeyPressedEvent event(key, 1);
-        EventHandler::DispatchEvent(event);
+        if(key == GLFW_KEY_ESCAPE) {
+            glfwSetWindowShouldClose(window, 1);
+        }
+        else {
+            KeyPressedEvent event(key, 1);
+            EventHandler::DispatchEvent(event, viewports);
+        }
     }
     else if(action == GLFW_RELEASE) {
         KeyReleasedEvent event(key);
-        EventHandler::DispatchEvent(event);
+        EventHandler::DispatchEvent(event, viewports);
     }
 }
 
@@ -180,20 +186,23 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
 {
     MouseMovedEvent event(xpos, ypos);
-    EventHandler::DispatchEvent(event);
+    EventHandler::DispatchEvent(event, viewports);
 }
 
 // process mouse button clicks
 // ---------------------------
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
+    double xPos, yPos;
+    glfwGetCursorPos(window, &xPos, &yPos);
+    
     if(action == GLFW_PRESS) {
-        MouseButtonPressedEvent event(button);
-        EventHandler::DispatchEvent(event);
+        MouseButtonPressedEvent event(button, xPos, yPos);
+        EventHandler::DispatchEvent(event, viewports);
     }
     else if(action == GLFW_RELEASE) {
-        MouseButtonReleasedEvent event(button);
-        EventHandler::DispatchEvent(event);
+        MouseButtonReleasedEvent event(button, xPos, yPos);
+        EventHandler::DispatchEvent(event, viewports);
     }
 }
 
@@ -202,5 +211,5 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
     MouseScrolledEvent event(xoffset, yoffset);
-    EventHandler::DispatchEvent(event);
+    EventHandler::DispatchEvent(event, viewports);
 }

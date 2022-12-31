@@ -8,6 +8,10 @@
 #include "../Entities/entity.h"
 #include "../Shaders/shader.h"
 #include "../Logger/logger.h"
+#include "../Event/event.h"
+#include "../Event/application_event.h"
+#include "../Event/key_event.h"
+#include "../Event/mouse_event.h"
 
 #include <memory>
 
@@ -57,6 +61,8 @@ public:
     virtual void AddEntititesToViewport(Entity& entity) {
         m_renderer->AddEntityToRender(entity);
     }
+    
+    virtual void HandleEvent(Event& event) = 0;
     
     glm::vec2 GetWindowDimensions() const {
         return this->m_windowDimensions;
