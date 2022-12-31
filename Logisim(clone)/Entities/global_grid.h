@@ -36,8 +36,16 @@ public:
         
         // instance rendering for the grid dots
         // ------------------------------------
-        glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, squaresCount);
+        glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, squaresCount.x * squaresCount.y);
         glBindVertexArray(0);
+    }
+    
+    float GetSquareSpacing() const {
+        return squareSpacing;
+    }
+    
+    glm::ivec2 GetSquaresCount() const {
+        return squaresCount;
     }
     
 private:
@@ -46,18 +54,14 @@ private:
     const float squareDimension = 1.0f;
     const float squareSpacing = 10.0f;
     glm::vec3 gridColor = glm::vec3(0.3);
-    unsigned int squaresCount;
+    glm::ivec2 squaresCount;
     
     void setup() {
         // calculate the number of grid dots to be rendered in each axis
         // -------------------------------------------
-        unsigned int xSquaresCount = (m_dimension.x)/ (squareSpacing);
-        unsigned int ySquaresCount = (m_dimension.y)/ (squareSpacing - squareDimension);
-        
-        // total number of squares
-        // -----------------------
-        squaresCount = xSquaresCount * ySquaresCount;
-        
+        squaresCount.x = (m_dimension.x)/ (squareSpacing);
+        squaresCount.y = (m_dimension.y)/ (squareSpacing - squareDimension);
+                
         float vertices[] = {
             0.0f,  1.0f,
             0.0f,  0.0f,
@@ -72,10 +76,10 @@ private:
         
         // calculate the positions of each dot
         // -----------------------------------
-        float* translations = new float[2 * squaresCount];
+        float* translations = new float[2 * squaresCount.x * squaresCount.y];
         unsigned int squareIndex = 0;
-        for(unsigned int i = 0; i < ySquaresCount; i++) {
-            for(unsigned int j = 0; j < xSquaresCount; j++) {
+        for(unsigned int i = 0; i < squaresCount.y; i++) {
+            for(unsigned int j = 0; j < squaresCount.x; j++) {
                 translations[squareIndex++] = j * squareSpacing;
                 translations[squareIndex++] = i * squareSpacing;
             }
@@ -101,7 +105,7 @@ private:
         // buffer data and attrib pointers for instance buffer
         // ---------------------------------------------------
         glBindBuffer(GL_ARRAY_BUFFER, m_instanceVBO);
-        glBufferData(GL_ARRAY_BUFFER, 2 * squaresCount * sizeof(float), translations, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, 2 * squaresCount.x * squaresCount.y * sizeof(float), translations, GL_STATIC_DRAW);
         
         glBindBuffer(GL_ARRAY_BUFFER, m_instanceVBO);
         glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);

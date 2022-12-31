@@ -12,9 +12,6 @@
 
 class Entity {
 public:
-    Shader m_shader;
-    Texture m_texture;
-    glm::vec3 m_position;
     
     Entity(Shader& shader, Texture& texture, glm::vec3 position) : m_shader{shader}, m_texture{texture}, m_position{position} {}
     virtual ~Entity() { }
@@ -22,6 +19,18 @@ public:
     
     virtual void Draw(const glm::mat4& view, const glm::mat4& projection) const = 0;
     
+    glm::vec3 GetPosition() const {
+        return m_position;
+    }
+    
+    GLuint GetTexID() const {
+        return m_texture.ID;
+    }
+    
+protected:
+    Shader m_shader;
+    Texture m_texture;
+    glm::vec3 m_position;
 };
 
 #endif

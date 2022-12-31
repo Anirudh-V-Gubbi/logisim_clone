@@ -17,13 +17,13 @@ public:
     // --------------------------------------------------------------------
     void AddEntityToRender(Entity& entity) {
         
-        auto it = m_entities.find(entity.m_texture.ID);
+        auto it = m_entities.find(entity.GetTexID());
         // if Texture ID doesn't exist, insert a new pair and return its iterator
         // -------------------------------------------------------------
         if(it == m_entities.end()) {
             it = m_entities.insert(
                 std::pair<GLuint, std::vector<std::shared_ptr<Entity>>>(
-                     entity.m_texture.ID,
+                     entity.GetTexID(),
                      std::vector<std::shared_ptr<Entity>>()
                 )
           ).first;

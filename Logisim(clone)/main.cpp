@@ -117,11 +117,12 @@ int main()
     
     // create a grid system
     // --------------------
-    GlobalGrid *grid = new GlobalGrid(gridShader, dummyTexture, glm::vec3(0.0, 0.0, 0.0), glm::vec2(pWindow->GetWindowDimensions().x * SCREEN_DIMENSIONS.x, pWindow->GetWindowDimensions().y * SCREEN_DIMENSIONS.y));
+    GlobalGrid *grid = new GlobalGrid(gridShader, dummyTexture, glm::vec3(0.2f * SCREEN_DIMENSIONS.x, 0.1f * SCREEN_DIMENSIONS.y, 0.0), glm::vec2(pWindow->GetWindowDimensions().x * SCREEN_DIMENSIONS.x, pWindow->GetWindowDimensions().y * SCREEN_DIMENSIONS.y));
     
     // add entities to the playground
     // ------------------------------
     //viewports[ViewportWindows::PLAYGROUND]->AddEntititesToViewport(*r);
+    pWindow->SetGrid(grid);
     viewports[ViewportWindows::PLAYGROUND]->AddEntititesToViewport(*grid);
     
     Logger* logger = new Logger("Logger");
