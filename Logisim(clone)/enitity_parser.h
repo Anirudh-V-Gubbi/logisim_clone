@@ -65,7 +65,7 @@ bool GetAttribute(int& currentIndex, std::string& str, std::string& attribute)
     return false;
 }
 
-void parseEntity(std::string entityFileName)
+bool ParseEntity(std::string entityFileName, std::map<std::string, std::string>& attributeMap)
 {
     // read the entity file contents
     // -----------------------------
@@ -75,7 +75,7 @@ void parseEntity(std::string entityFileName)
     
     if(!file) {
         Logger::GetInstance()->error(std::string("Could not open file " + fileName).c_str());
-        return;
+        return false;
     }
     
     std::stringstream ss;
@@ -93,17 +93,15 @@ void parseEntity(std::string entityFileName)
     // ------------------------
     if(start1 == -1) {
         INVALID_SYNTAX("No Start tag found");
-        return;
+        return false;
     }
     if(end1 == -1) {
         INVALID_SYNTAX("No End tag found");
-        return;
+        return false;
     }
     
     // map to store the attributes of the entities as key value pair
     // -------------------------------------------------------------
-    std::map<std::string, std::string> attributeMap;
-    
     std::string key, value;
     for(int i = start2 + 1; i < end1;) {
         key = "";
@@ -121,7 +119,7 @@ void parseEntity(std::string entityFileName)
         // ---------------------------------
         if(!GetAttribute(i, content, key)) {
             INVALID_ATTRIBUTE;
-            return;
+            return false;
         }
         
         // match the '=' between key and value of the attribute
@@ -132,7 +130,7 @@ void parseEntity(std::string entityFileName)
             if(content[i] == ' ' || content[i] == '\n' || content[i] == '\t') continue;
             
             INVALID_ATTRIBUTE;
-            return;
+            return false;
         }
         i++;
         
@@ -140,10 +138,12 @@ void parseEntity(std::string entityFileName)
         // ---------------------------------
         if(!GetAttribute(i, content, value)) {
             INVALID_ATTRIBUTE;
-            return;
+            return false;
         }
         
         attributeMap[key] = value;
     }
+    
+    return true;
 }
 #endif

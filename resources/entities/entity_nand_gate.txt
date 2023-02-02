@@ -1,8 +1,10 @@
 #START
 "name"="Nand Gate"
-"image_path"="Logisim(clone)/resources/images/nand_gate.png"
+"image_path"=".//resources/images/nand_gate.png"
+"width"="8"
+"height"="6"
 "direction"="EAST"
 "number_input_gates"="5"
 "input_gates_offsets"="(0, 1), (0, 2), (0, 3), (0, 4), (0, 5)"
-"output_gate_offset"="(3, 8)"
+"output_gate_offset"="(8, 3)"
 #END

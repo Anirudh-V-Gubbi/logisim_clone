@@ -19,6 +19,7 @@
 #include "Event/mouse_event.h"
 #include "Event/event_handler.h"
 #include "enitity_parser.h"
+#include "Entities/gates/and_gate_entity.h"
 
 #include <iostream>
 #include <memory>

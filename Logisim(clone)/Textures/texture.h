@@ -14,7 +14,8 @@ public:
         specs = new ImageSpecs();
         this->generateTexture(imagePath);
         
-        //delete image data and image specs if not required to be persistent;
+        // delete image data and image specs if not required to be persistent
+        // ------------------------------------------------------------------
         if(!persistentData) {
             if(specs->data) {
                 stbi_image_free(specs->data);
@@ -23,6 +24,11 @@ public:
             delete specs;
             specs = nullptr;
         }
+    }
+    // empty texture
+    // -------------
+    Texture() {
+        specs = NULL;
     }
     ~Texture() {
         
@@ -64,4 +70,22 @@ private:
     }
 };
 
+// empty texture
+// -------------
+class EmptyTexture : public Texture {
+public:
+    ~EmptyTexture() { }
+    
+    static EmptyTexture* GetInstance() {
+        if(s_instance == NULL) {
+            s_instance = new EmptyTexture();
+        }
+        
+        return s_instance;
+    }
+private:
+    inline static EmptyTexture* s_instance = NULL;
+    EmptyTexture() {}
+    
+};
 #endif

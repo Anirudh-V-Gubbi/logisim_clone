@@ -2,6 +2,7 @@
 #define ENTITY_H
 
 #include <GL/glew.h>
+#include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include <glm/mat4x4.hpp>
 #include "../Shaders/shader.h"
