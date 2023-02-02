@@ -1,0 +1,8 @@
+#START
+"name"="And Gate"
+"image_path"="Logisim(clone)/resources/images/and_gate.png"
+"direction"="EAST"
+"number_input_gates"="5"
+"input_gates_offsets"="(0, 1), (0, 2), (0, 3), (0, 4), (0, 5)"
+"output_gate_offset"="(3, 7)"
+#END

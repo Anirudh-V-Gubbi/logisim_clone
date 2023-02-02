@@ -1,0 +1,8 @@
+#START
+"name"="Not Gate"
+"image_path"="Logisim(clone)/resources/images/not_gate.png"
+"direction"="EAST"
+"number_input_gates"="1"
+"input_gates_offsets"="(0, 1)"
+"output_gate_offset"="(1, 4)"
+#END

@@ -19,6 +19,7 @@
 		8FA880A52929F2BF004C76D5 /* Textures in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8FA880A42929F2BF004C76D5 /* Textures */; };
 		8FAA87CA2943484800B1B9F7 /* Event in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8FAA87C92943484100B1B9F7 /* Event */; };
 		8FF085FA2934ABF500BFB919 /* ViewportWindows in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8FF085F92934ABE400BFB919 /* ViewportWindows */; };
+		8FF18BA5298B84BA0037B1FF /* resources in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8FF18BA4298B84B90037B1FF /* resources */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -28,6 +29,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				8FF18BA5298B84BA0037B1FF /* resources in CopyFiles */,
 				8FF085FA2934ABF500BFB919 /* ViewportWindows in CopyFiles */,
 				8F52560C293A0901003C7416 /* Logger in CopyFiles */,
 				8FA880A52929F2BF004C76D5 /* Textures in CopyFiles */,
@@ -68,6 +70,8 @@
 		8FDC14102931D8C000B5193E /* renderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = renderer.h; sourceTree = "<group>"; };
 		8FF085F82934A2E900BFB919 /* framebuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = framebuffer.h; sourceTree = "<group>"; };
 		8FF085F92934ABE400BFB919 /* ViewportWindows */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ViewportWindows; sourceTree = "<group>"; };
+		8FF18BA4298B84B90037B1FF /* resources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = resources; sourceTree = "<group>"; };
+		8FF18BA6298B8A3E0037B1FF /* enitity_parser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = enitity_parser.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +91,7 @@
 		8F5639AA292023AE007D80E6 = {
 			isa = PBXGroup;
 			children = (
+				8FF18BA4298B84B90037B1FF /* resources */,
 				8F1F869D2922B7E800CC14E7 /* vendors */,
 				8F1F869B2922B7DE00CC14E7 /* include */,
 				8F5639B5292023AE007D80E6 /* Logisim(clone) */,
@@ -115,6 +120,7 @@
 				8F5639B6292023AE007D80E6 /* main.cpp */,
 				8FDC14102931D8C000B5193E /* renderer.h */,
 				8FF085F82934A2E900BFB919 /* framebuffer.h */,
+				8FF18BA6298B8A3E0037B1FF /* enitity_parser.h */,
 			);
 			path = "Logisim(clone)";
 			sourceTree = "<group>";

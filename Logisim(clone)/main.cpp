@@ -18,6 +18,7 @@
 #include "Event/application_event.h"
 #include "Event/mouse_event.h"
 #include "Event/event_handler.h"
+#include "enitity_parser.h"
 
 #include <iostream>
 #include <memory>
