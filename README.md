@@ -3,7 +3,7 @@ This is an attempt to recreate the famous Logisim software used to design and si
 
 # Progress
 - [x] Create a basic framework, involving shaders, textures, renderers, entities and viewport windows(framebuffers).
-- [x] Have a grid system(coordinate system) in place. ( work in progress)
-- [ ] Create gate and wire models, as well as a dedicated renderer.
+- [x] Have a grid system(coordinate system) in place.
+- [ ] Create gate and wire models, as well as a dedicated renderer. ( work in progress)
 - [ ] Introduce an object-picking system for user to interact with the circuits.
 - [ ] Create a file system to save progress.
