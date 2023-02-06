@@ -116,12 +116,12 @@ public:
     }
     ~GateEntity() { }
     
-    void DrawGate(const glm::mat4& view, const glm::mat4& projection, const glm::ivec2& textureSize) const {
+    void Draw(const glm::mat4& view, const glm::mat4& projection) const override {
         m_shader.Use();
         glBindVertexArray(m_VAO);
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, m_position);
-        model = glm::scale(model, glm::vec3(textureSize.x, textureSize.y, 1));
+        model = glm::scale(model, glm::vec3(m_texture.GetTexWidth(), m_texture.GetTexWidth(), 1));
         m_shader.SetMatrix4f("model", model);
         m_shader.SetMatrix4f("view", view);
         m_shader.SetMatrix4f("projection", projection);
@@ -130,14 +130,57 @@ public:
     }
     
     virtual SocketState LogicFunction() = 0;
-    virtual const char* GetName() const { return this->m_name; }
+    virtual const char* GetName() const = 0;
     
 protected:
-    const char* m_name;
     glm::ivec2 m_gridPosition;
     Direction m_direction;
     std::vector<Socket> m_inputs;
     Socket m_output;
+    
+    void InitializeTexture(Texture& texture) {
+        m_texture = texture;
+    }
+    
+    void InitializeInputs(GateFromScript& gate) {
+        for(auto& [x, y] : gate.inputOffsets) {
+            
+            switch(m_direction) {
+                case Direction::NORTH:
+                    m_inputs.push_back(Socket(glm::ivec2(m_gridPosition.x + y, m_gridPosition.y - x)));
+                    break;
+                case Direction::SOUTH:
+                    m_inputs.push_back(Socket(glm::ivec2(m_gridPosition.x - y, m_gridPosition.y + x)));
+                    break;
+                case Direction::EAST:
+                    m_inputs.push_back(Socket(glm::ivec2(m_gridPosition.x + x, m_gridPosition.y + y)));
+                    break;
+                case Direction::WEST:
+                    m_inputs.push_back(Socket(glm::ivec2(m_gridPosition.x - x, m_gridPosition.y - y)));
+                    break;
+            }
+        }
+    }
+    
+    void InitializeOutput(GateFromScript& gate) {
+        int x = gate.outputOffset.first;
+        int y = gate.outputOffset.second;
+        
+        switch(m_direction) {
+            case Direction::NORTH:
+                m_output = Socket(glm::ivec2(m_gridPosition.x + y, m_gridPosition.y - x));
+                break;
+            case Direction::SOUTH:
+                m_output = Socket(glm::ivec2(m_gridPosition.x - y, m_gridPosition.y + x));
+                break;
+            case Direction::EAST:
+                m_output = Socket(glm::ivec2(m_gridPosition.x + x, m_gridPosition.y + y));
+                break;
+            case Direction::WEST:
+                m_output = Socket(glm::ivec2(m_gridPosition.x - x, m_gridPosition.y - y));
+                break;
+        }
+    }
     
 private:
     void setup() {

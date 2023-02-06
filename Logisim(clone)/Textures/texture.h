@@ -16,7 +16,7 @@ public:
     GLuint ID = 0;
     
     Texture(const char* imagePath, TextureFormats format, bool persistentData = false) {
-        specs = new ImageSpecs();
+        specs.reset(new ImageSpecs());
         this->generateTexture(imagePath, format);
         
         // delete image data and image specs if not required to be persistent
@@ -24,10 +24,9 @@ public:
         if(!persistentData) {
             if(specs->data) {
                 stbi_image_free(specs->data);
+                specs->data = nullptr;
             }
             
-            delete specs;
-            specs = nullptr;
         }
     }
     // empty texture
@@ -35,9 +34,7 @@ public:
     Texture() {
         specs = NULL;
     }
-    ~Texture() {
-        
-    }
+    ~Texture() { }
     
     void Bind() {
         stbi_set_flip_vertically_on_load(true);
@@ -61,11 +58,11 @@ public:
         return -1;
     }
     
-    bool DeleteSpecs()
+    bool DeleteImageData()
     {
-        if(specs != nullptr) {
-            delete specs;
-            specs = nullptr;
+        if(specs != nullptr && specs->data != nullptr) {
+            delete specs->data;
+            specs->data = nullptr;
             return true;
         }
         
@@ -80,7 +77,8 @@ private:
         unsigned char* data;
         
         ImageSpecs() : width{0}, height{0}, nrChannels{0}, data{nullptr} {}
-    } *specs;
+    };
+    std::shared_ptr<ImageSpecs> specs;
     
     void generateTexture(const char* path, TextureFormats format) {
         specs->data = stbi_load(path, &specs->width, &specs->height, &specs->nrChannels, format == TextureFormats::PNG ? STBI_rgb_alpha : STBI_default);
