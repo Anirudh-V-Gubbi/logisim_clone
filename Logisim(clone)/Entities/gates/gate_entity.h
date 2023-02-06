@@ -121,7 +121,7 @@ public:
         glBindVertexArray(m_VAO);
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, m_position);
-        model = glm::scale(model, glm::vec3(m_texture.GetTexWidth(), m_texture.GetTexWidth(), 1));
+        model = glm::scale(model, glm::vec3(m_texture.GetTexWidth(), m_texture.GetTexHeight(), 1));
         m_shader.SetMatrix4f("model", model);
         m_shader.SetMatrix4f("view", view);
         m_shader.SetMatrix4f("projection", projection);
