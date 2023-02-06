@@ -7,6 +7,10 @@
 #include "../Entities/gates/and_gate_entity.h"
 #include "../Entities/gates/not_gate_entity.h"
 #include "../Entities/gates/nand_gate_entity.h"
+#include "../Entities/gates/or_gate_entity.h"
+#include "../Entities/gates/nor_gate_entity.h"
+#include "../Entities/gates/xor_gate_entity.h"
+#include "../Entities/gates/xnor_gate_entity.h"
 
 #include <map>
 #include <cmath>

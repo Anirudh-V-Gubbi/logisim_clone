@@ -88,7 +88,7 @@ GateFromScript* parseScriptToGate(const char* scriptName)
         };
     }
     else {
-        throw GateException("Failed to parse And Gate script");
+        throw GateException("Failed to parse gate script");
     }
 }
 
