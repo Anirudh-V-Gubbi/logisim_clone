@@ -6,13 +6,18 @@
 #include <GL/glew.h>
 #include "stbImage.h"
 
+enum class TextureFormats {
+    JPG,
+    PNG
+};
+
 class Texture {
 public:
     GLuint ID = 0;
     
-    Texture(const char* imagePath, bool persistentData = false) {
+    Texture(const char* imagePath, TextureFormats format, bool persistentData = false) {
         specs = new ImageSpecs();
-        this->generateTexture(imagePath);
+        this->generateTexture(imagePath, format);
         
         // delete image data and image specs if not required to be persistent
         // ------------------------------------------------------------------
@@ -40,6 +45,33 @@ public:
         glBindTexture(GL_TEXTURE_2D, ID);
     }
     
+    int GetTexWidth() const {
+        if(specs != nullptr) {
+            return specs->width;
+        }
+        
+        return -1;
+    }
+    
+    int GetTexHeight() const {
+        if(specs != nullptr) {
+            return specs->height;
+        }
+        
+        return -1;
+    }
+    
+    bool DeleteSpecs()
+    {
+        if(specs != nullptr) {
+            delete specs;
+            specs = nullptr;
+            return true;
+        }
+        
+        return false;
+    }
+    
 private:
     struct ImageSpecs {
         int width;
@@ -50,8 +82,8 @@ private:
         ImageSpecs() : width{0}, height{0}, nrChannels{0}, data{nullptr} {}
     } *specs;
     
-    void generateTexture(const char* path) {
-        specs->data = stbi_load(path, &specs->width, &specs->height, &specs->nrChannels, 0);
+    void generateTexture(const char* path, TextureFormats format) {
+        specs->data = stbi_load(path, &specs->width, &specs->height, &specs->nrChannels, format == TextureFormats::PNG ? STBI_rgb_alpha : STBI_default);
         
         if(specs->data) {
             glGenTextures(1, &this->ID);
@@ -61,7 +93,7 @@ private:
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, specs->width, specs->height, 0, GL_RGB, GL_UNSIGNED_BYTE, specs->data);
+            glTexImage2D(GL_TEXTURE_2D, 0, format == TextureFormats::PNG ? GL_RGBA : GL_RGB, specs->width, specs->height, 0, format == TextureFormats::PNG ? GL_RGBA : GL_RGB, GL_UNSIGNED_BYTE, specs->data);
             glGenerateMipmap(GL_TEXTURE_2D);
         }
         else {

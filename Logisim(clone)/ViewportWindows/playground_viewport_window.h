@@ -4,6 +4,7 @@
 #include "viewport_window.h"
 #include "../Shaders/shader.h"
 #include "../Entities/global_grid.h"
+#include "../Entities/gates/and_gate_entity.h"
 
 #include <map>
 #include <cmath>
@@ -13,9 +14,15 @@ public:
     PlaygroundViewportWindow(glm::vec2 fractionalWindowDimensions, glm::vec2 fractionalPosition,
         const glm::ivec2& screenDimensions, Shader& shader)
         : ViewportWindow(fractionalWindowDimensions, fractionalPosition, screenDimensions, shader) {
-        
+            gateShader = new Shader("Shaders/gate_vertex.vs", "Shaders/gate_fragment.fs");
     }
     ~PlaygroundViewportWindow() override {
+        glDeleteVertexArrays(1, &GateEntity::m_VAO);
+        glDeleteBuffers(1, &GateEntity::m_VBO);
+        glDeleteBuffers(1, &GateEntity::m_EBO);
+        glDeleteProgram(gateShader->ID);
+        delete gateShader;
+        
         Logger::GetInstance()->info("Deleted Playground Viewport");
     }
     
@@ -44,6 +51,11 @@ public:
             {
                 MouseButtonPressedEvent* mEvent = dynamic_cast<MouseButtonPressedEvent*>(&event);
                 auto p = GetGridCoords(glm::vec2(mEvent->GetX(), mEvent->GetY()));
+                auto m = GetGridPointPosition(p.first, p.second);
+
+                AndGateEntity* gate = new AndGateEntity(*gateShader, glm::vec3(m.x - m_position.x * m_screenDimensions.x, m.y, 0.0f), glm::ivec2(p.first, p.second));
+                AddEntititesToViewport(*gate);
+                
                 std::cout << p.first << ", " << p.second << std::endl;
                 break;
             }
@@ -75,7 +87,7 @@ public:
     
 private:
     GlobalGrid* grid;
-    
+    Shader* gateShader;
 };
 
 #endif

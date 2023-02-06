@@ -9,12 +9,18 @@ public:
     : GateEntity(shader, *EmptyTexture::GetInstance(), position, gridPosition) {
         if(gate == NULL) {
             gate = parseScriptToGate("entity_and_gate.txt");
+            textureSize = glm::ivec2(gate->texture.GetTexWidth(), gate->texture.GetTexHeight());
+            gate->texture.DeleteSpecs();
         }
         InitializeTexture();
         InitializeInputs();
         InitializeOutput();
     }
     ~AndGateEntity() { }
+    
+    void Draw(const glm::mat4& view, const glm::mat4& projection) const override {
+        GateEntity::DrawGate(view, projection, textureSize);
+    }
     
     AndGateEntity* GetInstance() const override {
         return (AndGateEntity*)this;
@@ -26,6 +32,7 @@ public:
     
 private:
     inline static GateFromScript *gate = NULL;
+    inline static glm::ivec2 textureSize = glm::ivec2(0, 0);
     
     void InitializeTexture() {
         m_texture = gate->texture;

@@ -68,7 +68,7 @@ public:
         return this->m_windowDimensions;
     }
     
-private:
+protected:
     glm::vec2 m_windowDimensions;
     glm::ivec2 m_screenDimensions;
     glm::vec2 m_position;

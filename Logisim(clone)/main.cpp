@@ -77,12 +77,14 @@ int main()
         std::cout << "Failed to initialize GLEW" << std::endl;
         return -1;
     }
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     // set up shaders
     // --------------
-    Shader shader("Shaders/vertex.vs", "Shaders/frag.fs");
-    Texture texture("Textures/demo_image.jpg");
-    Texture dummyTexture("Textures/dummy.jpg");
+    //Shader shader("Shaders/vertex.vs", "Shaders/frag.fs");
+    //Texture texture("Textures/demo_image.jpg", TextureFormats::JPG);
+    //Texture dummyTexture("Textures/dummy.jpg", TextureFormats::JPG);
     Shader frameBufferShader("Shaders/framebuffer_vertex.vs", "Shaders/framebuffer_fragment.fs");
     Shader gridShader("Shaders/grid_vertex.vs", "Shaders/grid_fragment.fs");
     
@@ -119,7 +121,7 @@ int main()
     
     // create a grid system
     // --------------------
-    GlobalGrid *grid = new GlobalGrid(gridShader, dummyTexture, glm::vec3(0.2f * SCREEN_DIMENSIONS.x, 0.1f * SCREEN_DIMENSIONS.y, 0.0), glm::vec2(pWindow->GetWindowDimensions().x * SCREEN_DIMENSIONS.x, pWindow->GetWindowDimensions().y * SCREEN_DIMENSIONS.y));
+    GlobalGrid *grid = new GlobalGrid(gridShader, *EmptyTexture::GetInstance(), glm::vec3(0.2f * SCREEN_DIMENSIONS.x, 0.1f * SCREEN_DIMENSIONS.y, 0.0), glm::vec2(pWindow->GetWindowDimensions().x * SCREEN_DIMENSIONS.x, pWindow->GetWindowDimensions().y * SCREEN_DIMENSIONS.y));
     
     // add entities to the playground
     // ------------------------------
