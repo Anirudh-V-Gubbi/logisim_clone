@@ -5,6 +5,8 @@
 #include "../Shaders/shader.h"
 #include "../Entities/global_grid.h"
 #include "../Entities/gates/and_gate_entity.h"
+#include "../Entities/gates/not_gate_entity.h"
+#include "../Entities/gates/nand_gate_entity.h"
 
 #include <map>
 #include <cmath>
