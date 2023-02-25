@@ -88,7 +88,16 @@ public:
         float i = (position.y - pos.y ) / sSpacing;
         float j = (position.x - pos.x ) / sSpacing;
         
-        return std::make_pair<unsigned int,unsigned int>(round(i), round(j));
+        int x = (int)i;
+        int y = (int)j;
+        if((float)i - (int)i > 0.7f) {
+            x += 1;
+        }
+        if((float)j - (int)j > 0.5f) {
+            y += 1;
+        }
+        
+        return std::make_pair<unsigned int,unsigned int>(x, y);
     }
     
 private:
