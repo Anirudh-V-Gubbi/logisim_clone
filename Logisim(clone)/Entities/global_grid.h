@@ -10,6 +10,7 @@ public:
     // ----------------------------------------------------------------------
     GlobalGrid(Shader& shader, Texture& texture, glm::vec3 position, glm::vec2 dimension)
     : m_dimension{dimension}, Entity(shader, texture, position) {
+        instance = this;
         this->setup();
     }
 
@@ -25,6 +26,10 @@ public:
     
     GlobalGrid* GetInstance() const override {
         return (GlobalGrid*)this;
+    }
+    
+    static GlobalGrid* GetGrid() {
+        return instance;
     }
     
     void Draw(const glm::mat4& view, const glm::mat4& projection) const override {
@@ -48,7 +53,37 @@ public:
         return squaresCount;
     }
     
+    glm::vec2 GetGridPointPosition(int i, int j) const {
+        return (glm::vec2(m_position.x, m_position.y) + glm::vec2(j * squareSpacing, i * squareSpacing));
+    }
+    
+    glm::vec2 GetGridPointPositionRelative(glm::vec2& origin, int i, int j) const {
+        return (glm::vec2(origin.x, origin.y) + glm::vec2(j * squareSpacing, i * squareSpacing));
+    }
+    
+    glm::vec2 GetGridPointPositionRelative(glm::vec3& origin, int i, int j) const {
+        return (glm::vec2(origin.x, origin.y) + glm::vec2(j * squareSpacing, i * squareSpacing));
+    }
+    
+    std::pair<unsigned int, unsigned int> GetGridCoords(glm::vec2 position) const {
+        
+        float i = (position.y - m_position.y ) / squareSpacing;
+        float j = (position.x - m_position.x ) / squareSpacing;
+        
+        int x = (int)i;
+        int y = (int)j;
+        if((float)i - (int)i > 0.7f) {
+            x += 1;
+        }
+        if((float)j - (int)j > 0.5f) {
+            y += 1;
+        }
+        
+        return std::make_pair<unsigned int,unsigned int>(x, y);
+    }
+    
 private:
+    inline static GlobalGrid* instance;
     unsigned int m_VBO, m_VAO, m_EBO, m_instanceVBO;
     glm::vec2 m_dimension;
     const float squareDimension = 1.0f;

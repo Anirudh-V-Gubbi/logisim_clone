@@ -8,6 +8,8 @@
 #include <memory>
 #include <map>
 
+static GLint currentTextureID;
+
 class Renderer {
 public:
     Renderer() {}
@@ -42,6 +44,7 @@ public:
         for(const auto& [texID, entities] : m_entities) {
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, texID);
+            currentTextureID = texID;
             for(const auto& entity : entities) {
                 entity->Draw(view, projection);
             }

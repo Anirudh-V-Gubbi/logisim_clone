@@ -11,6 +11,7 @@
 #include "../Entities/gates/nor_gate_entity.h"
 #include "../Entities/gates/xor_gate_entity.h"
 #include "../Entities/gates/xnor_gate_entity.h"
+#include "../Entities/gates/socket.h"
 
 #include <map>
 #include <cmath>
@@ -23,11 +24,19 @@ public:
             gateShader = new Shader("Shaders/gate_vertex.vs", "Shaders/gate_fragment.fs");
     }
     ~PlaygroundViewportWindow() override {
+        // Delete gate resources
         glDeleteVertexArrays(1, &GateEntity::m_VAO);
         glDeleteBuffers(1, &GateEntity::m_VBO);
         glDeleteBuffers(1, &GateEntity::m_EBO);
         glDeleteProgram(gateShader->ID);
         delete gateShader;
+
+        // Delete gate socket resources
+        glDeleteVertexArrays(1, &GateSockets::m_VAO);
+        glDeleteBuffers(1, &GateSockets::m_VBO);
+        glDeleteBuffers(1, &GateSockets::m_EBO);
+        glDeleteTextures(1, &GateSockets::texture->ID);
+        glDeleteProgram(GateSockets::shader->ID);
         
         Logger::GetInstance()->info("Deleted Playground Viewport");
     }
@@ -56,8 +65,8 @@ public:
             case EventType::MouseButtonPressed:
             {
                 MouseButtonPressedEvent* mEvent = dynamic_cast<MouseButtonPressedEvent*>(&event);
-                auto p = GetGridCoords(glm::vec2(mEvent->GetX(), mEvent->GetY()));
-                auto m = GetGridPointPosition(p.first, p.second);
+                auto p = grid->GetGridCoords(glm::vec2(mEvent->GetX(), mEvent->GetY()));
+                auto m = grid->GetGridPointPosition(p.first, p.second);
 
                 AndGateEntity* gate = new AndGateEntity(*gateShader, glm::vec3(m.x - m_position.x * m_screenDimensions.x, m.y, 0.0f), glm::ivec2(p.first, p.second));
                 AddEntititesToViewport(*gate);
@@ -73,31 +82,6 @@ public:
                 break;
                 
         }
-    }
-    
-    glm::vec2 GetGridPointPosition(int i, int j) const {
-        glm::vec3 pos = grid->GetPosition();
-        float sSpacing = grid->GetSquareSpacing();
-        return (glm::vec2(pos.x, pos.y) + glm::vec2(j * sSpacing, i * sSpacing));
-    }
-    
-    std::pair<unsigned int, unsigned int> GetGridCoords(glm::vec2 position) const {
-        glm::vec3 pos = grid->GetPosition();
-        float sSpacing = grid->GetSquareSpacing();
-        
-        float i = (position.y - pos.y ) / sSpacing;
-        float j = (position.x - pos.x ) / sSpacing;
-        
-        int x = (int)i;
-        int y = (int)j;
-        if((float)i - (int)i > 0.7f) {
-            x += 1;
-        }
-        if((float)j - (int)j > 0.5f) {
-            y += 1;
-        }
-        
-        return std::make_pair<unsigned int,unsigned int>(x, y);
     }
     
 private:
