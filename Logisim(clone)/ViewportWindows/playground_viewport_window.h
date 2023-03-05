@@ -13,6 +13,7 @@
 #include "../Entities/gates/xnor_gate_entity.h"
 #include "../Entities/gates/socket.h"
 #include "../Entities/wires/wire_entity.h"
+#include "../Event/event_handler.h"
 
 #include <map>
 #include <cmath>
@@ -77,23 +78,47 @@ public:
             {
                 MouseButtonPressedEvent* mEvent = dynamic_cast<MouseButtonPressedEvent*>(&event);
                 auto p = grid->GetGridCoords(glm::vec2(mEvent->GetX(), mEvent->GetY()));
-                auto m = grid->GetGridPointPosition(p.first, p.second);
+                auto m = grid->GetGridPointPosition(p.x, p.y);
 
-                /*AndGateEntity* gate = new AndGateEntity(*gateShader, glm::vec3(m.x - m_position.x * m_screenDimensions.x, m.y, 0.0f), glm::ivec2(p.first, p.second));
-                AddEntititesToViewport(*gate);*/
+                AndGateEntity* gate = new AndGateEntity(*gateShader, glm::vec3(m.x - m_position.x * m_screenDimensions.x, m.y, 0.0f), glm::ivec2(p.x, p.y));
+                AddEntititesToViewport(*gate);
                 
-                WireEntity* wire = new WireEntity(*wireShader, glm::vec3(m.x - m_position.x * m_screenDimensions.x, m.y, 0.0f));
-                auto q = glm::vec3(m.x - m_position.x * m_screenDimensions.x, m.y, 0.0f);
-                wire->AddSocket(Socket(glm::ivec2(p.first, p.second), GlobalGrid::GetGrid()->GetGridPointPositionRelative(q, 0, 0)));
-                wire->AddSocket(Socket(glm::ivec2(p.first + 1, p.second), GlobalGrid::GetGrid()->GetGridPointPositionRelative(q, 0, 1)));
-                AddEntititesToViewport(*wire);
-                
-                std::cout << p.first << ", " << p.second << std::endl;
+                std::cout << p.x << ", " << p.y << std::endl;
                 break;
             }
             case EventType::MouseButtonReleased:
+            {
+                m_currentWire = nullptr;
                 break;
+            }
             case EventType::MouseMoved:
+            {
+                MouseMovedEvent* mEvent = dynamic_cast<MouseMovedEvent*>(&event);
+                glm::vec2 currentPosition = glm::vec2(mEvent->GetX(), mEvent->GetY());
+
+                auto startPoint = grid->GetGridCoords(EventHandler::clickPosition);
+                auto currentPoint = grid->GetGridCoords(currentPosition);
+                auto startPointPosition = grid->GetGridPointPosition(startPoint.x, startPoint.y) - glm::vec2(m_position.x * m_screenDimensions.x, 0.0f);
+                auto currentPointPosition = grid->GetGridPointPosition(currentPoint.x, currentPoint.y) - glm::vec2(m_position.x * m_screenDimensions.x, 0.0f);
+                
+                if(EventHandler::MouseButtonsState[GLFW_MOUSE_BUTTON_LEFT] == ButtonState::PRESSED) {
+                    if(m_currentWire == nullptr) {
+                        if(startPoint.x != currentPoint.x || startPoint.y != currentPoint.y) {
+                            WireEntity* wire = new WireEntity(*wireShader, glm::vec3(startPointPosition.x, startPointPosition.y, 0.0f));
+                            wire->CreateWireFromPoints(startPoint, startPointPosition, currentPoint, currentPointPosition);
+                            m_currentWire = wire;
+                            AddEntititesToViewport(*wire);
+                        }
+                    }
+                    else {
+                        auto lastSocketPos = m_currentWire->GetLastSocket().GetPosition();
+                        if(lastSocketPos.x != currentPoint.x || lastSocketPos.y != currentPoint.y) {
+                            m_currentWire->AddSocket(Socket(glm::ivec2(currentPoint.x, currentPoint.y), grid->GetGridPointPositionRelative(currentPointPosition, 0, 0)));
+                        }
+                        
+                    }
+                }
+            }
                 break;
             case EventType::MouseScrolled:
                 break;
@@ -105,6 +130,8 @@ private:
     GlobalGrid* grid;
     Shader* gateShader;
     Shader* wireShader;
+    
+    WireEntity* m_currentWire = nullptr;
 };
 
 #endif

@@ -1,7 +1,7 @@
 #ifndef WIRE_ENTITY_H
 #define WIRE_ENTITY_H
 
-const float WIRE_HEIGHT = 5.0f;
+const float WIRE_HEIGHT = 4.0f;
 
 class WireEntity : public Entity {
 public:
@@ -16,6 +16,36 @@ public:
     
     WireEntity* GetInstance() const override{
         return (WireEntity*)this;
+    }
+    
+    Socket GetLastSocket() const{
+        return m_sockets.back();
+    }
+    
+    void CreateWireFromPoints(glm::ivec2 gridPoint1, glm::vec2 absPosition1, glm::ivec2 gridPoint2, glm::vec2 absPosition2) {
+        glm::ivec2 offset = gridPoint2 - gridPoint1;
+        glm::vec2 intersection = glm::vec2(absPosition2.x, absPosition1.y);
+        
+        int i;
+        
+        short int sgnY = (offset.y >= 0) - (offset.y < 0);
+        for(i = 0; abs(i) < abs(offset.y); i += sgnY) {
+            AddSocket(Socket(glm::ivec2(gridPoint2.x, gridPoint1.y + i), GlobalGrid::GetGrid()->GetGridPointPositionRelative(absPosition1, 0, i)));
+        }
+        
+        if(offset.y != 0) {
+            AddSocket(Socket(glm::ivec2(gridPoint2.x, gridPoint1.y + i), GlobalGrid::GetGrid()->GetGridPointPositionRelative(absPosition1, 0, i)));
+        }
+        
+        short int sgnX = (offset.x >= 0) - (offset.x < 0);
+        for(i = 0; abs(i) < abs(offset.x); i += sgnX) {
+            AddSocket(Socket(glm::ivec2(gridPoint1.x + i, gridPoint1.y), GlobalGrid::GetGrid()->GetGridPointPositionRelative(intersection, i, 0)));
+        }
+        
+        if(offset.x != 0) {
+            AddSocket(Socket(glm::ivec2(gridPoint1.x + i, gridPoint1.y), GlobalGrid::GetGrid()->GetGridPointPositionRelative(intersection, i, 0)));
+        }
+        
     }
     
     void Draw(const glm::mat4& view, const glm::mat4& projection) const override {
