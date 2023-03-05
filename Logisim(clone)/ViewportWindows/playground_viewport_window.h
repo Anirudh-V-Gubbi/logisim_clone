@@ -32,6 +32,13 @@ public:
         glDeleteBuffers(1, &GateEntity::m_EBO);
         glDeleteProgram(gateShader->ID);
         delete gateShader;
+        
+        // Delete wire resources
+        glDeleteVertexArrays(1, &WireEntity::VAO);
+        glDeleteBuffers(1, &WireEntity::VBO);
+        glDeleteBuffers(1, &WireEntity::EBO);
+        glDeleteProgram(wireShader->ID);
+        delete wireShader;
 
         // Delete gate socket resources
         glDeleteVertexArrays(1, &GateSockets::m_VAO);
@@ -39,6 +46,8 @@ public:
         glDeleteBuffers(1, &GateSockets::m_EBO);
         glDeleteTextures(1, &GateSockets::texture->ID);
         glDeleteProgram(GateSockets::shader->ID);
+        delete GateSockets::shader;
+        delete GateSockets::texture;
         
         Logger::GetInstance()->info("Deleted Playground Viewport");
     }

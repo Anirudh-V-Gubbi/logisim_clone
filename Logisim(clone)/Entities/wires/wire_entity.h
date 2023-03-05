@@ -10,7 +10,9 @@ public:
     WireEntity(Shader& shader, glm::vec3 position) : Entity{shader, *EmptyTexture::GetInstance(), position} {
         this->setup();
     }
-    ~WireEntity() { }
+    ~WireEntity() {
+        glDeleteBuffers(1, &m_instanceVBO);
+    }
     
     WireEntity* GetInstance() const override{
         return (WireEntity*)this;
