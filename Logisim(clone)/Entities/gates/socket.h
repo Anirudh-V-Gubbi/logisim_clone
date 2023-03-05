@@ -28,7 +28,7 @@ public:
     }
     ~Socket() { }
     
-    glm::ivec2 GetAbsPosition() const {
+    glm::vec2 GetAbsPosition() const {
         return this->m_absPosition;
     }
     
