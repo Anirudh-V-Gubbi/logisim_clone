@@ -69,7 +69,7 @@ public:
         return (glm::vec2(origin.x, origin.y) + glm::vec2(j * squareSpacing, i * squareSpacing));
     }
     
-    std::pair<unsigned int, unsigned int> GetGridCoords(glm::vec2 position) const {
+    glm::ivec2 GetGridCoords(glm::vec2 position) const {
         
         float i = (position.y - m_position.y ) / squareSpacing;
         float j = (position.x - m_position.x ) / squareSpacing;
@@ -83,7 +83,7 @@ public:
             y += 1;
         }
         
-        return std::make_pair<unsigned int,unsigned int>(x, y);
+        return glm::ivec2(x, y);
     }
     
 private:

@@ -28,6 +28,10 @@ public:
     }
     ~Socket() { }
     
+    glm::ivec2 GetPosition() const {
+        return this->m_position;
+    }
+    
     glm::vec2 GetAbsPosition() const {
         return this->m_absPosition;
     }
