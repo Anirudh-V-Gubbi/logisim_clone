@@ -23,6 +23,7 @@ public:
         const glm::ivec2& screenDimensions, Shader& shader)
         : ViewportWindow(fractionalWindowDimensions, fractionalPosition, screenDimensions, shader) {
             gateShader = new Shader("Shaders/gate_vertex.vs", "Shaders/gate_fragment.fs");
+            wireShader = new Shader("Shaders/wire_vertex.vs", "Shaders/wire_fragment.fs");
     }
     ~PlaygroundViewportWindow() override {
         // Delete gate resources
@@ -69,8 +70,14 @@ public:
                 auto p = grid->GetGridCoords(glm::vec2(mEvent->GetX(), mEvent->GetY()));
                 auto m = grid->GetGridPointPosition(p.first, p.second);
 
-                AndGateEntity* gate = new AndGateEntity(*gateShader, glm::vec3(m.x - m_position.x * m_screenDimensions.x, m.y, 0.0f), glm::ivec2(p.first, p.second));
-                AddEntititesToViewport(*gate);
+                /*AndGateEntity* gate = new AndGateEntity(*gateShader, glm::vec3(m.x - m_position.x * m_screenDimensions.x, m.y, 0.0f), glm::ivec2(p.first, p.second));
+                AddEntititesToViewport(*gate);*/
+                
+                WireEntity* wire = new WireEntity(*wireShader, glm::vec3(m.x - m_position.x * m_screenDimensions.x, m.y, 0.0f));
+                auto q = glm::vec3(m.x - m_position.x * m_screenDimensions.x, m.y, 0.0f);
+                wire->AddSocket(Socket(glm::ivec2(p.first, p.second), GlobalGrid::GetGrid()->GetGridPointPositionRelative(q, 0, 0)));
+                wire->AddSocket(Socket(glm::ivec2(p.first + 1, p.second), GlobalGrid::GetGrid()->GetGridPointPositionRelative(q, 0, 1)));
+                AddEntititesToViewport(*wire);
                 
                 std::cout << p.first << ", " << p.second << std::endl;
                 break;
@@ -88,6 +95,7 @@ public:
 private:
     GlobalGrid* grid;
     Shader* gateShader;
+    Shader* wireShader;
 };
 
 #endif
