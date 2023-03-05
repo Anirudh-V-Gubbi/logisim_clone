@@ -36,6 +36,10 @@ public:
         glUniformMatrix4fv(glGetUniformLocation(this->ID, name), 1, GL_FALSE, glm::value_ptr(matrix));
     }
     
+    void SetVector2f(const char* name, glm::vec2 vector) const {
+        glUniform2fv(glGetUniformLocation(this->ID, name), 1, glm::value_ptr(vector));
+    }
+    
     void SetVector3f(const char* name, glm::vec3 vector) const {
         glUniform3fv(glGetUniformLocation(this->ID, name), 1, glm::value_ptr(vector));
     }

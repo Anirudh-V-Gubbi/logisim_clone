@@ -49,6 +49,10 @@ public:
         return squareSpacing;
     }
     
+    float GetSquareDimension() const {
+        return squareDimension;
+    }
+    
     glm::ivec2 GetSquaresCount() const {
         return squaresCount;
     }
