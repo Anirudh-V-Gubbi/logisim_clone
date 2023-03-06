@@ -2,6 +2,8 @@
 #define WIRE_ENTITY_H
 
 const float WIRE_HEIGHT = 4.0f;
+const float PI2 = 3.1415f / 2.0f;
+const float PI = 3.1415f;
 
 class WireEntity : public Entity {
 public:
@@ -29,8 +31,12 @@ public:
         int i;
         
         short int sgnY = (offset.y >= 0) - (offset.y < 0);
+        float rotation = (1 - sgnY) * PI2;
         for(i = 0; abs(i) < abs(offset.y); i += sgnY) {
             AddSocket(Socket(glm::ivec2(gridPoint2.x, gridPoint1.y + i), GlobalGrid::GetGrid()->GetGridPointPositionRelative(absPosition1, 0, i)));
+            
+            if(abs(i) < abs(offset.y) - 1)
+                m_socketRotations.push_back(rotation);
         }
         
         if(offset.y != 0) {
@@ -38,8 +44,11 @@ public:
         }
         
         short int sgnX = (offset.x >= 0) - (offset.x < 0);
+        rotation = (2 + sgnX) * PI2;
         for(i = 0; abs(i) < abs(offset.x); i += sgnX) {
             AddSocket(Socket(glm::ivec2(gridPoint1.x + i, gridPoint1.y), GlobalGrid::GetGrid()->GetGridPointPositionRelative(intersection, i, 0)));
+            if(abs(i) < abs(offset.x) - 1)
+                m_socketRotations.push_back(rotation);
         }
         
         if(offset.x != 0) {
@@ -55,8 +64,8 @@ public:
         for(int j = 0; j < m_sockets.size() - 1; j++) {
             glm::vec2 pos = m_sockets[j].GetAbsPosition();
             buffer[i++] = pos.x;
-            buffer[i++] = pos.y;
-            buffer[i++] = 0.0f * 3.1415f / 180;
+            buffer[i++] = pos.y + WIRE_HEIGHT / 2;
+            buffer[i++] = m_socketRotations[j];
         }
         
         // buffer data and attrib pointers for instance buffer
@@ -92,12 +101,34 @@ public:
     }
     
     void AddSocket(Socket socket) {
+        if(m_sockets.size() >= 1) {
+            Socket& lastSocket = m_sockets.back();
+            
+            if(socket.GetPosition().x == lastSocket.GetPosition().x) {
+                if(socket.GetPosition().y > lastSocket.GetPosition().y) {
+                    m_socketRotations.push_back(0.0f);
+                }
+                else {
+                    m_socketRotations.push_back(PI);
+                }
+            }
+            else {
+                if(socket.GetPosition().x > lastSocket.GetPosition().x) {
+                    m_socketRotations.push_back(3 * PI2);
+                }
+                else {
+                    m_socketRotations.push_back(PI2);
+                }
+            }
+        }
+        
         m_sockets.push_back(socket);
     }
     
 private:
     unsigned int m_instanceVBO;
     std::vector<Socket> m_sockets;
+    std::vector<float> m_socketRotations;
     
     void setup() {
         if(VAO == 0 && EBO == 0 && VBO == 0) {
@@ -111,10 +142,10 @@ private:
             //  +-------+
             float vertices[] = {
                  // positions
-                 1.0f,    1.0f,   // top right
-                 1.0f,    0.0f,   // bottom right
-                 0.0f,    0.0f,   // bottom left
-                 0.0f,    1.0f    // top left
+                 1.0f,    0.5f,   // top right
+                 1.0f,    -0.5f,   // bottom right
+                 0.0f,    -0.5f,   // bottom left
+                 0.0f,    0.5f    // top left
             };
             unsigned int indices[] = {
                 0, 3, 2,  // first Triangle
