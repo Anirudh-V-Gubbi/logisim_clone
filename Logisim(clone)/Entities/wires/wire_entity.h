@@ -33,26 +33,52 @@ public:
         short int sgnY = (offset.y >= 0) - (offset.y < 0);
         float rotation = (1 - sgnY) * PI2;
         for(i = 0; abs(i) < abs(offset.y); i += sgnY) {
-            AddSocket(Socket(glm::ivec2(gridPoint2.x, gridPoint1.y + i), GlobalGrid::GetGrid()->GetGridPointPositionRelative(absPosition1, 0, i)));
-            
-            if(abs(i) < abs(offset.y) - 1)
-                m_socketRotations.push_back(rotation);
+            AddSocket(Socket(glm::ivec2(gridPoint1.x, gridPoint1.y + i), GlobalGrid::GetGrid()->GetGridPointPositionRelative(absPosition1, 0, i)));
         }
         
         if(offset.y != 0) {
-            AddSocket(Socket(glm::ivec2(gridPoint2.x, gridPoint1.y + i), GlobalGrid::GetGrid()->GetGridPointPositionRelative(absPosition1, 0, i)));
+            AddSocket(Socket(glm::ivec2(gridPoint1.x, gridPoint1.y + i), GlobalGrid::GetGrid()->GetGridPointPositionRelative(absPosition1, 0, i)));
         }
         
         short int sgnX = (offset.x >= 0) - (offset.x < 0);
         rotation = (2 + sgnX) * PI2;
         for(i = 0; abs(i) < abs(offset.x); i += sgnX) {
-            AddSocket(Socket(glm::ivec2(gridPoint1.x + i, gridPoint1.y), GlobalGrid::GetGrid()->GetGridPointPositionRelative(intersection, i, 0)));
-            if(abs(i) < abs(offset.x) - 1)
-                m_socketRotations.push_back(rotation);
+            AddSocket(Socket(glm::ivec2(gridPoint1.x + i, gridPoint2.y), GlobalGrid::GetGrid()->GetGridPointPositionRelative(intersection, i, 0)));
         }
         
         if(offset.x != 0) {
-            AddSocket(Socket(glm::ivec2(gridPoint1.x + i, gridPoint1.y), GlobalGrid::GetGrid()->GetGridPointPositionRelative(intersection, i, 0)));
+            AddSocket(Socket(glm::ivec2(gridPoint1.x + i, gridPoint2.y), GlobalGrid::GetGrid()->GetGridPointPositionRelative(intersection, i, 0)));
+        }
+        
+    }
+    
+    void ContinueBuildWire(glm::ivec2 gridPoint2, glm::vec2 absPosition2) {
+        glm::ivec2 gridPoint1 = m_sockets.back().GetPosition();
+        glm::vec2 absPosition1 = m_sockets.back().GetAbsPosition();
+        
+        glm::ivec2 offset = gridPoint2 - gridPoint1;;
+        glm::vec2 intersection = glm::vec2(absPosition2.x, absPosition1.y);
+        
+        int i;
+        
+        short int sgnY = (offset.y >= 0) - (offset.y < 0);
+        float rotation = (1 - sgnY) * PI2;
+        for(i = 1 * sgnY; abs(i) < abs(offset.y); i += sgnY) {
+            AddSocket(Socket(glm::ivec2(gridPoint1.x, gridPoint1.y + i), GlobalGrid::GetGrid()->GetGridPointPositionRelative(absPosition1, 0, i)));
+        }
+        
+        if(offset.y != 0) {
+            AddSocket(Socket(glm::ivec2(gridPoint1.x, gridPoint1.y + i), GlobalGrid::GetGrid()->GetGridPointPositionRelative(absPosition1, 0, i)));
+        }
+        
+        short int sgnX = (offset.x >= 0) - (offset.x < 0);
+        rotation = (2 + sgnX) * PI2;
+        for(i = 1 * sgnX; abs(i) < abs(offset.x); i += sgnX) {
+            AddSocket(Socket(glm::ivec2(gridPoint1.x + i, gridPoint2.y), GlobalGrid::GetGrid()->GetGridPointPositionRelative(intersection, i, 0)));
+        }
+        
+        if(offset.x != 0) {
+            AddSocket(Socket(glm::ivec2(gridPoint1.x + i, gridPoint2.y), GlobalGrid::GetGrid()->GetGridPointPositionRelative(intersection, i, 0)));
         }
         
     }

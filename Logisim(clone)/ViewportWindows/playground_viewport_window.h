@@ -113,7 +113,7 @@ public:
                     else {
                         auto lastSocketPos = m_currentWire->GetLastSocket().GetPosition();
                         if(lastSocketPos.x != currentPoint.x || lastSocketPos.y != currentPoint.y) {
-                            m_currentWire->AddSocket(Socket(glm::ivec2(currentPoint.x, currentPoint.y), grid->GetGridPointPositionRelative(currentPointPosition, 0, 0)));
+                            m_currentWire->ContinueBuildWire(currentPoint, currentPointPosition);
                         }
                         
                     }
