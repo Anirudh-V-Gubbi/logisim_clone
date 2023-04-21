@@ -44,6 +44,10 @@ public:
         glUniform3fv(glGetUniformLocation(this->ID, name), 1, glm::value_ptr(vector));
     }
     
+    void SetInteger1i(const char* name, int unit) const {
+        glUniform1i(glGetUniformLocation(this->ID, name), unit);
+    }
+    
 private:
 
     struct ShaderCodes {
