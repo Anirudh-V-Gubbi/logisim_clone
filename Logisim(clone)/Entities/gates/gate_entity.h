@@ -3,18 +3,12 @@
 
 #include "../entity.h"
 #include "../../enitity_parser.h"
-#include "gate_exception.h"
+#include "../entity_exception.h"
 #include "socket.h"
 #include "../global_grid.h"
 #include <vector>
 #include <map>
-
-enum class Direction {
-    NORTH,
-    SOUTH,
-    EAST,
-    WEST
-};
+#include "../../utility.h"
 
 struct GateFromScript {
     const char* name;
@@ -26,47 +20,6 @@ struct GateFromScript {
     std::vector<std::pair<short int, short int>> inputOffsets;
     std::pair<short int, short int> outputOffset;
 };
-
-std::vector<std::pair<short int, short int>> stringToList(std::string str)
-{
-    std::vector<std::pair<short int, short int>> list;
-    
-    std::stringstream ss(str);
-    std::string offset;
-    while(std::getline(ss, offset, ')')) {
-        std::stringstream ssoffset(offset);
-        short int x, y;
-        
-        while(ssoffset.peek() == ' ' || ssoffset.peek() == '(' || ssoffset.peek() == ',') {
-            ssoffset.ignore();
-            }
-        ssoffset >> x;
-            
-        while(ssoffset.peek() == ' ' || ssoffset.peek() == ',') {
-            ssoffset.ignore();
-        }
-        ssoffset >> y;
-        
-        list.push_back(std::make_pair(x, y));
-    }
-    
-    return list;
-}
-
-Direction stringToDirection(std::string str)
-{
-    if(str == "NORTH") {
-        return Direction::NORTH;
-    }
-    if(str == "SOUTH") {
-        return Direction::SOUTH;
-    }
-    if(str == "WEST") {
-        return Direction::WEST;
-    }
-    
-    return Direction::EAST;
-}
 
 GateFromScript* parseScriptToGate(const char* scriptName)
 {
@@ -84,7 +37,7 @@ GateFromScript* parseScriptToGate(const char* scriptName)
         };
     }
     else {
-        throw GateException("Failed to parse gate script");
+        throw EntityException("Failed to parse gate script");
     }
 }
 

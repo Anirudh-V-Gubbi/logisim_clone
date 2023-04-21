@@ -68,6 +68,7 @@
 		8FA880A42929F2BF004C76D5 /* Textures */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Textures; sourceTree = "<group>"; };
 		8FAA87C92943484100B1B9F7 /* Event */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Event; sourceTree = "<group>"; };
 		8FDC14102931D8C000B5193E /* renderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = renderer.h; sourceTree = "<group>"; };
+		8FE26A3C29F2A8C200D964FD /* utility.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = utility.h; sourceTree = "<group>"; };
 		8FF085F82934A2E900BFB919 /* framebuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = framebuffer.h; sourceTree = "<group>"; };
 		8FF085F92934ABE400BFB919 /* ViewportWindows */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ViewportWindows; sourceTree = "<group>"; };
 		8FF18BA4298B84B90037B1FF /* resources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = resources; sourceTree = "<group>"; };
@@ -121,6 +122,7 @@
 				8FDC14102931D8C000B5193E /* renderer.h */,
 				8FF085F82934A2E900BFB919 /* framebuffer.h */,
 				8FF18BA6298B8A3E0037B1FF /* enitity_parser.h */,
+				8FE26A3C29F2A8C200D964FD /* utility.h */,
 			);
 			path = "Logisim(clone)";
 			sourceTree = "<group>";
