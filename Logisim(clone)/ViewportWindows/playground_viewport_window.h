@@ -13,6 +13,7 @@
 #include "../Entities/gates/xnor_gate_entity.h"
 #include "../Entities/wires/wire_entity.h"
 #include "../Event/event_handler.h"
+#include "../Entities/switches/input_switch_entity.h"
 
 #include <map>
 #include <cmath>
@@ -24,6 +25,7 @@ public:
         : ViewportWindow(fractionalWindowDimensions, fractionalPosition, screenDimensions, shader) {
             gateShader = new Shader("Shaders/gate_vertex.vs", "Shaders/gate_fragment.fs");
             wireShader = new Shader("Shaders/wire_vertex.vs", "Shaders/wire_fragment.fs");
+            switchShader = new Shader("Shaders/switch_vertex.vs", "Shaders/switch_fragment.fs");
     }
     ~PlaygroundViewportWindow() override {
         // Delete gate resources
@@ -79,8 +81,14 @@ public:
                 auto p = grid->GetGridCoords(glm::vec2(mEvent->GetX(), mEvent->GetY()));
                 auto m = grid->GetGridPointPosition(p.x, p.y);
 
-                AndGateEntity* gate = new AndGateEntity(*gateShader, glm::vec3(m.x - m_position.x * m_screenDimensions.x, m.y, 0.0f), glm::ivec2(p.x, p.y));
-                AddEntititesToViewport(*gate);
+                if(mEvent->GetMouseButton() != 0) {
+                    AndGateEntity* gate = new AndGateEntity(*gateShader, glm::vec3(m.x - m_position.x * m_screenDimensions.x, m.y, 0.0f), glm::ivec2(p.x, p.y));
+                    AddEntititesToViewport(*gate);
+                }else {
+                    
+                    InputSwitchEntity* iSwitch = new InputSwitchEntity(*switchShader, glm::vec3(m.x - m_position.x * m_screenDimensions.x, m.y, 0.0f), glm::ivec2(p.x, p.y));
+                    AddEntititesToViewport(*iSwitch);
+                }
                 
                 std::cout << p.x << ", " << p.y << std::endl;
                 break;
@@ -129,6 +137,7 @@ private:
     GlobalGrid* grid;
     Shader* gateShader;
     Shader* wireShader;
+    Shader* switchShader;
     
     WireEntity* m_currentWire = nullptr;
 };
