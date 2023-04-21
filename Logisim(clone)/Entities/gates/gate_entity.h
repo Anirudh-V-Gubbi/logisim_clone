@@ -4,7 +4,7 @@
 #include "../entity.h"
 #include "../../enitity_parser.h"
 #include "../entity_exception.h"
-#include "socket.h"
+#include "../sockets/gate_sockets.h"
 #include "../global_grid.h"
 #include <vector>
 #include <map>

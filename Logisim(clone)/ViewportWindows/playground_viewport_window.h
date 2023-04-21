@@ -11,7 +11,6 @@
 #include "../Entities/gates/nor_gate_entity.h"
 #include "../Entities/gates/xor_gate_entity.h"
 #include "../Entities/gates/xnor_gate_entity.h"
-#include "../Entities/gates/socket.h"
 #include "../Entities/wires/wire_entity.h"
 #include "../Event/event_handler.h"
 
