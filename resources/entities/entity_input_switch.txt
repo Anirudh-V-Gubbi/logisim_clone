@@ -3,7 +3,7 @@
 "image_path"=".//resources/images/input_switch.png"
 "color_map_path"=".//resources/images/input_switch_color_map.png"
 "width"="21"
-"height"="21"
+"height"="24"
 "direction"="EAST"
 "switch_socket_offsets"="(2, 1)"
 #END
