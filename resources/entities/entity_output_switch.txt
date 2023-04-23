@@ -1,0 +1,10 @@
+#START
+"name"="Output Switch"
+"image_path"=".//resources/images/output_switch.png"
+"color_map_path"=".//resources/images/output_switch_color_map.png"
+"width"="22"
+"height"="23"
+"direction"="EAST"
+"switch_socket_offsets"="(2, 1)"
+#END
+
