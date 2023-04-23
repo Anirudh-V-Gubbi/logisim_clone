@@ -12,8 +12,8 @@ public:
             sswitch->texture.DeleteImageData();
             sswitch->colorMapTexture.DeleteImageData();
         }
+        m_switchState = SocketState::HIGH;
         SwitchEntity::InitializeSwitchEntity(*sswitch);
-        m_switchState = SocketState::LOW;
     }
     ~InputSwitchEntity() { }
 
