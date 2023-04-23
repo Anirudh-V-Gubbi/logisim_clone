@@ -1,5 +1,5 @@
 #ifndef OUTPUT_SWITCH_ENTITY_H
-#define OUT PUT_SWITCH_ENTITY_H
+#define OUTPUT_SWITCH_ENTITY_H
 
 #include "switch_entity.h"
 
