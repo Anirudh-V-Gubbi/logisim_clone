@@ -14,6 +14,7 @@
 #include "../Entities/wires/wire_entity.h"
 #include "../Event/event_handler.h"
 #include "../Entities/switches/input_switch_entity.h"
+#include "../Entities/switches/output_switch_entity.h"
 
 #include <map>
 #include <cmath>
@@ -86,8 +87,8 @@ public:
                     AddEntititesToViewport(*gate);
                 }else {
                     
-                    InputSwitchEntity* iSwitch = new InputSwitchEntity(*switchShader, glm::vec3(m.x - m_position.x * m_screenDimensions.x, m.y, 0.0f), glm::ivec2(p.x, p.y));
-                    AddEntititesToViewport(*iSwitch);
+                    OutputSwitchEntity* oSwitch = new OutputSwitchEntity(*switchShader, glm::vec3(m.x - m_position.x * m_screenDimensions.x, m.y, 0.0f), glm::ivec2(p.x, p.y));
+                    AddEntititesToViewport(*oSwitch);
                 }
                 
                 std::cout << p.x << ", " << p.y << std::endl;
