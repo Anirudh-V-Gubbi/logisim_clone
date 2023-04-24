@@ -5,11 +5,8 @@
 
 #include "Shaders/shader.h"
 #include "Textures/texture.h"
-#include "Entities/rectangle_entity.h"
-#include "renderer.h"
 #include "ViewportWindows/viewport_window.h"
 #include "ViewportWindows/playground_viewport_window.h"
-#include "framebuffer.h"
 #include "ViewportWindows/toolbar_viewport_window.h"
 #include "ViewportWindows/projectspace_viewport_window.h"
 #include "Logger/logger.h"
@@ -18,8 +15,6 @@
 #include "Event/application_event.h"
 #include "Event/mouse_event.h"
 #include "Event/event_handler.h"
-#include "enitity_parser.h"
-#include "Entities/gates/and_gate_entity.h"
 
 #include <iostream>
 #include <memory>
@@ -82,15 +77,8 @@ int main()
 
     // set up shaders
     // --------------
-    //Shader shader("Shaders/vertex.vs", "Shaders/frag.fs");
-    //Texture texture("Textures/demo_image.jpg", TextureFormats::JPG);
-    //Texture dummyTexture("Textures/dummy.jpg", TextureFormats::JPG);
     Shader frameBufferShader("Shaders/framebuffer_vertex.vs", "Shaders/framebuffer_fragment.fs");
     Shader gridShader("Shaders/grid_vertex.vs", "Shaders/grid_fragment.fs");
-    
-    // create a sample entity to render, deleted later by the renderer
-    // ---------------------------------------------------------------
-    //RectangleEntity *r = new RectangleEntity(shader, texture, glm::vec3(100.0, 100.0, 0.0));
     
     // an enum to access viewport windows
     // ----------------------------------
@@ -125,7 +113,6 @@ int main()
     
     // add entities to the playground
     // ------------------------------
-    //viewports[ViewportWindows::PLAYGROUND]->AddEntititesToViewport(*r);
     pWindow->SetGrid(grid);
     viewports[ViewportWindows::PLAYGROUND]->AddEntititesToViewport(*grid);
     
