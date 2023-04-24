@@ -5,7 +5,6 @@
 #include <glm/mat4x4.hpp>
 #include "../framebuffer.h"
 #include "../renderer.h"
-#include "../Entities/entity.h"
 #include "../Shaders/shader.h"
 #include "../Logger/logger.h"
 #include "../Event/event.h"

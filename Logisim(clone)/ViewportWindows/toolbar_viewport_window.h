@@ -2,7 +2,6 @@
 #define TOOLBAR_VIEWPORT_WINDOW_H
 
 #include "viewport_window.h"
-#include "../Shaders/shader.h"
 
 class ToolbarViewportWindow : public ViewportWindow {
 public:
