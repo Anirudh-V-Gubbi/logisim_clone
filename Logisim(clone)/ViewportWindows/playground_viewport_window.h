@@ -23,9 +23,9 @@ public:
     PlaygroundViewportWindow(glm::vec2 fractionalWindowDimensions, glm::vec2 fractionalPosition,
         const glm::ivec2& screenDimensions, Shader& shader)
         : ViewportWindow(fractionalWindowDimensions, fractionalPosition, screenDimensions, shader) {
-            gateShader = new Shader("Shaders/gate_vertex.vs", "Shaders/gate_fragment.fs");
-            wireShader = new Shader("Shaders/wire_vertex.vs", "Shaders/wire_fragment.fs");
-            switchShader = new Shader("Shaders/switch_vertex.vs", "Shaders/switch_fragment.fs");
+            gateShader = new Shader("resources/shaders/gate_vertex.vs", "resources/shaders/gate_fragment.fs");
+            wireShader = new Shader("resources/shaders/wire_vertex.vs", "resources/shaders/wire_fragment.fs");
+            switchShader = new Shader("resources/shaders/switch_vertex.vs", "resources/shaders/switch_fragment.fs");
     }
     ~PlaygroundViewportWindow() override {
         // Delete gate resources

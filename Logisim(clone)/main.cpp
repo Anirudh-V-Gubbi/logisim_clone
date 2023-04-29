@@ -77,8 +77,8 @@ int main()
 
     // set up shaders
     // --------------
-    Shader frameBufferShader("Shaders/framebuffer_vertex.vs", "Shaders/framebuffer_fragment.fs");
-    Shader gridShader("Shaders/grid_vertex.vs", "Shaders/grid_fragment.fs");
+    Shader frameBufferShader("resources/shaders/framebuffer_vertex.vs", "resources/shaders/framebuffer_fragment.fs");
+    Shader gridShader("resources/shaders/grid_vertex.vs", "resources/shaders/grid_fragment.fs");
     
     // an enum to access viewport windows
     // ----------------------------------

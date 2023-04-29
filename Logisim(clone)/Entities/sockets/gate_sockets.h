@@ -126,7 +126,7 @@ private:
             // shader setup
             // ------------
             if(shader == nullptr) {
-                shader = new Shader("Shaders/socket_vertex.vs", "Shaders/socket_fragment.fs");
+                shader = new Shader("resources/shaders/socket_vertex.vs", "resources/shaders/socket_fragment.fs");
             }
             
             // texture setup

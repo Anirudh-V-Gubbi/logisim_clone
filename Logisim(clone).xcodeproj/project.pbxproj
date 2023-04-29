@@ -15,11 +15,11 @@
 		8F52560C293A0901003C7416 /* Logger in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8F52560B293A08F1003C7416 /* Logger */; };
 		8F5639B7292023AE007D80E6 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F5639B6292023AE007D80E6 /* main.cpp */; };
 		8F5639C7292028E6007D80E6 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F5639BE29202435007D80E6 /* OpenGL.framework */; };
+		8F585EB029FD30EE00E9475C /* resources in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8FF18BA4298B84B90037B1FF /* resources */; };
 		8FA8809E2929F219004C76D5 /* Shaders in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8F6B3017292800F800E13646 /* Shaders */; };
 		8FA880A52929F2BF004C76D5 /* Textures in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8FA880A42929F2BF004C76D5 /* Textures */; };
 		8FAA87CA2943484800B1B9F7 /* Event in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8FAA87C92943484100B1B9F7 /* Event */; };
 		8FF085FA2934ABF500BFB919 /* ViewportWindows in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8FF085F92934ABE400BFB919 /* ViewportWindows */; };
-		8FF18BA5298B84BA0037B1FF /* resources in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8FF18BA4298B84B90037B1FF /* resources */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -29,7 +29,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
-				8FF18BA5298B84BA0037B1FF /* resources in CopyFiles */,
+				8F585EB029FD30EE00E9475C /* resources in CopyFiles */,
 				8FF085FA2934ABF500BFB919 /* ViewportWindows in CopyFiles */,
 				8F52560C293A0901003C7416 /* Logger in CopyFiles */,
 				8FA880A52929F2BF004C76D5 /* Textures in CopyFiles */,
@@ -40,15 +40,6 @@
 				8FAA87CA2943484800B1B9F7 /* Event in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
-		};
-		8F5639B1292023AE007D80E6 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 1;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -148,7 +139,6 @@
 			buildPhases = (
 				8F5639AF292023AE007D80E6 /* Sources */,
 				8F5639B0292023AE007D80E6 /* Frameworks */,
-				8F5639B1292023AE007D80E6 /* CopyFiles */,
 				8F1F869A2922B7C100CC14E7 /* CopyFiles */,
 			);
 			buildRules = (
