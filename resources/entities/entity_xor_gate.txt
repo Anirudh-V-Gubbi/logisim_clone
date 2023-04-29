@@ -1,6 +1,6 @@
 #START
 "name"="Xor Gate"
-"image_path"=".//resources/images/xor_gate.png"
+"image_path"="resources/images/xor_gate.png"
 "width"="8"
 "height"="6"
 "direction"="EAST"

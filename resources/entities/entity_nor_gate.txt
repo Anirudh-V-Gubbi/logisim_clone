@@ -1,6 +1,6 @@
 #START
 "name"="Nor Gate"
-"image_path"=".//resources/images/nor_gate.png"
+"image_path"="resources/images/nor_gate.png"
 "width"="8"
 "height"="6"
 "direction"="EAST"

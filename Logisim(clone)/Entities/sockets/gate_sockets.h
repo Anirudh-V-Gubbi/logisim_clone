@@ -132,7 +132,7 @@ private:
             // texture setup
             // -------------
             if(texture == nullptr) {
-                texture = new Texture(".//resources/images/socket.png", TextureFormats::PNG);
+                texture = new Texture("resources/images/socket.png", TextureFormats::PNG);
             }
         }
         

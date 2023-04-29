@@ -1,7 +1,7 @@
 #START
 "name"="Output Switch"
-"image_path"=".//resources/images/output_switch.png"
-"color_map_path"=".//resources/images/output_switch_color_map.png"
+"image_path"="resources/images/output_switch.png"
+"color_map_path"="resources/images/output_switch_color_map.png"
 "width"="22"
 "height"="23"
 "direction"="EAST"

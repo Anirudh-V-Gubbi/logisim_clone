@@ -1,6 +1,6 @@
 #START
 "name"="And Gate"
-"image_path"=".//resources/images/and_gate.png"
+"image_path"="resources/images/and_gate.png"
 "width"="7"
 "height"="6"
 "direction"="EAST"
