@@ -11,3 +11,38 @@ This is an attempt to recreate the famous Logisim software used to design and si
 - [ ] Establish different modes / states for the application.
 - [ ] Create a file system to save progress.
 - [ ] Create a project space for user to browse through project directories.
+
+# Installation Guide
+
+**Note**: The project needs glew and glfw3 libraries to be installed. On MacOS, you install these easily through Homebrew:
+  '''
+  brew install <package-name>
+  '''
+  
+1. Clone the master branch of the repository.
+  '''
+  git clone https://github.com/Anirudh-V-Gubbi/logisim_clone.git
+  '''
+2. Change directory into the Logisim(clone) folder
+  '''
+  cd Logisim\(clone\)
+  '''
+3. Create a build folder and change directory.
+  '''
+  mkdir build
+  '''
+  '''
+  cd build
+  '''
+4. Run the cmake and make commands.
+  '''
+  cmake ..
+  '''
+  '''
+  make
+  '''
+5. Run the EXE file generated from the terminal.
+  '''
+  ./Logisim\(clone\)
+  '''
+  
