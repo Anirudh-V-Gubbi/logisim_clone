@@ -25,7 +25,7 @@ This is an attempt to recreate the famous Logisim software used to design and si
   ```
 2. Change directory into the Logisim(clone) folder
   ```
-  cd Logisim\(clone\)
+  cd logisim_clone
   ```
 3. Create a build folder and change directory.
   ```
@@ -43,6 +43,6 @@ This is an attempt to recreate the famous Logisim software used to design and si
   ```
 5. Run the EXE file generated from the terminal.
   ```
-  ./Logisim\(clone\)
+  ./logisim_clone
   ```
   
