@@ -102,6 +102,8 @@ protected:
                     break;
             }
         }
+        
+        GlobalGrid::GetGrid()->AddSocketsToBoard(m_sockets.m_sockets);
     }
     
 private:

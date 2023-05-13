@@ -2,7 +2,9 @@
 #define GLOBAL_GRID_H
 
 #include "entity.h"
+#include "sockets/socket.h"
 #include <glm/vec2.hpp>
+#include <map>
 
 class GlobalGrid : public Entity {
 public:
@@ -86,6 +88,23 @@ public:
         return glm::ivec2(x, y);
     }
     
+    void AddSocketToBoard(Socket& socket) {
+        glm::ivec2 gridPos = socket.GetPosition();
+        auto it = socketBoard.find(gridPos);
+        
+        if(it == socketBoard.end()) {
+            it = socketBoard.insert({gridPos, std::vector<std::shared_ptr<Socket>>()}).first;
+        }
+        
+        it->second.push_back(std::shared_ptr<Socket>(&socket));
+    }
+    
+    void AddSocketsToBoard(std::vector<Socket>& sockets) {
+        for(auto& socket : sockets) {
+            AddSocketToBoard(socket);
+        }
+    }
+    
 private:
     inline static GlobalGrid* instance;
     unsigned int m_VBO, m_VAO, m_EBO, m_instanceVBO;
@@ -94,6 +113,15 @@ private:
     const float squareSpacing = 10.0f;
     glm::vec3 gridColor = glm::vec3(0.3);
     glm::ivec2 squaresCount;
+    
+    struct compare_ivec2{
+        bool operator()(const glm::ivec2& first, const glm::ivec2& second) const {
+            if(first.x == second.x) return first.y < second.y;
+            
+            return first.x < second.x;
+        };
+    };
+    std::map<glm::ivec2, std::vector<std::shared_ptr<Socket>>, compare_ivec2> socketBoard;
     
     void setup() {
         // calculate the number of grid dots to be rendered in each axis

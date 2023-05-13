@@ -149,6 +149,7 @@ public:
         }
         
         m_sockets.push_back(socket);
+        GlobalGrid::GetGrid()->AddSocketToBoard(socket);
     }
     
 private:

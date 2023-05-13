@@ -101,6 +101,8 @@ protected:
                     break;
             }
         }
+        
+        GlobalGrid::GetGrid()->AddSocketsToBoard(m_sockets.m_inputs);
     }
     
     void InitializeOutput(GateFromScript& gate) {
@@ -121,6 +123,8 @@ protected:
                 m_sockets.m_outputs.push_back(Socket(glm::ivec2(m_gridPosition.x - y, m_gridPosition.y - x), GlobalGrid::GetGrid()->GetGridPointPositionRelative(m_position, y, x)));
                 break;
         }
+        
+        GlobalGrid::GetGrid()->AddSocketsToBoard(m_sockets.m_outputs);
     }
     
 private:
