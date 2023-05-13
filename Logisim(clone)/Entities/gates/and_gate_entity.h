@@ -29,6 +29,36 @@ public:
         return "And Gate";
     }
     
+    void OnInputChange(SocketState newState) override {
+        using ss = SocketState;
+        ss finalState = ss::UNINITIALIZED;
+        
+        for(auto& socket : m_sockets.m_inputs) {
+            ss state = socket.GetState();
+            
+            if(state == ss::UNINITIALIZED) {
+                continue;
+            }
+            if(state == ss::ERROR) {
+                finalState = ss::ERROR;
+                break;
+            }
+            if(state == ss::LOW) {
+                finalState = state;
+            }
+            else if(state == ss::HIGH) {
+                if(finalState != ss::LOW) {
+                    finalState = state;
+                }
+                else {
+                    finalState = ss::LOW;
+                }
+            }
+        }
+        
+        m_sockets.m_outputs[0].ChangeState(finalState);
+    }
+    
 private:
     inline static GateFromScript *gate = NULL;
     
