@@ -1,6 +1,8 @@
 #ifndef SOCKET_H
 #define SOCKET_H
 
+#include <functional>
+
 enum class SocketState {
     ERROR,
     UNINITIALIZED,
@@ -20,7 +22,13 @@ public:
     Socket(glm::ivec2 position, glm::vec2 absPosition, SocketState state) : m_position{position}, m_absPosition{absPosition}, m_state{state} {
         m_color = socketStateColorMap.at(m_state);
     }
+    Socket(glm::ivec2 position, glm::vec2 absPosition, SocketState state, std::function<void()> entityCallback) : m_position{position}, m_absPosition{absPosition}, m_state{state}, m_entityCallback{entityCallback} {
+        m_color = socketStateColorMap.at(m_state);
+    }
     Socket(glm::ivec2 position, glm::vec2 absPosition) : m_position{position}, m_absPosition{absPosition},  m_state{SocketState::UNINITIALIZED} {
+        m_color = socketStateColorMap.at(m_state);
+    }
+    Socket(glm::ivec2 position, glm::vec2 absPosition, std::function<void()> entityCallback) : m_position{position}, m_absPosition{absPosition},  m_state{SocketState::UNINITIALIZED}, m_entityCallback{entityCallback} {
         m_color = socketStateColorMap.at(m_state);
     }
     Socket() : m_position{glm::ivec2(0, 0)}, m_state{SocketState::UNINITIALIZED} {
@@ -45,6 +53,7 @@ private:
     glm::vec2 m_absPosition;
     SocketState m_state;
     glm::vec3 m_color;
+    std::function<void()> m_entityCallback;
 };
 
 #endif
