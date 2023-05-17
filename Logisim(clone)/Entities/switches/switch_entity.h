@@ -73,6 +73,7 @@ public:
     }
     
     virtual const char* GetName() const = 0;
+    virtual void OnInputChange(SocketState newState) {};
     
 protected:
     glm::ivec2 m_gridPosition;
@@ -80,8 +81,11 @@ protected:
     SwitchSockets m_sockets;
     Texture m_colorMapTexture;
     SocketState m_switchState;
+    std::function<void(SocketState)> m_onInputChange;
     
     void InitializeSwitchEntity(SwitchFromScript& sswitch) {
+        m_onInputChange = [this](SocketState newState) {this->OnInputChange(newState);};
+        
         m_texture = sswitch.texture;
         m_colorMapTexture = sswitch.colorMapTexture;
 
@@ -89,16 +93,16 @@ protected:
             
             switch(m_direction) {
                 case Direction::NORTH:
-                    m_sockets.m_sockets.push_back(Socket(glm::ivec2(m_gridPosition.x - x, m_gridPosition.y + y), GlobalGrid::GetGrid()->GetGridPointPositionRelative(m_position, x, y), m_switchState));
+                    m_sockets.m_sockets.push_back(Socket(glm::ivec2(m_gridPosition.x - x, m_gridPosition.y + y), GlobalGrid::GetGrid()->GetGridPointPositionRelative(m_position, x, y), m_switchState, &m_onInputChange));
                     break;
                 case Direction::SOUTH:
-                    m_sockets.m_sockets.push_back(Socket(glm::ivec2(m_gridPosition.x + x, m_gridPosition.y - y), GlobalGrid::GetGrid()->GetGridPointPositionRelative(m_position, x, y), m_switchState));
+                    m_sockets.m_sockets.push_back(Socket(glm::ivec2(m_gridPosition.x + x, m_gridPosition.y - y), GlobalGrid::GetGrid()->GetGridPointPositionRelative(m_position, x, y), m_switchState, &m_onInputChange));
                     break;
                 case Direction::EAST:
-                    m_sockets.m_sockets.push_back(Socket(glm::ivec2(m_gridPosition.x + y, m_gridPosition.y + x), GlobalGrid::GetGrid()->GetGridPointPositionRelative(m_position, y, x), m_switchState));
+                    m_sockets.m_sockets.push_back(Socket(glm::ivec2(m_gridPosition.x + y, m_gridPosition.y + x), GlobalGrid::GetGrid()->GetGridPointPositionRelative(m_position, y, x), m_switchState, &m_onInputChange));
                     break;
                 case Direction::WEST:
-                    m_sockets.m_sockets.push_back(Socket(glm::ivec2(m_gridPosition.x - y, m_gridPosition.y - x), GlobalGrid::GetGrid()->GetGridPointPositionRelative(m_position, y, x), m_switchState));
+                    m_sockets.m_sockets.push_back(Socket(glm::ivec2(m_gridPosition.x - y, m_gridPosition.y - x), GlobalGrid::GetGrid()->GetGridPointPositionRelative(m_position, y, x), m_switchState, &m_onInputChange));
                     break;
             }
         }

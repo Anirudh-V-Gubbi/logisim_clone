@@ -25,6 +25,12 @@ public:
         return "Output Switch";
     }
     
+    void OnInputChange(SocketState newState) override {
+        using ss = SocketState;
+        ss finalState = ss::UNINITIALIZED;
+        m_switchState = newState;
+    }
+    
 private:
     inline static SwitchFromScript *sswitch = NULL;
     
