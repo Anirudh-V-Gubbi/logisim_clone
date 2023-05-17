@@ -55,6 +55,7 @@ public:
     void ChangeState(SocketState newState) {
         if(m_state != newState) {
             m_state = newState;
+            m_color = socketStateColorMap.at(m_state);
             if(m_entityCallback) (*m_entityCallback)(newState);
         }
     }
