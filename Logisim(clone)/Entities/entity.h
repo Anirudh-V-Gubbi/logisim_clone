@@ -14,7 +14,6 @@
 class Entity {
 public:
     
-    Entity(Shader& shader, Texture& texture, glm::vec3 position) : m_shader{shader}, m_texture{texture}, m_position{position} {}
     virtual ~Entity() { }
     virtual Entity* GetInstance() const = 0;
     
@@ -32,6 +31,10 @@ protected:
     Shader m_shader;
     Texture m_texture;
     glm::vec3 m_position;
+    
+    // Protected constructor for the abstract class
+    // --------------------------------------------
+    Entity(Shader& shader, Texture& texture, glm::vec3 position) : m_shader{shader}, m_texture{texture}, m_position{position} {}
 };
 
 #endif

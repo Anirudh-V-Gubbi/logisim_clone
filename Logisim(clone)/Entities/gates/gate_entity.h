@@ -45,12 +45,7 @@ class GateEntity : public Entity {
 public:
     inline static unsigned int m_VBO = 0, m_VAO = 0, m_EBO = 0;
     
-    GateEntity(Shader& shader, Texture& texture, glm::vec3 position, glm::ivec2 gridPosition)
-    :m_direction{Direction::EAST}, m_gridPosition{gridPosition}, Entity(shader, texture, position) {
-        if(m_VBO == 0 && m_VAO == 0 && m_EBO == 0)
-            this->setup();
-    }
-    ~GateEntity() { }
+    virtual ~GateEntity() { }
     
     void Draw(const glm::mat4& view, const glm::mat4& projection) const override {
         m_shader.Use();
@@ -80,6 +75,14 @@ protected:
     Direction m_direction;
     GateSockets m_sockets;
     std::function<void(SocketState)> m_onInputChange;
+    
+    // Protected constructor for the abstract class
+    // --------------------------------------------
+    GateEntity(Shader& shader, Texture& texture, glm::vec3 position, glm::ivec2 gridPosition)
+    :m_direction{Direction::EAST}, m_gridPosition{gridPosition}, Entity(shader, texture, position) {
+        if(m_VBO == 0 && m_VAO == 0 && m_EBO == 0)
+            this->setup();
+    }
 
     void InitializeTexture(Texture& texture) {
         m_texture = texture;

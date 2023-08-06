@@ -16,19 +16,7 @@
 
 class ViewportWindow {
 public:
-    ViewportWindow(glm::vec2 fractionalWindowDimensions, glm::vec2 fractionalPosition,
-                   const glm::ivec2& screenDimensions, Shader& shader)
-    : m_windowDimensions{fractionalWindowDimensions}, m_position{fractionalPosition},
-    m_screenDimensions{screenDimensions}, m_frameBufferShader{shader} {
-        // create a new framebuffer and a new renderer
-        // -------------------------------------------
-        m_frameBuffer = std::make_unique<FrameBuffer>(m_windowDimensions.x * m_screenDimensions.x, m_windowDimensions.y * m_screenDimensions.y);
-        m_renderer = std::make_unique<Renderer>();
-        
-        // setup the array objects and buffers for the framebuffer rectangle
-        // -----------------------------------------------------------------
-        this->setup();
-    }
+
     virtual ~ViewportWindow() { };
     
     virtual void Render(const glm::mat4& view, const glm::mat4& projection) const {
@@ -75,6 +63,22 @@ protected:
     std::unique_ptr<Renderer> m_renderer;
     Shader m_frameBufferShader;
     GLuint m_VBO, m_VAO, m_EBO;
+    
+    // Protected constructor for the abstract class
+    // --------------------------------------------
+    ViewportWindow(glm::vec2 fractionalWindowDimensions, glm::vec2 fractionalPosition,
+                   const glm::ivec2& screenDimensions, Shader& shader)
+    : m_windowDimensions{fractionalWindowDimensions}, m_position{fractionalPosition},
+    m_screenDimensions{screenDimensions}, m_frameBufferShader{shader} {
+        // create a new framebuffer and a new renderer
+        // -------------------------------------------
+        m_frameBuffer = std::make_unique<FrameBuffer>(m_windowDimensions.x * m_screenDimensions.x, m_windowDimensions.y * m_screenDimensions.y);
+        m_renderer = std::make_unique<Renderer>();
+        
+        // setup the array objects and buffers for the framebuffer rectangle
+        // -----------------------------------------------------------------
+        this->setup();
+    }
     
     void drawRectangle() const {
         this->m_frameBufferShader.Use();

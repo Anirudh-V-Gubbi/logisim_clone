@@ -38,12 +38,7 @@ class SwitchEntity : public Entity {
 public:
     inline static unsigned int m_VBO = 0, m_VAO = 0, m_EBO = 0;
     
-    SwitchEntity(Shader& shader, Texture& texture, glm::vec3 position, glm::ivec2 gridPosition)
-    :m_direction{Direction::EAST}, m_gridPosition{gridPosition}, Entity(shader, texture, position) {
-        if(m_VBO == 0 && m_VAO == 0 && m_EBO == 0)
-            this->setup();
-    }
-    ~SwitchEntity() { }
+    virtual ~SwitchEntity() { }
     
     void Draw(const glm::mat4& view, const glm::mat4& projection) const override {
         m_shader.Use();
@@ -82,6 +77,14 @@ protected:
     Texture m_colorMapTexture;
     SocketState m_switchState;
     std::function<void(SocketState)> m_onInputChange;
+    
+    // Protected constructor for the abstract class
+    // --------------------------------------------
+    SwitchEntity(Shader& shader, Texture& texture, glm::vec3 position, glm::ivec2 gridPosition)
+    :m_direction{Direction::EAST}, m_gridPosition{gridPosition}, Entity(shader, texture, position) {
+        if(m_VBO == 0 && m_VAO == 0 && m_EBO == 0)
+            this->setup();
+    }
     
     void InitializeSwitchEntity(SwitchFromScript& sswitch) {
         m_onInputChange = [this](SocketState newState) {this->OnInputChange(newState);};
