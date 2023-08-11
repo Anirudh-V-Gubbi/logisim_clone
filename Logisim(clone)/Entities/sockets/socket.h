@@ -28,7 +28,9 @@ public:
     Socket() : m_position{glm::ivec2(0, 0)}, m_state{SocketState::UNINITIALIZED}, m_entityCallback{nullptr} {
         m_color = socketStateColorMap.at(m_state);
     }
-    ~Socket() { }
+    ~Socket() {
+        
+    }
     
     glm::ivec2 GetPosition() const {
         return this->m_position;
@@ -46,11 +48,11 @@ public:
         return this->m_state;
     }
     
-    void ChangeState(SocketState newState) {
+    void ChangeState(SocketState newState, bool notifyCallback = true) {
         if(m_state != newState) {
             m_state = newState;
             m_color = socketStateColorMap.at(m_state);
-            if(m_entityCallback) (*m_entityCallback)(newState);
+            if(m_entityCallback && notifyCallback) (*m_entityCallback)(newState);
         }
     }
     

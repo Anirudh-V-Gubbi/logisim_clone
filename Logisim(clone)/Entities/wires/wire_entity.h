@@ -1,6 +1,8 @@
 #ifndef WIRE_ENTITY_H
 #define WIRE_ENTITY_H
 
+#include "doubly_linked_list.h"
+
 const float WIRE_HEIGHT = 4.0f;
 const float PI2 = 3.1415f / 2.0f;
 const float PI = 3.1415f;
@@ -11,6 +13,7 @@ public:
     
     WireEntity(Shader& shader, glm::vec3 position) : Entity{shader, *EmptyTexture::GetInstance(), position} {
         this->setup();
+        m_onInputChange = [this](SocketState state) {this->OnInputChange(state);};
     }
     ~WireEntity() {
         glDeleteBuffers(1, &m_instanceVBO);
@@ -86,12 +89,16 @@ public:
     void Draw(const glm::mat4& view, const glm::mat4& projection) const override {
         float* buffer = new float[3 * (m_sockets.size() - 1)];
         
-        int i = 0;
-        for(int j = 0; j < m_sockets.size() - 1; j++) {
-            glm::vec2 pos = m_sockets[j].GetAbsPosition();
+        int i = 0, j = 0;
+        for(auto& socket : m_sockets) {
+            glm::vec2 pos = socket.GetAbsPosition();
             buffer[i++] = pos.x;
             buffer[i++] = pos.y + WIRE_HEIGHT / 2;
             buffer[i++] = m_socketRotations[j];
+            
+            if(++j == m_sockets.size() - 1) {
+                break;
+            }
         }
         
         // buffer data and attrib pointers for instance buffer
@@ -117,7 +124,7 @@ public:
         m_shader.SetVector2f("size", glm::vec2(GlobalGrid::GetGrid()->GetSquareSpacing() + GlobalGrid::GetGrid()->GetSquareDimension(), WIRE_HEIGHT));
         m_shader.SetMatrix4f("view", view);
         m_shader.SetMatrix4f("projection", projection);
-        m_shader.SetVector3f("wcolor", m_sockets[0].GetColor());
+        m_shader.SetVector3f("wcolor", m_sockets.front().GetColor());
         
         glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, (m_sockets.size() - 1));
         
@@ -148,14 +155,22 @@ public:
             }
         }
         
+        socket.RegisterChangeCallback(&m_onInputChange);
         m_sockets.push_back(socket);
-        GlobalGrid::GetGrid()->AddSocketToBoard(socket);
+        GlobalGrid::GetGrid()->AddSocketToBoard(m_sockets.back());
+    }
+    
+    void OnInputChange(SocketState newState) {
+        for(auto& socket : m_sockets) {
+            (socket).ChangeState(newState, false);
+        }
     }
     
 private:
     unsigned int m_instanceVBO;
-    std::vector<Socket> m_sockets;
+    DoublyLinkedList<Socket> m_sockets;
     std::vector<float> m_socketRotations;
+    std::function<void(SocketState)> m_onInputChange;
     
     void setup() {
         if(VAO == 0 && EBO == 0 && VBO == 0) {
