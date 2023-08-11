@@ -22,13 +22,7 @@ public:
     Socket(glm::ivec2 position, glm::vec2 absPosition, SocketState state) : m_position{position}, m_absPosition{absPosition}, m_state{state}, m_entityCallback{nullptr} {
         m_color = socketStateColorMap.at(m_state);
     }
-    Socket(glm::ivec2 position, glm::vec2 absPosition, SocketState state, std::function<void(SocketState)>* entityCallback) : m_position{position}, m_absPosition{absPosition}, m_state{state}, m_entityCallback{entityCallback} {
-        m_color = socketStateColorMap.at(m_state);
-    }
     Socket(glm::ivec2 position, glm::vec2 absPosition) : m_position{position}, m_absPosition{absPosition},  m_state{SocketState::UNINITIALIZED}, m_entityCallback{nullptr} {
-        m_color = socketStateColorMap.at(m_state);
-    }
-    Socket(glm::ivec2 position, glm::vec2 absPosition, std::function<void(SocketState)>* entityCallback) : m_position{position}, m_absPosition{absPosition},  m_state{SocketState::UNINITIALIZED}, m_entityCallback{entityCallback} {
         m_color = socketStateColorMap.at(m_state);
     }
     Socket() : m_position{glm::ivec2(0, 0)}, m_state{SocketState::UNINITIALIZED}, m_entityCallback{nullptr} {
@@ -58,6 +52,10 @@ public:
             m_color = socketStateColorMap.at(m_state);
             if(m_entityCallback) (*m_entityCallback)(newState);
         }
+    }
+    
+    void RegisterChangeCallback(std::function<void(SocketState)>* entityCallback) {
+        m_entityCallback = entityCallback;
     }
     
 private:

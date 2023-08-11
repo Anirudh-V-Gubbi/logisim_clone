@@ -96,18 +96,20 @@ protected:
             
             switch(m_direction) {
                 case Direction::NORTH:
-                    m_sockets.m_sockets.push_back(Socket(glm::ivec2(m_gridPosition.x - x, m_gridPosition.y + y), GlobalGrid::GetGrid()->GetGridPointPositionRelative(m_position, x, y), m_switchState, &m_onInputChange));
+                    m_sockets.m_sockets.push_back(Socket(glm::ivec2(m_gridPosition.x - x, m_gridPosition.y + y), GlobalGrid::GetGrid()->GetGridPointPositionRelative(m_position, x, y), m_switchState));
                     break;
                 case Direction::SOUTH:
-                    m_sockets.m_sockets.push_back(Socket(glm::ivec2(m_gridPosition.x + x, m_gridPosition.y - y), GlobalGrid::GetGrid()->GetGridPointPositionRelative(m_position, x, y), m_switchState, &m_onInputChange));
+                    m_sockets.m_sockets.push_back(Socket(glm::ivec2(m_gridPosition.x + x, m_gridPosition.y - y), GlobalGrid::GetGrid()->GetGridPointPositionRelative(m_position, x, y), m_switchState));
                     break;
                 case Direction::EAST:
-                    m_sockets.m_sockets.push_back(Socket(glm::ivec2(m_gridPosition.x + y, m_gridPosition.y + x), GlobalGrid::GetGrid()->GetGridPointPositionRelative(m_position, y, x), m_switchState, &m_onInputChange));
+                    m_sockets.m_sockets.push_back(Socket(glm::ivec2(m_gridPosition.x + y, m_gridPosition.y + x), GlobalGrid::GetGrid()->GetGridPointPositionRelative(m_position, y, x), m_switchState));
                     break;
                 case Direction::WEST:
-                    m_sockets.m_sockets.push_back(Socket(glm::ivec2(m_gridPosition.x - y, m_gridPosition.y - x), GlobalGrid::GetGrid()->GetGridPointPositionRelative(m_position, y, x), m_switchState, &m_onInputChange));
+                    m_sockets.m_sockets.push_back(Socket(glm::ivec2(m_gridPosition.x - y, m_gridPosition.y - x), GlobalGrid::GetGrid()->GetGridPointPositionRelative(m_position, y, x), m_switchState));
                     break;
             }
+            
+            m_sockets.m_sockets.back().RegisterChangeCallback(&m_onInputChange);
         }
         
         GlobalGrid::GetGrid()->AddSocketsToBoard(m_sockets.m_sockets);
