@@ -56,7 +56,10 @@ public:
             }
         }
         
-        m_sockets.m_outputs[0].ChangeState(finalState);
+        if(m_sockets.m_outputs[0].GetState() != finalState) {
+            m_sockets.m_outputs[0].ChangeState(finalState);
+            GlobalGrid::GetGrid()->PushStateChangeNotification(m_sockets.m_outputs[0]);
+        }
     }
     
 private:

@@ -162,7 +162,10 @@ public:
     
     void OnInputChange(SocketState newState) {
         for(auto& socket : m_sockets) {
-            (socket).ChangeState(newState, false);
+            if(socket.GetState() == newState) continue;
+            
+            socket.ChangeState(newState, false);
+            GlobalGrid::GetGrid()->PushStateChangeNotification(socket);
         }
     }
     

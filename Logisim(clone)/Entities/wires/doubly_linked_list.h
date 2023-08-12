@@ -36,7 +36,7 @@ struct DLLNode {
     DLLNode *prev;
     
     DLLNode<T>() {}
-    DLLNode<T>(T value) : value{value} {}
+    DLLNode<T>(T value) : value{value}, next{nullptr}, prev{nullptr} {}
 };
 
 template <typename T>

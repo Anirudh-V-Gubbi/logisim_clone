@@ -5,6 +5,7 @@
 #include "sockets/socket.h"
 #include <glm/vec2.hpp>
 #include <map>
+#include <queue>
 
 class GlobalGrid : public Entity {
 public:
@@ -32,6 +33,17 @@ public:
     
     static GlobalGrid* GetGrid() {
         return instance;
+    }
+    
+    void Update() {
+        while(!stateChangeNotifications.empty()) {
+            auto notif = stateChangeNotifications.front();
+            stateChangeNotifications.pop();
+            
+            for(auto& socket : socketBoard[notif.first]) {
+                socket->ChangeState(notif.second);
+            }
+        }
     }
     
     void Draw(const glm::mat4& view, const glm::mat4& projection) const override {
@@ -105,6 +117,12 @@ public:
         }
     }
     
+    void PushStateChangeNotification(Socket& socket) {
+        if(socketBoard[socket.GetPosition()].size() <= 1) return;
+        
+        stateChangeNotifications.push({socket.GetPosition(), socket.GetState()});
+    }
+    
 private:
     inline static GlobalGrid* instance;
     unsigned int m_VBO, m_VAO, m_EBO, m_instanceVBO;
@@ -122,6 +140,7 @@ private:
         };
     };
     std::map<glm::ivec2, std::vector<std::shared_ptr<Socket>>, compare_ivec2> socketBoard;
+    std::queue<std::pair<glm::ivec2, SocketState>> stateChangeNotifications;
     
     void setup() {
         // calculate the number of grid dots to be rendered in each axis
