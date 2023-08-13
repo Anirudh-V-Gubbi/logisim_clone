@@ -29,6 +29,40 @@ public:
         return "Nand Gate";
     }
     
+    void OnInputChange(SocketState newState) override {
+        using ss = SocketState;
+        ss finalState = ss::UNINITIALIZED;
+        
+        for(auto& socket : m_sockets.m_inputs) {
+            ss state = socket.GetState();
+            
+            if(state == ss::UNINITIALIZED) {
+                continue;
+            }
+            if(state == ss::ERROR) {
+                finalState = ss::ERROR;
+                break;
+            }
+            if(state == ss::LOW) {
+                finalState = ss::HIGH;
+            }
+            else if(state == ss::HIGH) {
+                if(finalState != ss::HIGH) {
+                    finalState = ss::LOW;
+                }
+            }
+        }
+        
+        if(finalState == ss::UNINITIALIZED) {
+            finalState = ss::ERROR;
+        }
+        
+        if(m_sockets.m_outputs[0].GetState() != finalState) {
+            m_sockets.m_outputs[0].ChangeState(finalState);
+            GlobalGrid::GetGrid()->PushStateChangeNotification(m_sockets.m_outputs[0]);
+        }
+    }
+    
 private:
     inline static GateFromScript *gate = NULL;
 };

@@ -9,7 +9,7 @@ This is an attempt to recreate the famous Logisim software used to design and si
 - [x] Create a basic framework, involving logger, shaders, textures, renderers, entities and viewport windows(framebuffers).
 - [x] Have a grid system(coordinate system) and an input handler in place.
 - [x] Create gate, wire and switch entities as well as a dedicated renderer.
-- [ ] Establish Socket-Socket communication. (work in progress)
+- [x] Establish Socket-Socket communication.
 - [ ] Introduce an object-picking system for user to interact with the circuits.
 - [ ] Create a toolbar interface with icons and texts.
 - [ ] Establish different modes / states for the application.

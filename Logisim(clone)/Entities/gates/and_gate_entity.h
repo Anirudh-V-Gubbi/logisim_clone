@@ -44,16 +44,17 @@ public:
                 break;
             }
             if(state == ss::LOW) {
-                finalState = state;
+                finalState = ss::LOW;
             }
             else if(state == ss::HIGH) {
                 if(finalState != ss::LOW) {
-                    finalState = state;
-                }
-                else {
-                    finalState = ss::LOW;
+                    finalState = ss::HIGH;
                 }
             }
+        }
+        
+        if(finalState == ss::UNINITIALIZED) {
+            finalState = ss::ERROR;
         }
         
         if(m_sockets.m_outputs[0].GetState() != finalState) {
