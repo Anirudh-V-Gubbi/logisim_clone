@@ -117,6 +117,16 @@ public:
         }
     }
     
+    SocketState GetSocketStateAt(glm::ivec2 gridPosition) const {
+        auto it = socketBoard.find(gridPosition);
+        
+        if(it != socketBoard.end()) {
+            return it->second[0]->GetState();
+        }
+        
+        return SocketState::UNINITIALIZED;
+    }
+    
     void PushStateChangeNotification(Socket& socket) {
         if(socketBoard[socket.GetPosition()].size() <= 1) return;
         

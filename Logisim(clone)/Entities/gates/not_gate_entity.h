@@ -21,15 +21,7 @@ public:
         return (NotGateEntity*)this;
     }
     
-    SocketState LogicFunction() override {
-        return SocketState::UNINITIALIZED;
-    }
-    
-    const char* GetName() const override {
-        return "Not Gate";
-    }
-    
-    void OnInputChange(SocketState newState) override {
+    SocketState LogicFunction() const override {
         using ss = SocketState;
         ss finalState = ss::UNINITIALIZED;
         
@@ -55,10 +47,11 @@ public:
             finalState = ss::ERROR;
         }
         
-        if(m_sockets.m_outputs[0].GetState() != finalState) {
-            m_sockets.m_outputs[0].ChangeState(finalState);
-            GlobalGrid::GetGrid()->PushStateChangeNotification(m_sockets.m_outputs[0]);
-        }
+        return finalState;
+    }
+    
+    const char* GetName() const override {
+        return "Not Gate";
     }
     
 private:
