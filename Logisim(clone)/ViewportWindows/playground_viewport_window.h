@@ -23,9 +23,9 @@ public:
     PlaygroundViewportWindow(glm::vec2 fractionalWindowDimensions, glm::vec2 fractionalPosition,
         const glm::ivec2& screenDimensions, Shader& shader)
         : ViewportWindow(fractionalWindowDimensions, fractionalPosition, screenDimensions, shader) {
-            gateShader = new Shader("resources/shaders/gate_vertex.vs", "resources/shaders/gate_fragment.fs");
-            wireShader = new Shader("resources/shaders/wire_vertex.vs", "resources/shaders/wire_fragment.fs");
-            switchShader = new Shader("resources/shaders/switch_vertex.vs", "resources/shaders/switch_fragment.fs");
+            gateShader = new Shader("gate_vertex.vs", "gate_fragment.fs");
+            wireShader = new Shader("wire_vertex.vs", "wire_fragment.fs");
+            switchShader = new Shader("switch_vertex.vs", "switch_fragment.fs");
     }
     ~PlaygroundViewportWindow() override {
         // Delete gate resources
@@ -85,11 +85,11 @@ public:
                     AndGateEntity* gate = new AndGateEntity(*gateShader, glm::vec3(m.x - m_position.x * m_screenDimensions.x, m.y, 0.0f), glm::ivec2(p.x, p.y));
                     AddEntititesToViewport(*gate);
                 }else {
-                    
+
                     OutputSwitchEntity* oSwitch = new OutputSwitchEntity(*switchShader, glm::vec3(m.x - m_position.x * m_screenDimensions.x, m.y, 0.0f), glm::ivec2(p.x, p.y));
                     AddEntititesToViewport(*oSwitch);
                 }
-                
+
                 std::cout << p.x << ", " << p.y << std::endl;
                 break;
             }

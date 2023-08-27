@@ -1,6 +1,6 @@
 #START
 "name"="Or Gate"
-"image_path"="resources/images/or_gate.png"
+"image_path"="or_gate.png"
 "width"="7"
 "height"="6"
 "direction"="EAST"

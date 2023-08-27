@@ -1,6 +1,6 @@
 #START
 "name"="Nand Gate"
-"image_path"="resources/images/nand_gate.png"
+"image_path"="nand_gate.png"
 "width"="8"
 "height"="6"
 "direction"="EAST"

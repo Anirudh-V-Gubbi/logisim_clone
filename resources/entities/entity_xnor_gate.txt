@@ -1,6 +1,6 @@
 #START
 "name"="Xnor Gate"
-"image_path"="resources/images/xnor_gate.png"
+"image_path"="xnor_gate.png"
 "width"="9"
 "height"="6"
 "direction"="EAST"

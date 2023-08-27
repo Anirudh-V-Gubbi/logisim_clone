@@ -1,4 +1,9 @@
 #define GLEW_STATIC
+
+#ifndef RELEASE_BUILD
+#define RESOURCE_PATH "resources/"
+#endif
+
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/vec2.hpp>
@@ -77,8 +82,8 @@ int main()
 
     // set up shaders
     // --------------
-    Shader frameBufferShader("resources/shaders/framebuffer_vertex.vs", "resources/shaders/framebuffer_fragment.fs");
-    Shader gridShader("resources/shaders/grid_vertex.vs", "resources/shaders/grid_fragment.fs");
+    Shader frameBufferShader("framebuffer_vertex.vs", "framebuffer_fragment.fs");
+    Shader gridShader("grid_vertex.vs", "grid_fragment.fs");
     
     // an enum to access viewport windows
     // ----------------------------------

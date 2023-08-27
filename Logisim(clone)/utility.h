@@ -1,6 +1,9 @@
 #ifndef UTILITY_H
 #define UTILITY_H
 
+#include <string>
+#include <vector>
+
 enum class Direction {
     NORTH,
     SOUTH,
@@ -47,6 +50,32 @@ Direction stringToDirection(std::string str)
     }
     
     return Direction::EAST;
+}
+
+std::string getResourceFullPath(const char* path)
+{
+    std::string fullPath(RESOURCE_PATH);
+    fullPath += path;
+    
+    return fullPath;
+}
+
+std::string getShaderFullPath(const char* path)
+{
+    std::string fullPath(RESOURCE_PATH);
+    fullPath += "shaders/";
+    fullPath += path;
+
+    return fullPath;
+}
+
+std::string getTextureFullPath(const char* path)
+{
+    std::string fullPath(RESOURCE_PATH);
+    fullPath += "images/";
+    fullPath += path;
+    
+    return fullPath;
 }
 
 #endif

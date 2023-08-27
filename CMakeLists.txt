@@ -23,6 +23,10 @@ file(COPY ${ENTITY_FILES}
 add_executable(Logisim_clone "Logisim(clone)/main.cpp")
 target_include_directories(Logisim_clone PRIVATE "include/" "resources/")
 
+target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC RELEASE_BUILD)
+target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC
+                            RESOURCE_PATH="${CMAKE_CURRENT_BINARY_DIR}/resources/")
+
 set_target_properties(Logisim_clone PROPERTIES 
                       XCODE_GENERATE_SCHEME TRUE
                       XCODE_SCHEME_WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})

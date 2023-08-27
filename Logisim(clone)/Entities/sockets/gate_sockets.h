@@ -126,13 +126,13 @@ private:
             // shader setup
             // ------------
             if(shader == nullptr) {
-                shader = new Shader("resources/shaders/socket_vertex.vs", "resources/shaders/socket_fragment.fs");
+                shader = new Shader("socket_vertex.vs", "socket_fragment.fs");
             }
             
             // texture setup
             // -------------
             if(texture == nullptr) {
-                texture = new Texture("resources/images/socket.png", TextureFormats::PNG);
+                texture = new Texture("socket.png", TextureFormats::PNG);
             }
         }
         

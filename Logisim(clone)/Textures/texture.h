@@ -5,6 +5,7 @@
 
 #include <GL/glew.h>
 #include "stbImage.h"
+#include "../utility.h"
 
 enum class TextureFormats {
     JPG,
@@ -17,7 +18,7 @@ public:
     
     Texture(const char* imagePath, TextureFormats format, bool persistentData = false) {
         specs.reset(new ImageSpecs());
-        this->generateTexture(imagePath, format);
+        this->generateTexture(getTextureFullPath(imagePath).c_str(), format);
         
         // delete image data and image specs if not required to be persistent
         // ------------------------------------------------------------------

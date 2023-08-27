@@ -10,6 +10,7 @@
 #include <glm/mat4x4.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "../Logger/logger.h"
+#include "../utility.h"
 
 class Shader {
 public:
@@ -19,7 +20,7 @@ public:
         // create a struct to hold shader code, deallocated in compileShaders()
         shaderCode = new ShaderCodes();
         
-        this->readFiles(vertexPath, fragmentPath);
+        this->readFiles(getShaderFullPath(vertexPath).c_str(), getShaderFullPath(fragmentPath).c_str());
         this->compileShaders();
     }
     

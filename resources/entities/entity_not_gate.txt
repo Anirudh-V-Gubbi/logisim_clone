@@ -1,6 +1,6 @@
 #START
 "name"="Not Gate"
-"image_path"="resources/images/not_gate.png"
+"image_path"="not_gate.png"
 "width"="4"
 "height"="2"
 "direction"="EAST"
