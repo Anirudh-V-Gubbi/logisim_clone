@@ -9,6 +9,9 @@ if(NOT OPENGL_FOUND)
     message("ERROR: OpenGL not found")
 endif(NOT OPENGL_FOUND)
 
+add_subdirectory(vendors/glfw)
+add_subdirectory(vendors/glm)
+
 file(GLOB SHADER_FILES "resources/shaders/*")
 file(GLOB IMAGE_FILES "resources/images/*")
 file(GLOB ENTITY_FILES "resources/entities/*")
@@ -31,6 +34,5 @@ set_target_properties(Logisim_clone PROPERTIES
                       XCODE_GENERATE_SCHEME TRUE
                       XCODE_SCHEME_WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
-find_package(glfw3 REQUIRED)
-find_package(GLEW REQUIRED)
+find_package(GLEW REQUIRED PATHS "${CMAKE_CURRENT_SOURCE_DIR}/vendors/")
 target_link_libraries(Logisim_clone glfw GLEW::glew)

@@ -70,7 +70,19 @@ public:
             case EventType::WindowResize:
                 break;
             case EventType::KeyPressed:
+            {
+                KeyPressedEvent* kEvent = dynamic_cast<KeyPressedEvent*>(&event);
+                if(kEvent->GetKeyCode() == GLFW_KEY_W) {
+                    kas = !kas;
+                }
+                else {
+                    auto& socket = GlobalGrid::GetGrid()->GetSocketAt(glm::ivec2(2 + kas, 2));
+                    if(m % 2 == 0) socket.ChangeState(SocketState::LOW);
+                    else socket.ChangeState(SocketState::HIGH);
+                    m++;
+                }
                 break;
+            }
             case EventType::KeyReleased:
                 break;
             case EventType::KeyTyped:
@@ -82,11 +94,11 @@ public:
                 auto m = grid->GetGridPointPosition(p.x, p.y);
 
                 if(mEvent->GetMouseButton() != 0) {
-                    AndGateEntity* gate = new AndGateEntity(*gateShader, glm::vec3(m.x - m_position.x * m_screenDimensions.x, m.y, 0.0f), glm::ivec2(p.x, p.y));
+                    XnorGateEntity* gate = new XnorGateEntity(*gateShader, glm::vec3(m.x - m_position.x * m_screenDimensions.x, m.y, 0.0f), glm::ivec2(p.x, p.y));
                     AddEntititesToViewport(*gate);
-                }else {
+                }else if(kas == true){
 
-                    OutputSwitchEntity* oSwitch = new OutputSwitchEntity(*switchShader, glm::vec3(m.x - m_position.x * m_screenDimensions.x, m.y, 0.0f), glm::ivec2(p.x, p.y));
+                    oSwitch = new OutputSwitchEntity(*switchShader, glm::vec3(m.x - m_position.x * m_screenDimensions.x, m.y, 0.0f), glm::ivec2(p.x, p.y));
                     AddEntititesToViewport(*oSwitch);
                 }
 
@@ -138,6 +150,9 @@ private:
     Shader* gateShader;
     Shader* wireShader;
     Shader* switchShader;
+    OutputSwitchEntity* oSwitch;
+    int m = 0;
+    bool kas = false;
     
     WireEntity* m_currentWire = nullptr;
 };
