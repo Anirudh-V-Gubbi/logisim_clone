@@ -30,9 +30,5 @@ target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC RELEASE_BUILD)
 target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC
                             RESOURCE_PATH="${CMAKE_CURRENT_BINARY_DIR}/resources/")
 
-set_target_properties(Logisim_clone PROPERTIES 
-                      XCODE_GENERATE_SCHEME TRUE
-                      XCODE_SCHEME_WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-
 find_package(GLEW REQUIRED PATHS "${CMAKE_CURRENT_SOURCE_DIR}/vendors/")
 target_link_libraries(Logisim_clone glfw GLEW::glew)
