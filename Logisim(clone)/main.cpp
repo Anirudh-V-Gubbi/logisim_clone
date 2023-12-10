@@ -1,9 +1,5 @@
 #define GLEW_STATIC
 
-#ifndef RELEASE_BUILD
-#define RESOURCE_PATH "resources/"
-#endif
-
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/vec2.hpp>

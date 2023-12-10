@@ -1,5 +1,6 @@
 # Builds
 build/
+bin/
 
 # OS specific
 .DS_Store

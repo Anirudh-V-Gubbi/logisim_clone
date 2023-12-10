@@ -3,34 +3,51 @@ project(Logisim_clone LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_SUPPRESS_REGENERATION true)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin/$<CONFIGURATION>)
 
+# Set default configuration to be Debug
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Choose the type of build" FORCE)
+endif()
+
+# Resolve library dependencies
 find_package(OpenGL REQUIRED)
 if(NOT OPENGL_FOUND)
     message("ERROR: OpenGL not found")
 endif(NOT OPENGL_FOUND)
+find_package(glfw3 REQUIRED)
+find_package(GLEW REQUIRED)
 
-file(GLOB SHADER_FILES "resources/shaders/*")
-file(GLOB IMAGE_FILES "resources/images/*")
-file(GLOB ENTITY_FILES "resources/entities/*")
-
-file(COPY ${SHADER_FILES}
-        DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/resources/shaders/")
-file(COPY ${IMAGE_FILES}
-        DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/resources/images/")
-file(COPY ${ENTITY_FILES}
-        DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/resources/entities/")
-
+# Create the executable for the project
 add_executable(Logisim_clone "Logisim(clone)/main.cpp")
-target_include_directories(Logisim_clone PRIVATE "include/" "resources/")
 
+# Configure include search paths
+target_include_directories(Logisim_clone PRIVATE "include/" "Logisim(clone)/*")
+
+# Add all the source files to the target
+file(GLOB_RECURSE HEADER_FILES "Logisim(clone)/*")
+target_sources(Logisim_clone PRIVATE ${HEADER_FILES})
+
+# Add MACROS
+if(CMAKE_BUILD_TYPE MATCHES Debug)
+    target_compile_definitions(Logisim_clone PUBLIC DEBUG)
+elseif(CMAKE_BUILD_TYPEc MATCHES Release)
+    target_compile_definitions(Logisim_clone PUBLIC RELEASE)
+endif()
 target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC RELEASE_BUILD)
 target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC
-                            RESOURCE_PATH="${CMAKE_CURRENT_BINARY_DIR}/resources/")
+                            RESOURCE_PATH="${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/resources/")
 
+# Xcode target properties
 set_target_properties(Logisim_clone PROPERTIES 
                       XCODE_GENERATE_SCHEME TRUE
                       XCODE_SCHEME_WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
-find_package(glfw3 REQUIRED)
-find_package(GLEW REQUIRED)
+# Link libraries
 target_link_libraries(Logisim_clone glfw GLEW::glew)
+
+# Copy resources into the final output directory
+add_custom_command(TARGET Logisim_clone POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy_directory
+                   "\"${CMAKE_SOURCE_DIR}/resources/\""
+                   "\"${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/resources/\"")
