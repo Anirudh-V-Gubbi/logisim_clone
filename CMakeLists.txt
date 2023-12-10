@@ -5,6 +5,8 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_SUPPRESS_REGENERATION true)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin/$<CONFIGURATION>)
 
+option(ENABLE_LOGGING "Enables logging debug information onto the console" ON)
+
 # Set default configuration to be Debug
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Choose the type of build" FORCE)
@@ -31,10 +33,12 @@ target_sources(Logisim_clone PRIVATE ${HEADER_FILES})
 # Add MACROS
 if(CMAKE_BUILD_TYPE MATCHES Debug)
     target_compile_definitions(Logisim_clone PUBLIC DEBUG)
-elseif(CMAKE_BUILD_TYPEc MATCHES Release)
+    if(ENABLE_LOGGING)
+    target_compile_definitions(Logisim_clone PUBLIC ENABLE_LOGGER)
+    endif()
+elseif(CMAKE_BUILD_TYPE MATCHES Release)
     target_compile_definitions(Logisim_clone PUBLIC RELEASE)
 endif()
-target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC RELEASE_BUILD)
 target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC
                             RESOURCE_PATH="${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/resources/")
 

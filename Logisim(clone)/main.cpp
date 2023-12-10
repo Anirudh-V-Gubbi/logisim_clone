@@ -50,12 +50,15 @@ int main()
 #endif
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
+    // Initialise the logger
+    new Logger("Logger");
+
     // glfw window creation
     // --------------------
     GLFWwindow* window = glfwCreateWindow(SCREEN_DIMENSIONS.x, SCREEN_DIMENSIONS.y, "Logisim(clone)", NULL, NULL);
     if (window == NULL)
     {
-        std::cout << "Failed to create GLFW window" << std::endl;
+        Logger::GetInstance()->error("Failed to create GLFW window");
         glfwTerminate();
         return -1;
     }
@@ -70,7 +73,7 @@ int main()
     // ---------------------------------------
     if (glewInit() != GLEW_OK)
     {
-        std::cout << "Failed to initialize GLEW" << std::endl;
+        Logger::GetInstance()->error("Failed to initialize GLEW");
         return -1;
     }
     glEnable(GL_BLEND);
@@ -116,8 +119,6 @@ int main()
     // ------------------------------
     pWindow->SetGrid(grid);
     viewports[ViewportWindows::PLAYGROUND]->AddEntititesToViewport(*grid);
-    
-    Logger* logger = new Logger("Logger");
     
     // uncomment this call to draw in wireframe polygons.
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);

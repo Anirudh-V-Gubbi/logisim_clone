@@ -6,6 +6,7 @@
 #include <GL/glew.h>
 #include "stbImage.h"
 #include "../utility.h"
+#include "../Logger/logger.h"
 
 enum class TextureFormats {
     JPG,
@@ -16,8 +17,9 @@ class Texture {
 public:
     GLuint ID = 0;
     
-    Texture(const char* imagePath, TextureFormats format, bool persistentData = false) {
+    Texture(std::string imagePath, TextureFormats format, bool persistentData = false) {
         specs.reset(new ImageSpecs());
+        m_textureName = imagePath.substr(imagePath.find('.'));
         this->generateTexture(getTextureFullPath(imagePath).c_str(), format);
         
         // delete image data and image specs if not required to be persistent
@@ -80,9 +82,10 @@ private:
         ImageSpecs() : width{0}, height{0}, nrChannels{0}, data{nullptr} {}
     };
     std::shared_ptr<ImageSpecs> specs;
+    std::string m_textureName;
     
-    void generateTexture(const char* path, TextureFormats format) {
-        specs->data = stbi_load(path, &specs->width, &specs->height, &specs->nrChannels, format == TextureFormats::PNG ? STBI_rgb_alpha : STBI_default);
+    void generateTexture(std::string path, TextureFormats format) {
+        specs->data = stbi_load(path.c_str(), &specs->width, &specs->height, &specs->nrChannels, format == TextureFormats::PNG ? STBI_rgb_alpha : STBI_default);
         
         if(specs->data) {
             glGenTextures(1, &this->ID);
@@ -96,7 +99,7 @@ private:
             glGenerateMipmap(GL_TEXTURE_2D);
         }
         else {
-            std::cout << "ERROR | Failed to load texture" << std::endl;
+            Logger::GetInstance()->error("Failed to load texture", m_textureName);
         }
     }
 };

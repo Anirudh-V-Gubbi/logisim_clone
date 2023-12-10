@@ -16,11 +16,13 @@ class Shader {
 public:
     unsigned int ID;
 
-    Shader(const char* vertexPath, const char* fragmentPath) {
+    Shader(std::string vertexPath, std::string fragmentPath) {
         // create a struct to hold shader code, deallocated in compileShaders()
         shaderCode = new ShaderCodes();
+
+        m_shaderName = vertexPath.substr(0, vertexPath.find('.'));
         
-        this->readFiles(getShaderFullPath(vertexPath).c_str(), getShaderFullPath(fragmentPath).c_str());
+        this->readFiles(getShaderFullPath(vertexPath), getShaderFullPath(fragmentPath));
         this->compileShaders();
     }
     
@@ -55,8 +57,10 @@ private:
         std::string vertexCode;
         std::string fragmentCode;
     } *shaderCode;
+
+    std::string m_shaderName;
     
-    void readFiles(const char* vertexPath, const char* fragPath){
+    void readFiles(std::string vertexPath, std::string fragPath){
         std::ifstream vShaderFile;
         std::ifstream fShaderFile;
         
@@ -64,8 +68,8 @@ private:
         fShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
         
         try {
-            vShaderFile.open(vertexPath);
-            fShaderFile.open(fragPath);
+            vShaderFile.open(vertexPath.c_str());
+            fShaderFile.open(fragPath.c_str());
             
             std::stringstream sCodeBuffer, fCodeBuffer;
             
@@ -78,8 +82,8 @@ private:
             vShaderFile.close();
             fShaderFile.close();
         }
-        catch(std::ifstream::failure e) {
-            std::cout << "ERROR | Failed to read shader files.\n";
+        catch(const std::exception& e) {
+            Logger::GetInstance()->error("Failed to read shader files for", m_shaderName);
         }
     }
     
@@ -101,7 +105,7 @@ private:
         //vertex shader compilation failed
         if(!success) {
             glGetShaderInfoLog(vertexID, 512, NULL, infolog);
-            std::cout << "ERROR | Failed to compile vertex shader : " << infolog << std::endl;
+            Logger::GetInstance()->error("Failed to compile", m_shaderName, "vertex shader -\n", infolog);
         }
         
         //create fragment shader
@@ -114,7 +118,7 @@ private:
         //fragment shader compilation failed
         if(!success) {
             glGetShaderInfoLog(fragID, 512, NULL, infolog);
-            std::cout << "ERROR | Failed to compile fragment shader : " << infolog << std::endl;
+            Logger::GetInstance()->error("Failed to compile", m_shaderName, "fragment shader -\n", infolog);
         }
         
         //create and link shader program
@@ -128,7 +132,7 @@ private:
         //shader program linking fails
         if(!success) {
             glGetProgramInfoLog(this->ID, 512, NULL, infolog);
-            std::cout << "ERROR | Failed to link shader program : " << infolog << std::endl;
+            Logger::GetInstance()->error("Failed to link", m_shaderName, "shader program -\n", infolog);
         }
         
         //delete shader objects

@@ -2,6 +2,7 @@
 #define FRAMEBUFFER_H
 
 #include <GL/glew.h>
+#include "Logger/logger.h"
 
 class FrameBuffer {
 public:
@@ -62,7 +63,7 @@ private:
         // framebuffer generation unsuccessfull
         // ------------------------------------
         if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-            std::cout << "ERROR : Framebuffer is not complete!" << std::endl;
+            Logger::GetInstance()->error("Framebuffer is not complete!");
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 };

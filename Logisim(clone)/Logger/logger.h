@@ -7,6 +7,7 @@
 #include <time.h>
 #include <stdexcept>
 #include <string>
+#include <sstream>
 
 class Logger {
 public:
@@ -29,19 +30,37 @@ public:
         return m_logger;
     }
     
-    void info(const char* info)
+    template<typename... Args>
+    void info(const Args&... args)
     {
-        std::cout << "[" << getTime() << "]" << " " << this->_name << ": " << info << '\n';
+        #ifdef ENABLE_LOGGER
+        std::ostringstream oss;
+        oss << "[INFO]" << " [" << getTime() << "] " << this->_name << ": ";
+        log(oss, args...);
+        std::cout << oss.str() << std::endl;
+        #endif
     }
 
-    void warn(const char* warning)
+    template<typename... Args>
+    void warn(const Args&... args)
     {
-        std::cout << "[" << getTime() << "]" << " " << this->_name << ": " << warning << '\n';
+        #ifdef ENABLE_LOGGER
+        std::ostringstream oss;
+        oss << "[WARN]" << " [" << getTime() << "] " << this->_name << ": ";
+        log(oss, args...);
+        std::cout << oss.str() << std::endl;
+        #endif
     }
 
-    void error(const char* error)
+    template<typename... Args>
+    void error(const Args&... args)
     {
-        std::cout << "[" << getTime() << "]" << " " << this->_name << ": " << error << '\n';
+        #ifdef ENABLE_LOGGER
+        std::ostringstream oss;
+        oss << "[ERR]" << " [" << getTime() << "] " << this->_name << ": ";
+        log(oss, args...);
+        std::cout << oss.str() << std::endl;
+        #endif
     }
     
 private:
@@ -59,6 +78,14 @@ private:
         strftime(&timeNow[0], 15, "%r", tmp);
 
         return timeNow;
+    }
+    
+    void log(std::ostringstream& oss) { }
+
+    template<typename First, typename... Rest>
+    void log(std::ostringstream& oss, const First& first, const Rest&... rest) {
+        oss << first << " ";
+        log(oss, rest...);
     }
 };
 

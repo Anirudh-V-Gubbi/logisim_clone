@@ -29,27 +29,27 @@ public:
     }
     ~PlaygroundViewportWindow() override {
         // Delete gate resources
-        glDeleteVertexArrays(1, &GateEntity::m_VAO);
-        glDeleteBuffers(1, &GateEntity::m_VBO);
-        glDeleteBuffers(1, &GateEntity::m_EBO);
-        glDeleteProgram(gateShader->ID);
-        delete gateShader;
-        
+glDeleteVertexArrays(1, &GateEntity::m_VAO);
+glDeleteBuffers(1, &GateEntity::m_VBO);
+glDeleteBuffers(1, &GateEntity::m_EBO);
+glDeleteProgram(gateShader->ID);
+delete gateShader;
+
         // Delete wire resources
-        glDeleteVertexArrays(1, &WireEntity::VAO);
-        glDeleteBuffers(1, &WireEntity::VBO);
-        glDeleteBuffers(1, &WireEntity::EBO);
-        glDeleteProgram(wireShader->ID);
-        delete wireShader;
+glDeleteVertexArrays(1, &WireEntity::VAO);
+glDeleteBuffers(1, &WireEntity::VBO);
+glDeleteBuffers(1, &WireEntity::EBO);
+glDeleteProgram(wireShader->ID);
+delete wireShader;
 
         // Delete gate socket resources
-        glDeleteVertexArrays(1, &GateSockets::m_VAO);
-        glDeleteBuffers(1, &GateSockets::m_VBO);
-        glDeleteBuffers(1, &GateSockets::m_EBO);
-        glDeleteTextures(1, &GateSockets::texture->ID);
-        glDeleteProgram(GateSockets::shader->ID);
-        delete GateSockets::shader;
-        delete GateSockets::texture;
+glDeleteVertexArrays(1, &GateSockets::m_VAO);
+glDeleteBuffers(1, &GateSockets::m_VBO);
+glDeleteBuffers(1, &GateSockets::m_EBO);
+glDeleteTextures(1, &GateSockets::texture->ID);
+glDeleteProgram(GateSockets::shader->ID);
+delete GateSockets::shader;
+delete GateSockets::texture;
         
         Logger::GetInstance()->info("Deleted Playground Viewport");
     }
@@ -90,7 +90,7 @@ public:
                     AddEntititesToViewport(*oSwitch);
                 }
 
-                std::cout << p.x << ", " << p.y << std::endl;
+                Logger::GetInstance()->info(p.x, ',', p.y);
                 break;
             }
             case EventType::MouseButtonReleased:

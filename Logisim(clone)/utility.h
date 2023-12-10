@@ -52,7 +52,7 @@ Direction stringToDirection(std::string str)
     return Direction::EAST;
 }
 
-std::string getResourceFullPath(const char* path)
+std::string getResourceFullPath(std::string path)
 {
     std::string fullPath(RESOURCE_PATH);
     fullPath += path;
@@ -60,7 +60,7 @@ std::string getResourceFullPath(const char* path)
     return fullPath;
 }
 
-std::string getShaderFullPath(const char* path)
+std::string getShaderFullPath(std::string path)
 {
     std::string fullPath(RESOURCE_PATH);
     fullPath += "shaders/";
@@ -69,7 +69,7 @@ std::string getShaderFullPath(const char* path)
     return fullPath;
 }
 
-std::string getTextureFullPath(const char* path)
+std::string getTextureFullPath(std::string path)
 {
     std::string fullPath(RESOURCE_PATH);
     fullPath += "images/";
