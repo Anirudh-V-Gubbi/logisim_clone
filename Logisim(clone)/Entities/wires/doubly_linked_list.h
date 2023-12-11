@@ -8,15 +8,15 @@ public:
     
     DLLNextIterator(Type* head) : it{head} {}
     
-    bool operator== (const DLLNextIterator& other) {
+    bool operator== (const DLLNextIterator& other) const {
         return it == other.it;
     }
     
-    bool operator!= (const DLLNextIterator& other) {
+    bool operator!= (const DLLNextIterator& other) const {
         return it != other.it;
     }
     
-    T& operator* () {
+    T& operator* () const {
         return it->value;
     }
     
