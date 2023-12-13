@@ -7,17 +7,17 @@ class GateSockets {
 public:
     inline static unsigned int m_VBO = 0, m_VAO = 0, m_EBO = 0;
     unsigned int m_instanceVBO = 0;
-    inline static Shader* shader = nullptr;
+    inline static std::shared_ptr<Shader> shader;
     inline static Texture* texture = nullptr;
     
-    std::vector<Socket> m_inputs;
-    std::vector<Socket> m_outputs;
+    std::vector<std::shared_ptr<Socket>> m_inputs;
+    std::vector<std::shared_ptr<Socket>> m_outputs;
     
     GateSockets() {
         this->setup();
     }
     ~GateSockets() {
-        glDeleteBuffers(1, &m_instanceVBO);
+//        glDeleteBuffers(1, &m_instanceVBO);
     }
     
     void Draw(const glm::mat4& view, const glm::mat4& projection) const {
@@ -26,8 +26,8 @@ public:
         
         int i = 0;
         for(auto& socket : m_inputs) {
-            auto position = socket.GetAbsPosition();
-            auto color = socket.GetColor();
+            auto position = socket->GetAbsPosition();
+            auto color = socket->GetColor();
             buffer[i++] = position.x;
             buffer[i++] = position.y;
             buffer[i++] = color.x;
@@ -36,8 +36,8 @@ public:
         }
         
         for(auto& socket : m_outputs) {
-            auto position = socket.GetAbsPosition();
-            auto color = socket.GetColor();
+            auto position = socket->GetAbsPosition();
+            auto color = socket->GetColor();
             buffer[i++] = position.x;
             buffer[i++] = position.y;
             buffer[i++] = color.x;
@@ -126,7 +126,7 @@ private:
             // shader setup
             // ------------
             if(shader == nullptr) {
-                shader = new Shader("socket_vertex.vs", "socket_fragment.fs");
+                shader = ShaderManager::GetShader("socket");
             }
             
             // texture setup

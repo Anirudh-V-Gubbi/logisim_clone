@@ -20,14 +20,14 @@ public:
         // create a struct to hold shader code, deallocated in compileShaders()
         shaderCode = new ShaderCodes();
 
-        m_shaderName = vertexPath.substr(0, vertexPath.find('.'));
+        m_shaderName = vertexPath.substr(0, vertexPath.find('_'));
         
         this->readFiles(getShaderFullPath(vertexPath), getShaderFullPath(fragmentPath));
         this->compileShaders();
     }
     
     ~Shader() {
-        Logger::GetInstance()->info("Destroyed Shader");
+        Logger::GetInstance()->info("Destroyed Shader:", m_shaderName);
         glDeleteProgram(this->ID);
     }
     

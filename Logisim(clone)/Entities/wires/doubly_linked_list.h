@@ -46,6 +46,14 @@ public:
     DLLNode<T> *tail;
     
     DoublyLinkedList() : head{nullptr}, tail{nullptr}, m_size{0} {}
+
+    ~DoublyLinkedList() {
+        while(head != nullptr) {
+            DLLNode<T>* next = head->next;
+            delete head;
+            head = next;
+        }
+    }
     
     void push_back(T value) {
         DLLNode<T>* newNode = new DLLNode<T>(value);

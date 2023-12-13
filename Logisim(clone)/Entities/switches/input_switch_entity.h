@@ -5,7 +5,7 @@
 
 class InputSwitchEntity : public SwitchEntity {
 public:
-    InputSwitchEntity(Shader& shader, glm::vec3 position, glm::ivec2 gridPosition)
+    InputSwitchEntity(std::shared_ptr<Shader> shader, glm::vec3 position, glm::ivec2 gridPosition)
     : SwitchEntity(shader, *EmptyTexture::GetInstance(), position, gridPosition) {
         if(sswitch == NULL) {
             sswitch = parseScriptToSwitch("entity_input_switch.txt");

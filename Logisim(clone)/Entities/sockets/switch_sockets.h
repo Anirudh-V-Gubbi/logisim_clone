@@ -10,7 +10,7 @@ public:
     inline static Shader* shader = nullptr;
     inline static Texture* texture = nullptr;
     
-    std::vector<Socket> m_sockets;
+    std::vector<std::shared_ptr<Socket>> m_sockets;
     
     SwitchSockets() {
         this->setup();
@@ -25,8 +25,8 @@ public:
         
         int i = 0;
         for(auto& socket : m_sockets) {
-            auto position = socket.GetAbsPosition();
-            auto color = socket.GetColor();
+            auto position = socket->GetAbsPosition();
+            auto color = socket->GetColor();
             buffer[i++] = position.x;
             buffer[i++] = position.y;
             buffer[i++] = color.x;

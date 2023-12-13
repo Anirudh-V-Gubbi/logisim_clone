@@ -18,15 +18,15 @@ public:
     
     // add entities to the map - either to an existing list of entites with the same Texture ID or into a new list for a new Texture ID
     // --------------------------------------------------------------------
-    void AddEntityToRender(Entity& entity) {
+    void AddEntityToRender(std::shared_ptr<Entity> entity) {
         
-        auto it = m_entities.find(entity.GetTexID());
+        auto it = m_entities.find(entity->GetTexID());
         // if Texture ID doesn't exist, insert a new pair and return its iterator
         // -------------------------------------------------------------
         if(it == m_entities.end()) {
             it = m_entities.insert(
                 std::pair<GLuint, std::vector<std::shared_ptr<Entity>>>(
-                     entity.GetTexID(),
+                     entity->GetTexID(),
                      std::vector<std::shared_ptr<Entity>>()
                 )
           ).first;
@@ -34,9 +34,7 @@ public:
         
         // create a new shared ptr to own the instance of the entity and push it into the list
         // ------------------------------------------------------------------
-        std::shared_ptr<Entity> ptr;
-        ptr.reset(entity.GetInstance());
-        it->second.push_back(ptr);
+        it->second.push_back(entity);
     }
     
     // draw the enitites - draw entities with same texture IDs together

@@ -5,7 +5,7 @@
 
 class OutputSwitchEntity : public SwitchEntity {
 public:
-    OutputSwitchEntity(Shader& shader, glm::vec3 position, glm::ivec2 gridPosition)
+    OutputSwitchEntity(std::shared_ptr<Shader> shader, glm::vec3 position, glm::ivec2 gridPosition)
     : SwitchEntity(shader, *EmptyTexture::GetInstance(), position, gridPosition) {
         if(sswitch == NULL) {
             sswitch = parseScriptToSwitch("entity_output_switch.txt");

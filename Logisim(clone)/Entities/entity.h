@@ -10,6 +10,7 @@
 #include "../Logger/logger.h"
 
 #include <iostream>
+#include <memory>
 
 class Entity {
 public:
@@ -28,13 +29,13 @@ public:
     }
     
 protected:
-    Shader m_shader;
+    std::shared_ptr<Shader> m_shader;
     Texture m_texture;
     glm::vec3 m_position;
     
     // Protected constructor for the abstract class
     // --------------------------------------------
-    Entity(Shader& shader, Texture& texture, glm::vec3 position) : m_shader{shader}, m_texture{texture}, m_position{position} {}
+    Entity(std::shared_ptr<Shader> shader, Texture& texture, glm::vec3 position) : m_shader{shader}, m_texture{texture}, m_position{position} {}
 };
 
 #endif

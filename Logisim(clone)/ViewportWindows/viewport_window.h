@@ -11,13 +11,16 @@
 #include "../Event/application_event.h"
 #include "../Event/key_event.h"
 #include "../Event/mouse_event.h"
+#include "../Shaders/shader_manager.h"
 
 #include <memory>
 
 class ViewportWindow {
 public:
 
-    virtual ~ViewportWindow() { };
+    virtual ~ViewportWindow() {
+        
+    };
     
     virtual void Render(const glm::mat4& view, const glm::mat4& projection) const {
         // bind to the framebuffer and clear it
@@ -45,7 +48,7 @@ public:
         this->drawRectangle();
     }
     
-    virtual void AddEntititesToViewport(Entity& entity) {
+    virtual void AddEntititesToViewport(std::shared_ptr<Entity> entity) {
         m_renderer->AddEntityToRender(entity);
     }
     
@@ -61,13 +64,13 @@ protected:
     glm::vec2 m_position;
     std::unique_ptr<FrameBuffer> m_frameBuffer;
     std::unique_ptr<Renderer> m_renderer;
-    Shader m_frameBufferShader;
+    std::shared_ptr<Shader> m_frameBufferShader;
     GLuint m_VBO, m_VAO, m_EBO;
     
     // Protected constructor for the abstract class
     // --------------------------------------------
     ViewportWindow(glm::vec2 fractionalWindowDimensions, glm::vec2 fractionalPosition,
-                   const glm::ivec2& screenDimensions, Shader& shader)
+                   const glm::ivec2& screenDimensions, std::shared_ptr<Shader> shader)
     : m_windowDimensions{fractionalWindowDimensions}, m_position{fractionalPosition},
     m_screenDimensions{screenDimensions}, m_frameBufferShader{shader} {
         // create a new framebuffer and a new renderer
@@ -81,7 +84,7 @@ protected:
     }
     
     void drawRectangle() const {
-        this->m_frameBufferShader.Use();
+        this->m_frameBufferShader->Use();
         glBindVertexArray(this->m_VAO);
         this->m_frameBuffer->BindTextureAttachment();
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

@@ -6,7 +6,7 @@
 class ToolbarViewportWindow : public ViewportWindow {
 public:
     ToolbarViewportWindow(glm::vec2 fractionalWindowDimensions, glm::vec2 fractionalPosition,
-        const glm::ivec2& screenDimensions, Shader& shader)
+        const glm::ivec2& screenDimensions, std::shared_ptr<Shader> shader)
         : ViewportWindow(fractionalWindowDimensions, fractionalPosition, screenDimensions, shader) {
         
     }

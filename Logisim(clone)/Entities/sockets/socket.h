@@ -1,6 +1,8 @@
 #ifndef SOCKET_H
 #define SOCKET_H
 
+#include "../../Shaders/shader_manager.h"
+
 #include <functional>
 
 enum class SocketState {
@@ -29,7 +31,7 @@ public:
         m_color = socketStateColorMap.at(m_state);
     }
     ~Socket() {
-        
+        Logger::GetInstance()->info("Deleted Socket at", m_position.x, ",", m_position.y);
     }
     
     glm::ivec2 GetPosition() const {

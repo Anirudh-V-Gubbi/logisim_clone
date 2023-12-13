@@ -5,7 +5,7 @@
 
 class NorGateEntity : public GateEntity {
 public:
-    NorGateEntity(Shader& shader, glm::vec3 position, glm::ivec2 gridPosition)
+    NorGateEntity(std::shared_ptr<Shader> shader, glm::vec3 position, glm::ivec2 gridPosition)
     : GateEntity(shader, *EmptyTexture::GetInstance(), position, gridPosition) {
         if(gate == NULL) {
             gate = parseScriptToGate("entity_nor_gate.txt");
@@ -26,7 +26,7 @@ public:
         ss finalState = ss::UNINITIALIZED;
         
         for(auto& socket : m_sockets.m_inputs) {
-            ss state = socket.GetState();
+            ss state = socket->GetState();
             
             if(state == ss::UNINITIALIZED) {
                 continue;

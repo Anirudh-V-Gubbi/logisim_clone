@@ -17,45 +17,39 @@
 
 #include <map>
 #include <cmath>
+#include <memory>
 
 class PlaygroundViewportWindow : public ViewportWindow {
 public:
     PlaygroundViewportWindow(glm::vec2 fractionalWindowDimensions, glm::vec2 fractionalPosition,
-        const glm::ivec2& screenDimensions, Shader& shader)
+        const glm::ivec2& screenDimensions, std::shared_ptr<Shader> shader)
         : ViewportWindow(fractionalWindowDimensions, fractionalPosition, screenDimensions, shader) {
-            gateShader = new Shader("gate_vertex.vs", "gate_fragment.fs");
-            wireShader = new Shader("wire_vertex.vs", "wire_fragment.fs");
-            switchShader = new Shader("switch_vertex.vs", "switch_fragment.fs");
     }
     ~PlaygroundViewportWindow() override {
         // Delete gate resources
-glDeleteVertexArrays(1, &GateEntity::m_VAO);
-glDeleteBuffers(1, &GateEntity::m_VBO);
-glDeleteBuffers(1, &GateEntity::m_EBO);
-glDeleteProgram(gateShader->ID);
-delete gateShader;
+        glDeleteVertexArrays(1, &GateEntity::m_VAO);
+        glDeleteBuffers(1, &GateEntity::m_VBO);
+        glDeleteBuffers(1, &GateEntity::m_EBO);
 
         // Delete wire resources
-glDeleteVertexArrays(1, &WireEntity::VAO);
-glDeleteBuffers(1, &WireEntity::VBO);
-glDeleteBuffers(1, &WireEntity::EBO);
-glDeleteProgram(wireShader->ID);
-delete wireShader;
+        glDeleteVertexArrays(1, &WireEntity::VAO);
+        glDeleteBuffers(1, &WireEntity::VBO);
+        glDeleteBuffers(1, &WireEntity::EBO);
 
         // Delete gate socket resources
-glDeleteVertexArrays(1, &GateSockets::m_VAO);
-glDeleteBuffers(1, &GateSockets::m_VBO);
-glDeleteBuffers(1, &GateSockets::m_EBO);
-glDeleteTextures(1, &GateSockets::texture->ID);
-glDeleteProgram(GateSockets::shader->ID);
-delete GateSockets::shader;
-delete GateSockets::texture;
+        if(GateSockets::m_VAO != 0) {
+            glDeleteVertexArrays(1, &GateSockets::m_VAO);
+            glDeleteBuffers(1, &GateSockets::m_VBO);
+            glDeleteBuffers(1, &GateSockets::m_EBO);
+            glDeleteTextures(1, &GateSockets::texture->ID);
+            delete GateSockets::texture;
+        }
         
         Logger::GetInstance()->info("Deleted Playground Viewport");
     }
     
-    void SetGrid(GlobalGrid* g) {
-        grid = g;
+    void SetGrid(std::shared_ptr<GlobalGrid> g) {
+         grid = g;
     }
     
     void HandleEvent(Event& event) override {
@@ -82,12 +76,16 @@ delete GateSockets::texture;
                 auto m = grid->GetGridPointPosition(p.x, p.y);
 
                 if(mEvent->GetMouseButton() != 0) {
-                    AndGateEntity* gate = new AndGateEntity(*gateShader, glm::vec3(m.x - m_position.x * m_screenDimensions.x, m.y, 0.0f), glm::ivec2(p.x, p.y));
-                    AddEntititesToViewport(*gate);
+                    std::shared_ptr<AndGateEntity> gate = std::make_shared<AndGateEntity>(ShaderManager::GetShader("gate"),
+                                                                                            glm::vec3(m.x - m_position.x * m_screenDimensions.x, m.y, 0.0f),
+                                                                                            glm::ivec2(p.x, p.y));
+                    AddEntititesToViewport(gate);
                 }else {
 
-                    OutputSwitchEntity* oSwitch = new OutputSwitchEntity(*switchShader, glm::vec3(m.x - m_position.x * m_screenDimensions.x, m.y, 0.0f), glm::ivec2(p.x, p.y));
-                    AddEntititesToViewport(*oSwitch);
+                    std::shared_ptr<OutputSwitchEntity> oSwitch = std::make_shared<OutputSwitchEntity>(ShaderManager::GetShader("switch"),
+                                                                                                        glm::vec3(m.x - m_position.x * m_screenDimensions.x, m.y, 0.0f),
+                                                                                                        glm::ivec2(p.x, p.y));
+                    AddEntititesToViewport(oSwitch);
                 }
 
                 Logger::GetInstance()->info(p.x, ',', p.y);
@@ -111,10 +109,11 @@ delete GateSockets::texture;
                 if(EventHandler::MouseButtonsState[GLFW_MOUSE_BUTTON_LEFT] == ButtonState::PRESSED) {
                     if(m_currentWire == nullptr) {
                         if(startPoint.x != currentPoint.x || startPoint.y != currentPoint.y) {
-                            WireEntity* wire = new WireEntity(*wireShader, glm::vec3(startPointPosition.x, startPointPosition.y, 0.0f));
+                            std::shared_ptr<WireEntity> wire = std::make_shared<WireEntity>(ShaderManager::GetShader("wire"),
+                                                                                            glm::vec3(startPointPosition.x, startPointPosition.y, 0.0f));
                             wire->CreateWireFromPoints(startPoint, startPointPosition, currentPoint, currentPointPosition);
-                            m_currentWire = wire;
-                            AddEntititesToViewport(*wire);
+                            m_currentWire = wire.get();
+                            AddEntititesToViewport(wire);
                         }
                     }
                     else {
@@ -134,10 +133,7 @@ delete GateSockets::texture;
     }
     
 private:
-    GlobalGrid* grid;
-    Shader* gateShader;
-    Shader* wireShader;
-    Shader* switchShader;
+    std::shared_ptr<GlobalGrid> grid;
     
     WireEntity* m_currentWire = nullptr;
 };

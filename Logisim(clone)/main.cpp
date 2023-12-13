@@ -16,6 +16,7 @@
 #include "Event/application_event.h"
 #include "Event/mouse_event.h"
 #include "Event/event_handler.h"
+#include "Shaders/shader_manager.h"
 
 #include <iostream>
 #include <memory>
@@ -78,11 +79,6 @@ int main()
     }
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    // set up shaders
-    // --------------
-    Shader frameBufferShader("framebuffer_vertex.vs", "framebuffer_fragment.fs");
-    Shader gridShader("grid_vertex.vs", "grid_fragment.fs");
     
     // an enum to access viewport windows
     // ----------------------------------
@@ -94,16 +90,19 @@ int main()
     
     // create a toolbar viewport window, where tools and menu options will be rendered
     // -------------------------------------------------------------------------------
-    ToolbarViewportWindow* tWindow = new ToolbarViewportWindow(glm::vec2(1.0,0.1), glm::vec2(0.0f, 0.0f), SCREEN_DIMENSIONS, frameBufferShader);
+    ToolbarViewportWindow* tWindow = new ToolbarViewportWindow(glm::vec2(1.0,0.1), glm::vec2(0.0f, 0.0f),
+                                            SCREEN_DIMENSIONS, ShaderManager::GetShader("framebuffer"));
     
     // create a project space viewport window, where circuit projects will be rendered
     // -------------------------------------------------------------------------------
-    ProjectspaceViewportWindow* psWindow = new ProjectspaceViewportWindow(glm::vec2(0.2, 0.9), glm::vec2(0.0f, 0.1f), SCREEN_DIMENSIONS, frameBufferShader);
+    ProjectspaceViewportWindow* psWindow = new ProjectspaceViewportWindow(glm::vec2(0.2, 0.9), glm::vec2(0.0f, 0.1f),
+                                                    SCREEN_DIMENSIONS, ShaderManager::GetShader("framebuffer"));
     
     // create a playground viewport window, where logic gates are expected to
     // be rendered
     // ----------------------------------------------------------------------
-    PlaygroundViewportWindow* pWindow = new PlaygroundViewportWindow(glm::vec2(0.8, 0.9), glm::vec2(0.2f, 0.1f), SCREEN_DIMENSIONS, frameBufferShader);
+    PlaygroundViewportWindow* pWindow = new PlaygroundViewportWindow(glm::vec2(0.8, 0.9), glm::vec2(0.2f, 0.1f),
+                                                SCREEN_DIMENSIONS, ShaderManager::GetShader("framebuffer"));
     
     // push the window pointers onto the static array
     // ----------------------------------------------
@@ -113,12 +112,14 @@ int main()
     
     // create a grid system
     // --------------------
-    GlobalGrid *grid = new GlobalGrid(gridShader, *EmptyTexture::GetInstance(), glm::vec3(0.2f * SCREEN_DIMENSIONS.x, 0.1f * SCREEN_DIMENSIONS.y, 0.0), glm::vec2(pWindow->GetWindowDimensions().x * SCREEN_DIMENSIONS.x, pWindow->GetWindowDimensions().y * SCREEN_DIMENSIONS.y));
+    std::shared_ptr<GlobalGrid> grid = std::make_shared<GlobalGrid>(ShaderManager::GetShader("grid"), *EmptyTexture::GetInstance(),
+                                glm::vec3(0.2f * SCREEN_DIMENSIONS.x, 0.1f * SCREEN_DIMENSIONS.y, 0.0),
+                                glm::vec2(pWindow->GetWindowDimensions().x * SCREEN_DIMENSIONS.x, pWindow->GetWindowDimensions().y * SCREEN_DIMENSIONS.y));
     
     // add entities to the playground
     // ------------------------------
     pWindow->SetGrid(grid);
-    viewports[ViewportWindows::PLAYGROUND]->AddEntititesToViewport(*grid);
+    viewports[ViewportWindows::PLAYGROUND]->AddEntititesToViewport(grid);
     
     // uncomment this call to draw in wireframe polygons.
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);

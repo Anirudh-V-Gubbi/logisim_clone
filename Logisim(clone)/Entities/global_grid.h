@@ -11,7 +11,7 @@ class GlobalGrid : public Entity {
 public:
     // grid requires absolute dimensions and position, relative to the window
     // ----------------------------------------------------------------------
-    GlobalGrid(Shader& shader, Texture& texture, glm::vec3 position, glm::vec2 dimension)
+    GlobalGrid(std::shared_ptr<Shader> shader, Texture& texture, glm::vec3 position, glm::vec2 dimension)
     : m_dimension{dimension}, Entity(shader, texture, position) {
         instance = this;
         this->setup();
@@ -22,7 +22,6 @@ public:
         glDeleteBuffers(1, &m_VBO);
         glDeleteBuffers(1, &m_EBO);
         glDeleteBuffers(1, &m_instanceVBO);
-        glDeleteProgram(m_shader.ID);
         
         Logger::GetInstance()->info("Deleted Global Grid");
     }
@@ -47,11 +46,11 @@ public:
     }
     
     void Draw(const glm::mat4& view, const glm::mat4& projection) const override {
-        m_shader.Use();
+        m_shader->Use();
         glBindVertexArray(m_VAO);
-        m_shader.SetMatrix4f("view", view);
-        m_shader.SetMatrix4f("projection", projection);
-        m_shader.SetVector3f("gridColor", gridColor);
+        m_shader->SetMatrix4f("view", view);
+        m_shader->SetMatrix4f("projection", projection);
+        m_shader->SetVector3f("gridColor", gridColor);
         
         // instance rendering for the grid dots
         // ------------------------------------
@@ -100,18 +99,18 @@ public:
         return glm::ivec2(x, y);
     }
     
-    void AddSocketToBoard(Socket& socket) {
-        glm::ivec2 gridPos = socket.GetPosition();
+    void AddSocketToBoard(std::shared_ptr<Socket> socket) {
+        glm::ivec2 gridPos = socket->GetPosition();
         auto it = socketBoard.find(gridPos);
         
         if(it == socketBoard.end()) {
             it = socketBoard.insert({gridPos, std::vector<std::shared_ptr<Socket>>()}).first;
         }
         
-        it->second.push_back(std::shared_ptr<Socket>(&socket));
+        it->second.push_back(socket);
     }
     
-    void AddSocketsToBoard(std::vector<Socket>& sockets) {
+    void AddSocketsToBoard(std::vector<std::shared_ptr<Socket>>& sockets) {
         for(auto& socket : sockets) {
             AddSocketToBoard(socket);
         }

@@ -48,14 +48,14 @@ public:
     virtual ~GateEntity() { }
     
     void Draw(const glm::mat4& view, const glm::mat4& projection) const override {
-        m_shader.Use();
+        m_shader->Use();
         glBindVertexArray(m_VAO);
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, m_position);
         model = glm::scale(model, glm::vec3(m_texture.GetTexWidth(), m_texture.GetTexHeight(), 1));
-        m_shader.SetMatrix4f("model", model);
-        m_shader.SetMatrix4f("view", view);
-        m_shader.SetMatrix4f("projection", projection);
+        m_shader->SetMatrix4f("model", model);
+        m_shader->SetMatrix4f("view", view);
+        m_shader->SetMatrix4f("projection", projection);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
         
@@ -69,9 +69,9 @@ public:
     void OnInputChange(SocketState newState) {
         SocketState finalState = LogicFunction();
         
-        if(m_sockets.m_outputs[0].GetState() != finalState) {
-            m_sockets.m_outputs[0].ChangeState(finalState);
-            GlobalGrid::GetGrid()->PushStateChangeNotification(m_sockets.m_outputs[0]);
+        if(m_sockets.m_outputs[0]->GetState() != finalState) {
+            m_sockets.m_outputs[0]->ChangeState(finalState);
+            GlobalGrid::GetGrid()->PushStateChangeNotification(*m_sockets.m_outputs[0].get());
         }
     }
     
@@ -86,7 +86,7 @@ protected:
     
     // Protected constructor for the abstract class
     // --------------------------------------------
-    GateEntity(Shader& shader, Texture& texture, glm::vec3 position, glm::ivec2 gridPosition)
+    GateEntity(std::shared_ptr<Shader> shader, Texture& texture, glm::vec3 position, glm::ivec2 gridPosition)
     :m_direction{Direction::EAST}, m_gridPosition{gridPosition}, Entity(shader, texture, position) {
         if(m_VBO == 0 && m_VAO == 0 && m_EBO == 0)
             this->setup();
@@ -121,8 +121,9 @@ protected:
                     break;
             }
             
-            m_sockets.m_inputs.push_back(Socket(position, absPosition, GlobalGrid::GetGrid()->GetSocketStateAt(position)));
-            m_sockets.m_inputs.back().RegisterChangeCallback(&m_onInputChange);
+            m_sockets.m_inputs.push_back(std::make_shared<Socket>(position, absPosition,
+                                            GlobalGrid::GetGrid()->GetSocketStateAt(position)));
+            m_sockets.m_inputs.back()->RegisterChangeCallback(&m_onInputChange);
         }
         
         GlobalGrid::GetGrid()->AddSocketsToBoard(m_sockets.m_inputs);
@@ -153,7 +154,7 @@ protected:
                 break;
         }
         
-        m_sockets.m_outputs.push_back(Socket(position, absPosition, LogicFunction()));
+        m_sockets.m_outputs.push_back(std::make_shared<Socket>(position, absPosition, LogicFunction()));
         
         GlobalGrid::GetGrid()->AddSocketsToBoard(m_sockets.m_outputs);
     }

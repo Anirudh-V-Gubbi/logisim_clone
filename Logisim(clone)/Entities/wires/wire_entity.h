@@ -11,7 +11,7 @@ class WireEntity : public Entity {
 public:
     inline static unsigned int VAO = 0, VBO = 0, EBO = 0;
     
-    WireEntity(Shader& shader, glm::vec3 position) : Entity{shader, *EmptyTexture::GetInstance(), position} {
+    WireEntity(std::shared_ptr<Shader> shader, glm::vec3 position) : Entity{shader, *EmptyTexture::GetInstance(), position} {
         this->setup();
         m_onInputChange = [this](SocketState state) {this->OnInputChange(state);};
     }
@@ -23,8 +23,8 @@ public:
         return (WireEntity*)this;
     }
     
-    Socket GetLastSocket() const{
-        return m_sockets.back();
+    Socket& GetLastSocket() const{
+        return *m_sockets.back().get();
     }
     
     void CreateWireFromPoints(glm::ivec2 gridPoint1, glm::vec2 absPosition1, glm::ivec2 gridPoint2, glm::vec2 absPosition2) {
@@ -36,28 +36,28 @@ public:
         short int sgnY = (offset.y >= 0) - (offset.y < 0);
         float rotation = (1 - sgnY) * PI2;
         for(i = 0; abs(i) < abs(offset.y); i += sgnY) {
-            AddSocket(Socket(glm::ivec2(gridPoint1.x, gridPoint1.y + i), GlobalGrid::GetGrid()->GetGridPointPositionRelative(absPosition1, 0, i)));
+            AddSocket(std::make_shared<Socket>(glm::ivec2(gridPoint1.x, gridPoint1.y + i), GlobalGrid::GetGrid()->GetGridPointPositionRelative(absPosition1, 0, i)));
         }
         
         if(offset.y != 0) {
-            AddSocket(Socket(glm::ivec2(gridPoint1.x, gridPoint1.y + i), GlobalGrid::GetGrid()->GetGridPointPositionRelative(absPosition1, 0, i)));
+            AddSocket(std::make_shared<Socket>(glm::ivec2(gridPoint1.x, gridPoint1.y + i), GlobalGrid::GetGrid()->GetGridPointPositionRelative(absPosition1, 0, i)));
         }
         
         short int sgnX = (offset.x >= 0) - (offset.x < 0);
         rotation = (2 + sgnX) * PI2;
         for(i = 0; abs(i) < abs(offset.x); i += sgnX) {
-            AddSocket(Socket(glm::ivec2(gridPoint1.x + i, gridPoint2.y), GlobalGrid::GetGrid()->GetGridPointPositionRelative(intersection, i, 0)));
+            AddSocket(std::make_shared<Socket>(glm::ivec2(gridPoint1.x + i, gridPoint2.y), GlobalGrid::GetGrid()->GetGridPointPositionRelative(intersection, i, 0)));
         }
         
         if(offset.x != 0) {
-            AddSocket(Socket(glm::ivec2(gridPoint1.x + i, gridPoint2.y), GlobalGrid::GetGrid()->GetGridPointPositionRelative(intersection, i, 0)));
+            AddSocket(std::make_shared<Socket>(glm::ivec2(gridPoint1.x + i, gridPoint2.y), GlobalGrid::GetGrid()->GetGridPointPositionRelative(intersection, i, 0)));
         }
         
     }
     
     void ContinueBuildWire(glm::ivec2 gridPoint2, glm::vec2 absPosition2) {
-        glm::ivec2 gridPoint1 = m_sockets.back().GetPosition();
-        glm::vec2 absPosition1 = m_sockets.back().GetAbsPosition();
+        glm::ivec2 gridPoint1 = m_sockets.back()->GetPosition();
+        glm::vec2 absPosition1 = m_sockets.back()->GetAbsPosition();
         
         glm::ivec2 offset = gridPoint2 - gridPoint1;;
         glm::vec2 intersection = glm::vec2(absPosition2.x, absPosition1.y);
@@ -67,21 +67,21 @@ public:
         short int sgnY = (offset.y >= 0) - (offset.y < 0);
         float rotation = (1 - sgnY) * PI2;
         for(i = 1 * sgnY; abs(i) < abs(offset.y); i += sgnY) {
-            AddSocket(Socket(glm::ivec2(gridPoint1.x, gridPoint1.y + i), GlobalGrid::GetGrid()->GetGridPointPositionRelative(absPosition1, 0, i)));
+            AddSocket(std::make_shared<Socket>(glm::ivec2(gridPoint1.x, gridPoint1.y + i), GlobalGrid::GetGrid()->GetGridPointPositionRelative(absPosition1, 0, i)));
         }
         
         if(offset.y != 0) {
-            AddSocket(Socket(glm::ivec2(gridPoint1.x, gridPoint1.y + i), GlobalGrid::GetGrid()->GetGridPointPositionRelative(absPosition1, 0, i)));
+            AddSocket(std::make_shared<Socket>(glm::ivec2(gridPoint1.x, gridPoint1.y + i), GlobalGrid::GetGrid()->GetGridPointPositionRelative(absPosition1, 0, i)));
         }
         
         short int sgnX = (offset.x >= 0) - (offset.x < 0);
         rotation = (2 + sgnX) * PI2;
         for(i = 1 * sgnX; abs(i) < abs(offset.x); i += sgnX) {
-            AddSocket(Socket(glm::ivec2(gridPoint1.x + i, gridPoint2.y), GlobalGrid::GetGrid()->GetGridPointPositionRelative(intersection, i, 0)));
+            AddSocket(std::make_shared<Socket>(glm::ivec2(gridPoint1.x + i, gridPoint2.y), GlobalGrid::GetGrid()->GetGridPointPositionRelative(intersection, i, 0)));
         }
         
         if(offset.x != 0) {
-            AddSocket(Socket(glm::ivec2(gridPoint1.x + i, gridPoint2.y), GlobalGrid::GetGrid()->GetGridPointPositionRelative(intersection, i, 0)));
+            AddSocket(std::make_shared<Socket>(glm::ivec2(gridPoint1.x + i, gridPoint2.y), GlobalGrid::GetGrid()->GetGridPointPositionRelative(intersection, i, 0)));
         }
         
     }
@@ -91,7 +91,7 @@ public:
         
         int i = 0, j = 0;
         for(auto& socket : m_sockets) {
-            glm::vec2 pos = socket.GetAbsPosition();
+            glm::vec2 pos = socket->GetAbsPosition();
             buffer[i++] = pos.x;
             buffer[i++] = pos.y + WIRE_HEIGHT / 2;
             buffer[i++] = m_socketRotations[j];
@@ -119,12 +119,12 @@ public:
         
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         
-        m_shader.Use();
+        m_shader->Use();
         
-        m_shader.SetVector2f("size", glm::vec2(GlobalGrid::GetGrid()->GetSquareSpacing() + GlobalGrid::GetGrid()->GetSquareDimension(), WIRE_HEIGHT));
-        m_shader.SetMatrix4f("view", view);
-        m_shader.SetMatrix4f("projection", projection);
-        m_shader.SetVector3f("wcolor", m_sockets.front().GetColor());
+        m_shader->SetVector2f("size", glm::vec2(GlobalGrid::GetGrid()->GetSquareSpacing() + GlobalGrid::GetGrid()->GetSquareDimension(), WIRE_HEIGHT));
+        m_shader->SetMatrix4f("view", view);
+        m_shader->SetMatrix4f("projection", projection);
+        m_shader->SetVector3f("wcolor", m_sockets.front()->GetColor());
         
         glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, (m_sockets.size() - 1));
         
@@ -133,12 +133,12 @@ public:
         delete[] buffer;
     }
     
-    void AddSocket(Socket socket) {
+    void AddSocket(std::shared_ptr<Socket> socket) {
         if(m_sockets.size() >= 1) {
-            Socket& lastSocket = m_sockets.back();
+            Socket& lastSocket = *m_sockets.back().get();
             
-            if(socket.GetPosition().x == lastSocket.GetPosition().x) {
-                if(socket.GetPosition().y > lastSocket.GetPosition().y) {
+            if(socket->GetPosition().x == lastSocket.GetPosition().x) {
+                if(socket->GetPosition().y > lastSocket.GetPosition().y) {
                     m_socketRotations.push_back(0.0f);
                 }
                 else {
@@ -146,7 +146,7 @@ public:
                 }
             }
             else {
-                if(socket.GetPosition().x > lastSocket.GetPosition().x) {
+                if(socket->GetPosition().x > lastSocket.GetPosition().x) {
                     m_socketRotations.push_back(3 * PI2);
                 }
                 else {
@@ -155,23 +155,23 @@ public:
             }
         }
         
-        socket.RegisterChangeCallback(&m_onInputChange);
+        socket->RegisterChangeCallback(&m_onInputChange);
         m_sockets.push_back(socket);
         GlobalGrid::GetGrid()->AddSocketToBoard(m_sockets.back());
     }
     
     void OnInputChange(SocketState newState) {
         for(auto& socket : m_sockets) {
-            if(socket.GetState() == newState) continue;
+            if(socket->GetState() == newState) continue;
             
-            socket.ChangeState(newState, false);
-            GlobalGrid::GetGrid()->PushStateChangeNotification(socket);
+            socket->ChangeState(newState, false);
+            GlobalGrid::GetGrid()->PushStateChangeNotification(*socket.get());
         }
     }
     
 private:
     unsigned int m_instanceVBO;
-    DoublyLinkedList<Socket> m_sockets;
+    DoublyLinkedList<std::shared_ptr<Socket>> m_sockets;
     std::vector<float> m_socketRotations;
     std::function<void(SocketState)> m_onInputChange;
     
