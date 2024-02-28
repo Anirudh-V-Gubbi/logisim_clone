@@ -166,12 +166,12 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
         }
         else {
             KeyPressedEvent event(key, 1);
-            EventHandler::DispatchEvent(event, viewports);
+            EventHandler::GetInstance()->DispatchEvent(event);
         }
     }
     else if(action == GLFW_RELEASE) {
         KeyReleasedEvent event(key);
-        EventHandler::DispatchEvent(event, viewports);
+        EventHandler::GetInstance()->DispatchEvent(event);
     }
 }
 
@@ -180,7 +180,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
 {
     MouseMovedEvent event(xpos, ypos);
-    EventHandler::DispatchEvent(event, viewports);
+    EventHandler::GetInstance()->DispatchEvent(event);
 }
 
 // process mouse button clicks
@@ -192,11 +192,11 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
     
     if(action == GLFW_PRESS) {
         MouseButtonPressedEvent event(button, xPos, yPos);
-        EventHandler::DispatchEvent(event, viewports);
+        EventHandler::GetInstance()->DispatchEvent(event);
     }
     else if(action == GLFW_RELEASE) {
         MouseButtonReleasedEvent event(button, xPos, yPos);
-        EventHandler::DispatchEvent(event, viewports);
+        EventHandler::GetInstance()->DispatchEvent(event);
     }
 }
 
@@ -205,5 +205,5 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
     MouseScrolledEvent event(xoffset, yoffset);
-    EventHandler::DispatchEvent(event, viewports);
+    EventHandler::GetInstance()->DispatchEvent(event);
 }

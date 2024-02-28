@@ -12,6 +12,8 @@
 #include "../Event/key_event.h"
 #include "../Event/mouse_event.h"
 #include "../Shaders/shader_manager.h"
+#include "../PubSub/subscriber.h"
+#include "../Event/event_handler.h"
 
 #include <memory>
 
@@ -66,6 +68,7 @@ protected:
     std::unique_ptr<Renderer> m_renderer;
     std::shared_ptr<Shader> m_frameBufferShader;
     GLuint m_VBO, m_VAO, m_EBO;
+    Subscriber<Event> inputEventSubscriber;
     
     // Protected constructor for the abstract class
     // --------------------------------------------
@@ -81,6 +84,9 @@ protected:
         // setup the array objects and buffers for the framebuffer rectangle
         // -----------------------------------------------------------------
         this->setup();
+
+        inputEventSubscriber.SetOnNotifyCallback([this](Event& event) {HandleEvent(event);});
+        EventHandler::GetInstance()->Subscribe(std::make_shared<Subscriber<Event>>(inputEventSubscriber));
     }
     
     void drawRectangle() const {
