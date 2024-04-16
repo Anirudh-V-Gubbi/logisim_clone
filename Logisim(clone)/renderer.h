@@ -4,6 +4,7 @@
 #include <GL/glew.h>
 #include <glm/mat4x4.hpp>
 #include <Entities/entity.h>
+#include <Logger/log.h>
 
 #include <vector>
 #include <memory>
@@ -13,12 +14,17 @@ static GLint currentTextureID;
 
 class Renderer {
 public:
-    Renderer() {}
-    ~Renderer() {}
+    Renderer() {
+        LOG_FUNCTION(this);
+    }
+    ~Renderer() {
+        LOG_FUNCTION(this);
+    }
     
     // add entities to the map - either to an existing list of entites with the same Texture ID or into a new list for a new Texture ID
     // --------------------------------------------------------------------
     void AddEntityToRender(std::shared_ptr<Entity> entity) {
+        LOG_FUNCTION(this, entity);
         
         auto it = m_entities.find(entity->GetTexID());
         // if Texture ID doesn't exist, insert a new pair and return its iterator
@@ -40,6 +46,8 @@ public:
     // draw the enitites - draw entities with same texture IDs together
     // ----------------------------------------------------------------
     void Draw(const glm::mat4& view, const glm::mat4& projection) const {
+        LOG_FUNCTION(this);
+        
         for(const auto& [texID, entities] : m_entities) {
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, texID);

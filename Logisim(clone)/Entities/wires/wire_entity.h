@@ -2,6 +2,7 @@
 #define WIRE_ENTITY_H
 
 #include "doubly_linked_list.h"
+#include <Logger/log.h>
 
 const float WIRE_HEIGHT = 4.0f;
 const float PI2 = 3.1415f / 2.0f;
@@ -12,22 +13,31 @@ public:
     inline static unsigned int VAO = 0, VBO = 0, EBO = 0;
     
     WireEntity(std::shared_ptr<Shader> shader, glm::vec3 position) : Entity{shader, *EmptyTexture::GetInstance(), position} {
+        LOG_FUNCTION(this, shader, position);
         this->setup();
         m_onInputChange = [this](SocketState state) {this->OnInputChange(state);};
     }
     ~WireEntity() {
+        LOG_FUNCTION(this);
+
         glDeleteBuffers(1, &m_instanceVBO);
     }
     
     WireEntity* GetInstance() const override{
+        LOG_FUNCTION(this);
+        
         return (WireEntity*)this;
     }
     
     Socket& GetLastSocket() const{
+        LOG_FUNCTION(this);
+
         return *m_sockets.back().get();
     }
     
     void CreateWireFromPoints(glm::ivec2 gridPoint1, glm::vec2 absPosition1, glm::ivec2 gridPoint2, glm::vec2 absPosition2) {
+        LOG_FUNCTION(this, gridPoint1, absPosition1, gridPoint2, absPosition2);
+        
         glm::ivec2 offset = gridPoint2 - gridPoint1;
         glm::vec2 intersection = glm::vec2(absPosition2.x, absPosition1.y);
         
@@ -56,6 +66,8 @@ public:
     }
     
     void ContinueBuildWire(glm::ivec2 gridPoint2, glm::vec2 absPosition2) {
+        LOG_FUNCTION(this, gridPoint2, absPosition2);
+        
         glm::ivec2 gridPoint1 = m_sockets.back()->GetPosition();
         glm::vec2 absPosition1 = m_sockets.back()->GetAbsPosition();
         
@@ -87,6 +99,8 @@ public:
     }
     
     void Draw(const glm::mat4& view, const glm::mat4& projection) const override {
+        LOG_FUNCTION(this);
+        
         float* buffer = new float[3 * (m_sockets.size() - 1)];
         
         int i = 0, j = 0;
@@ -134,6 +148,8 @@ public:
     }
     
     void AddSocket(std::shared_ptr<Socket> socket) {
+        LOG_FUNCTION(this, socket);
+
         if(m_sockets.size() >= 1) {
             Socket& lastSocket = *m_sockets.back().get();
             
@@ -161,6 +177,8 @@ public:
     }
     
     void OnInputChange(SocketState newState) {
+        LOG_FUNCTION(this, newState);
+
         for(auto& socket : m_sockets) {
             if(socket->GetState() == newState) continue;
             
@@ -176,6 +194,8 @@ private:
     std::function<void(SocketState)> m_onInputChange;
     
     void setup() {
+        LOG_FUNCTION(this);
+        
         if(VAO == 0 && EBO == 0 && VBO == 0) {
             // Vertex information and buffers setup
             // ------------------------------------

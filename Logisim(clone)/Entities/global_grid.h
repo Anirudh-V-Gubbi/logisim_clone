@@ -3,7 +3,9 @@
 
 #include "entity.h"
 #include <Entities/sockets/socket.h>
+#include <Logger/log.h>
 #include <glm/vec2.hpp>
+#include <glm/gtx/io.hpp>
 #include <map>
 #include <queue>
 
@@ -13,11 +15,15 @@ public:
     // ----------------------------------------------------------------------
     GlobalGrid(std::shared_ptr<Shader> shader, Texture& texture, glm::vec3 position, glm::vec2 dimension)
     : m_dimension{dimension}, Entity(shader, texture, position) {
+        LOG_FUNCTION(this, shader, texture, position, dimension);
+
         instance = this;
         this->setup();
     }
 
     ~GlobalGrid() {
+        LOG_FUNCTION(this);
+
         glDeleteVertexArrays(1, &m_VAO);
         glDeleteBuffers(1, &m_VBO);
         glDeleteBuffers(1, &m_EBO);
@@ -27,14 +33,20 @@ public:
     }
     
     GlobalGrid* GetInstance() const override {
+        LOG_FUNCTION(this);
+
         return (GlobalGrid*)this;
     }
     
     static GlobalGrid* GetGrid() {
+        LOG_FUNCTION_NO_ARGS();
+
         return instance;
     }
     
     void Update() {
+        LOG_FUNCTION(this);
+
         while(!stateChangeNotifications.empty()) {
             auto notif = stateChangeNotifications.front();
             stateChangeNotifications.pop();
@@ -46,6 +58,8 @@ public:
     }
     
     void Draw(const glm::mat4& view, const glm::mat4& projection) const override {
+        LOG_FUNCTION(this);
+
         m_shader->Use();
         glBindVertexArray(m_VAO);
         m_shader->SetMatrix4f("view", view);
@@ -59,30 +73,43 @@ public:
     }
     
     float GetSquareSpacing() const {
+        LOG_FUNCTION(this);
+
         return squareSpacing;
     }
     
     float GetSquareDimension() const {
+        LOG_FUNCTION(this);
+
         return squareDimension;
     }
     
     glm::ivec2 GetSquaresCount() const {
+        LOG_FUNCTION(this);
+
         return squaresCount;
     }
     
     glm::vec2 GetGridPointPosition(int i, int j) const {
+        LOG_FUNCTION(this, i, j);
+
         return (glm::vec2(m_position.x, m_position.y) + glm::vec2(j * squareSpacing, i * squareSpacing));
     }
     
     glm::vec2 GetGridPointPositionRelative(glm::vec2& origin, int i, int j) const {
+        LOG_FUNCTION(this, origin, i, j);
+
         return (glm::vec2(origin.x, origin.y) + glm::vec2(j * squareSpacing, i * squareSpacing));
     }
     
     glm::vec2 GetGridPointPositionRelative(glm::vec3& origin, int i, int j) const {
+        LOG_FUNCTION(this, origin, i, j);
+
         return (glm::vec2(origin.x, origin.y) + glm::vec2(j * squareSpacing, i * squareSpacing));
     }
     
     glm::ivec2 GetGridCoords(glm::vec2 position) const {
+        LOG_FUNCTION(this, position);
         
         float i = (position.y - m_position.y ) / squareSpacing;
         float j = (position.x - m_position.x ) / squareSpacing;
@@ -100,6 +127,8 @@ public:
     }
     
     void AddSocketToBoard(std::shared_ptr<Socket> socket) {
+        LOG_FUNCTION(this, socket);
+
         glm::ivec2 gridPos = socket->GetPosition();
         auto it = socketBoard.find(gridPos);
         
@@ -111,12 +140,16 @@ public:
     }
     
     void AddSocketsToBoard(std::vector<std::shared_ptr<Socket>>& sockets) {
+        LOG_FUNCTION(this, sockets.size());
+
         for(auto& socket : sockets) {
             AddSocketToBoard(socket);
         }
     }
     
     SocketState GetSocketStateAt(glm::ivec2 gridPosition) const {
+        LOG_FUNCTION(this, gridPosition);
+
         auto it = socketBoard.find(gridPosition);
         
         if(it != socketBoard.end()) {
@@ -127,11 +160,15 @@ public:
     }
 
     Socket& GetSocketAt(glm::ivec2 gridPosition) const {
+        LOG_FUNCTION(this, gridPosition);
+
         auto it = socketBoard.find(gridPosition);
         return *(it->second[0]);
     }
     
     void PushStateChangeNotification(Socket& socket) {
+        LOG_FUNCTION(this, socket);
+
         if(socketBoard[socket.GetPosition()].size() <= 1) return;
         
         stateChangeNotifications.push({socket.GetPosition(), socket.GetState()});
@@ -157,6 +194,8 @@ private:
     std::queue<std::pair<glm::ivec2, SocketState>> stateChangeNotifications;
     
     void setup() {
+        LOG_FUNCTION(this);
+
         // calculate the number of grid dots to be rendered in each axis
         // -------------------------------------------
         squaresCount.x = (m_dimension.x)/ (squareSpacing);

@@ -10,6 +10,7 @@
 class ShaderManager {
 public:
     static std::shared_ptr<Shader> GetShader(std::string name) {
+        LOG_FUNCTION(name);
         if(m_shaderMap.find(name) == m_shaderMap.end()) {
             m_shaderMap[name] = std::shared_ptr<Shader> (new Shader(name + "_vertex.vs", name + "_fragment.fs"));
         }

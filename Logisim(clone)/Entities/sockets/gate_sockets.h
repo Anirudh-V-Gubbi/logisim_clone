@@ -14,13 +14,18 @@ public:
     std::vector<std::shared_ptr<Socket>> m_outputs;
     
     GateSockets() {
+        LOG_FUNCTION(this);
+
         this->setup();
     }
     ~GateSockets() {
-//        glDeleteBuffers(1, &m_instanceVBO);
+        LOG_FUNCTION(this);
+
+        // glDeleteBuffers(1, &m_instanceVBO);
     }
     
     void Draw(const glm::mat4& view, const glm::mat4& projection) const {
+        LOG_FUNCTION(this);
         
         float* buffer = new float[5 * (m_inputs.size() + m_outputs.size())];
         
@@ -82,6 +87,8 @@ public:
     
 private:
     void setup() {
+        LOG_FUNCTION(this);
+        
         if(m_VBO == 0 && m_VAO == 0 && m_EBO == 0) {
             
             // Vertex information and buffers setup

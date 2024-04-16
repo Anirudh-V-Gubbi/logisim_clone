@@ -73,4 +73,64 @@ private:
   EventHandler() {}
 };
 
+
+inline std::ostream& operator<<(std::ostream& os, const Event& event) {
+    auto type = event.GetEventType();
+    switch (type) {
+      case EventType::None:
+          os << "None";
+          break;
+      case EventType::WindowClose:
+          os << "Window Close";
+          break;
+      case EventType::WindowResize:
+      {
+          auto dEvent = dynamic_cast<const WindowResizeEvent*>(&event);
+          os << "Window Resize " << dEvent->GetWidth() << ", " << dEvent->GetHeight();
+          break;
+      }
+      case EventType::KeyPressed:
+      {
+          auto dEvent = dynamic_cast<const KeyPressedEvent*>(&event);
+          os << "Key Pressed " << dEvent->GetKeyCode() << "(" << dEvent->GetRepeatCount() << ")";
+          break;
+      }
+      case EventType::KeyReleased:
+      {
+          auto dEvent = dynamic_cast<const KeyReleasedEvent*>(&event);
+          os << "Key Released " << dEvent->GetKeyCode();
+          break;
+      }
+      case EventType::KeyTyped:
+          os << "Key Typed";
+          break;
+      case EventType::MouseButtonPressed:
+      {
+          auto dEvent = dynamic_cast<const MouseButtonPressedEvent*>(&event);
+          os << "Mouse Button Pressed " << dEvent->GetMouseButton() << " " << dEvent->GetX() << ", " << dEvent->GetY();
+          break;
+      }
+      case EventType::MouseButtonReleased:
+      {
+          auto dEvent = dynamic_cast<const MouseButtonReleasedEvent*>(&event);
+          os << "Mouse Button released " << dEvent->GetMouseButton() << " " << dEvent->GetX() << ", " << dEvent->GetY();
+          break;
+      }
+      case EventType::MouseMoved:
+      {
+          auto dEvent = dynamic_cast<const MouseMovedEvent*>(&event);
+          os << "Mouse Moved " << dEvent->GetX() << ", " << dEvent->GetY();
+          break;
+      }
+      case EventType::MouseScrolled:
+      {
+          auto dEvent = dynamic_cast<const MouseScrolledEvent*>(&event);
+          os << "Mouse Scrolled " << dEvent->GetXOffset() << ", " << dEvent->GetYOffset();
+          break;
+      }
+    }
+
+    return os;
+}
+
 #endif

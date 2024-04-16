@@ -62,6 +62,17 @@ public:
         std::cout << oss.str() << std::endl;
         #endif
     }
+
+    template<typename... Args>
+    void function(const Args&... args)
+    {
+        #ifdef ENABLE_LOGGER
+        std::ostringstream oss;
+        oss << "[FUNC]" << " [" << getTime() << "] " << this->_name << ": ";
+        log(oss, args...);
+        std::cout << oss.str() << std::endl;
+        #endif
+    }
     
 private:
     static inline Logger* m_logger = nullptr;

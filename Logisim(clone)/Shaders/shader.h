@@ -9,7 +9,8 @@
 #include <GL/glew.h>
 #include <glm/mat4x4.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <Logger/logger.h>
+#include <glm/gtx/io.hpp>
+#include <Logger/log.h>
 #include <utility.h>
 
 class Shader {
@@ -17,6 +18,8 @@ public:
     unsigned int ID;
 
     Shader(std::string vertexPath, std::string fragmentPath) {
+        LOG_FUNCTION(this, vertexPath, fragmentPath);
+
         // create a struct to hold shader code, deallocated in compileShaders()
         shaderCode = new ShaderCodes();
 
@@ -27,29 +30,43 @@ public:
     }
     
     ~Shader() {
+        LOG_FUNCTION(this);
+
         Logger::GetInstance()->info("Destroyed Shader:", m_shaderName);
         glDeleteProgram(this->ID);
     }
     
     void Use() const {
+        LOG_FUNCTION(this);
+
         glUseProgram(this->ID);
     };
     
     void SetMatrix4f(const char* name, glm::mat4 matrix) const {
+        LOG_FUNCTION(this, name, matrix);
+
         glUniformMatrix4fv(glGetUniformLocation(this->ID, name), 1, GL_FALSE, glm::value_ptr(matrix));
     }
     
     void SetVector2f(const char* name, glm::vec2 vector) const {
+        LOG_FUNCTION(this, name, vector);
+
         glUniform2fv(glGetUniformLocation(this->ID, name), 1, glm::value_ptr(vector));
     }
     
     void SetVector3f(const char* name, glm::vec3 vector) const {
+        LOG_FUNCTION(this, name, vector);
+
         glUniform3fv(glGetUniformLocation(this->ID, name), 1, glm::value_ptr(vector));
     }
     
     void SetInteger1i(const char* name, int unit) const {
+        LOG_FUNCTION(this, name, unit);
+
         glUniform1i(glGetUniformLocation(this->ID, name), unit);
     }
+
+    friend inline std::ostream& operator<<(std::ostream& os, const Shader& shader);
     
 private:
 
@@ -61,6 +78,8 @@ private:
     std::string m_shaderName;
     
     void readFiles(std::string vertexPath, std::string fragPath){
+        LOG_FUNCTION(this, vertexPath, fragPath);
+
         std::ifstream vShaderFile;
         std::ifstream fShaderFile;
         
@@ -88,6 +107,8 @@ private:
     }
     
     void compileShaders() {
+        LOG_FUNCTION(this);
+
         GLuint vertexID, fragID;
         
         const char* vertexCode = shaderCode->vertexCode.c_str();
@@ -142,5 +163,11 @@ private:
         delete shaderCode;
     }
 };
+
+inline std::ostream& operator<<(std::ostream& os, const Shader& shader) {
+    os << "Shader " << shader.ID;
+    
+    return os;
+}
 
 #endif

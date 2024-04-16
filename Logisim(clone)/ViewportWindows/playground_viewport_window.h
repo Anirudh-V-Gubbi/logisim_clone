@@ -14,7 +14,7 @@
 #include <Entities/switches/input_switch_entity.h>
 #include <Entities/switches/output_switch_entity.h>
 #include <Shaders/shader_manager.h>
-#include <Logger/logger.h>
+#include <Logger/log.h>
 
 #include <map>
 #include <cmath>
@@ -25,8 +25,11 @@ public:
     PlaygroundViewportWindow(glm::vec2 fractionalWindowDimensions, glm::vec2 fractionalPosition,
         const glm::ivec2& screenDimensions, std::shared_ptr<Shader> shader)
         : ViewportWindow(fractionalWindowDimensions, fractionalPosition, screenDimensions, shader) {
+            LOG_FUNCTION(this, fractionalWindowDimensions, fractionalPosition, screenDimensions, shader);
     }
     ~PlaygroundViewportWindow() override {
+        LOG_FUNCTION(this);
+
         // Delete gate resources
         glDeleteVertexArrays(1, &GateEntity::m_VAO);
         glDeleteBuffers(1, &GateEntity::m_VBO);
@@ -50,10 +53,14 @@ public:
     }
     
     void SetGrid(std::shared_ptr<GlobalGrid> g) {
+        LOG_FUNCTION(this, g);
+
          grid = g;
     }
     
     void HandleEvent(Event& event) override {
+        LOG_FUNCTION(this, event);
+
         EventType type = event.GetEventType();
         int category = event.GetCategoryFlags();
         

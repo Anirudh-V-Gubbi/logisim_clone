@@ -13,14 +13,19 @@ public:
     std::vector<std::shared_ptr<Socket>> m_sockets;
     
     SwitchSockets() {
+        LOG_FUNCTION(this);
+
         this->setup();
     }
     ~SwitchSockets() {
+        LOG_FUNCTION(this);
+
         glDeleteBuffers(1, &m_instanceVBO);
     }
     
     void Draw(const glm::mat4& view, const glm::mat4& projection) const {
-        
+        LOG_FUNCTION(this);
+
         float* buffer = new float[5 * m_sockets.size()];
         
         int i = 0;
@@ -71,6 +76,8 @@ public:
     
 private:
     void setup() {
+        LOG_FUNCTION(this);
+        
         if(m_VBO == 0 && m_VAO == 0 && m_EBO == 0) {
             
             // Vertex information and buffers setup

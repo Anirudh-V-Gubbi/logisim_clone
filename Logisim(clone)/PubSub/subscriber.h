@@ -3,12 +3,22 @@
 
 template <typename T> class Subscriber {
 public:
-  Subscriber() {}
-  ~Subscriber() {}
+  Subscriber() {
+    LOG_FUNCTION(this);
+  }
+  ~Subscriber() {
+    LOG_FUNCTION(this);
+  }
 
-  void OnNotify(T &event) { m_callback(event); };
+  void OnNotify(T &event) { 
+    LOG_FUNCTION(this, event);
+    
+    m_callback(event);
+  };
 
   void SetOnNotifyCallback(std::function<void(T &)> callback) {
+    LOG_FUNCTION(this);
+
     m_callback = callback;
   }
 

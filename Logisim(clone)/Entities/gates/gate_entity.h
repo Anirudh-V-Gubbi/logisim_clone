@@ -6,6 +6,7 @@
 #include <Entities/entity_exception.h>
 #include <Entities/sockets/gate_sockets.h>
 #include <Entities/global_grid.h>
+#include <Logger/log.h>
 #include <utility.h>
 #include <vector>
 #include <map>
@@ -45,9 +46,13 @@ class GateEntity : public Entity {
 public:
     inline static unsigned int m_VBO = 0, m_VAO = 0, m_EBO = 0;
     
-    virtual ~GateEntity() { }
+    virtual ~GateEntity() {
+        LOG_FUNCTION(this);
+    }
     
     void Draw(const glm::mat4& view, const glm::mat4& projection) const override {
+        LOG_FUNCTION(this);
+
         m_shader->Use();
         glBindVertexArray(m_VAO);
         glm::mat4 model = glm::mat4(1.0f);
@@ -67,7 +72,8 @@ public:
     }
     
     void OnInputChange(SocketState newState) {
-        Logger::GetInstance()->info("ye");
+        LOG_FUNCTION(this, newState);
+
         SocketState finalState = LogicFunction();
         
         if(m_sockets.m_outputs[0]->GetState() != finalState) {
@@ -89,16 +95,21 @@ protected:
     // --------------------------------------------
     GateEntity(std::shared_ptr<Shader> shader, Texture& texture, glm::vec3 position, glm::ivec2 gridPosition)
     :m_direction{Direction::EAST}, m_gridPosition{gridPosition}, Entity(shader, texture, position) {
+        LOG_FUNCTION(this, shader, texture, position, gridPosition);
+
         if(m_VBO == 0 && m_VAO == 0 && m_EBO == 0)
             this->setup();
         m_onInputChange = [this](SocketState newState) {this->OnInputChange(newState);};
     }
 
     void InitializeTexture(Texture& texture) {
+        LOG_FUNCTION(this, texture);
+
         m_texture = texture;
     }
     
     void InitializeInputs(GateFromScript& gate) {
+        LOG_FUNCTION(this, gate.name);
         
         for(auto& [x, y] : gate.inputOffsets) {
             glm::ivec2 position;
@@ -132,6 +143,8 @@ protected:
     }
     
     void InitializeOutput(GateFromScript& gate) {
+        LOG_FUNCTION(this, gate.name);
+
         int x = gate.outputOffset.first;
         int y = gate.outputOffset.second;
         glm::ivec2 position;
@@ -163,6 +176,8 @@ protected:
     
 private:
     void setup() {
+        LOG_FUNCTION(this);
+
         float vertices[] = {
              // positions // texture coords
              1.0f, 1.0f,  1.0f, 1.0f,   // top right

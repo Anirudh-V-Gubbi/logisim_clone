@@ -36,6 +36,8 @@ public:
     {
         return (GetCategoryFlags() & category);
     }
+
+    friend inline std::ostream& operator<<(std::ostream& os, const Event& event);
 protected:
     Event() {}
 };

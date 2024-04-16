@@ -3,14 +3,12 @@
 
 #include <glm/vec2.hpp>
 #include <glm/mat4x4.hpp>
+#include <glm/gtx/io.hpp>
 #include <framebuffer.h>
 #include <renderer.h>
 #include <Shaders/shader.h>
-#include <Logger/logger.h>
+#include <Logger/log.h>
 #include <Event/event.h>
-#include <Event/application_event.h>
-#include <Event/key_event.h>
-#include <Event/mouse_event.h>
 #include <Shaders/shader_manager.h>
 #include <PubSub/subscriber.h>
 #include <Event/event_handler.h>
@@ -21,10 +19,12 @@ class ViewportWindow {
 public:
 
     virtual ~ViewportWindow() {
-        
+        LOG_FUNCTION(this);
     };
     
     virtual void Render(const glm::mat4& view, const glm::mat4& projection) const {
+        LOG_FUNCTION(this);
+
         // bind to the framebuffer and clear it
         // ------------------------------------
         m_frameBuffer->Bind();
@@ -51,12 +51,16 @@ public:
     }
     
     virtual void AddEntititesToViewport(std::shared_ptr<Entity> entity) {
+        LOG_FUNCTION(this, entity);
+
         m_renderer->AddEntityToRender(entity);
     }
     
     virtual void HandleEvent(Event& event) = 0;
     
     glm::vec2 GetWindowDimensions() const {
+        LOG_FUNCTION(this);
+
         return this->m_windowDimensions;
     }
     
@@ -76,6 +80,8 @@ protected:
                    const glm::ivec2& screenDimensions, std::shared_ptr<Shader> shader)
     : m_windowDimensions{fractionalWindowDimensions}, m_position{fractionalPosition},
     m_screenDimensions{screenDimensions}, m_frameBufferShader{shader} {
+        LOG_FUNCTION(this);
+
         // create a new framebuffer and a new renderer
         // -------------------------------------------
         m_frameBuffer = std::make_unique<FrameBuffer>(m_windowDimensions.x * m_screenDimensions.x, m_windowDimensions.y * m_screenDimensions.y);
@@ -90,6 +96,8 @@ protected:
     }
     
     void drawRectangle() const {
+        LOG_FUNCTION(this);
+        
         this->m_frameBufferShader->Use();
         glBindVertexArray(this->m_VAO);
         this->m_frameBuffer->BindTextureAttachment();
@@ -97,6 +105,8 @@ protected:
     }
     
     void setup() {
+        LOG_FUNCTION(this);
+
         // calculate top left position in [-1.0, 1.0] X [-1.0, 1.0] space
         // ---------------------------------------------------------------
         float normalizedPosX = m_position.x * 2.0f - 1.0f;

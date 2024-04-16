@@ -7,6 +7,8 @@ class OrGateEntity : public GateEntity {
 public:
     OrGateEntity(std::shared_ptr<Shader> shader, glm::vec3 position, glm::ivec2 gridPosition)
     : GateEntity(shader, *EmptyTexture::GetInstance(), position, gridPosition) {
+        LOG_FUNCTION(this, shader, position, gridPosition);
+
         if(gate == NULL) {
             gate = parseScriptToGate("entity_or_gate.txt");
             gate->texture.DeleteImageData();
@@ -15,13 +17,19 @@ public:
         GateEntity::InitializeInputs(*gate);
         GateEntity::InitializeOutput(*gate);
     }
-    ~OrGateEntity() { }
+    ~OrGateEntity() {
+        LOG_FUNCTION(this);
+    }
 
     OrGateEntity* GetInstance() const override {
+        LOG_FUNCTION(this);
+
         return (OrGateEntity*)this;
     }
     
     SocketState LogicFunction() const override {
+        LOG_FUNCTION(this);
+
         using ss = SocketState;
         ss finalState = ss::UNINITIALIZED;
         
@@ -54,6 +62,8 @@ public:
     }
     
     const char* GetName() const override {
+        LOG_FUNCTION(this);
+        
         return "Or Gate";
     }
     

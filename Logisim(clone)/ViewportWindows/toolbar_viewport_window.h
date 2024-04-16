@@ -8,13 +8,16 @@ public:
     ToolbarViewportWindow(glm::vec2 fractionalWindowDimensions, glm::vec2 fractionalPosition,
         const glm::ivec2& screenDimensions, std::shared_ptr<Shader> shader)
         : ViewportWindow(fractionalWindowDimensions, fractionalPosition, screenDimensions, shader) {
+            LOG_FUNCTION(this, fractionalWindowDimensions, fractionalPosition, screenDimensions, shader);
         
     }
     ~ToolbarViewportWindow() override {
-        Logger::GetInstance()->info("Deleted Toolbar Viewport");
+        LOG_FUNCTION(this);
     }
     
     void HandleEvent(Event& event) override {
+        LOG_FUNCTION(this, event);
+
         EventType type = event.GetEventType();
         int category = event.GetCategoryFlags();
         

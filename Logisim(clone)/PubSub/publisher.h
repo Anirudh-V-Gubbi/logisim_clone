@@ -7,18 +7,28 @@
 
 template <typename T> class Publisher {
 public:
-  Publisher(bool enabled = true) : m_enabled(enabled) {}
-  virtual ~Publisher() {}
+  Publisher(bool enabled = true) : m_enabled(enabled) {
+    LOG_FUNCTION(this, enabled);
+  }
+  virtual ~Publisher() {
+    LOG_FUNCTION(this);
+  }
 
   void Subscribe(std::shared_ptr<Subscriber<T>> subscriber) {
+    LOG_FUNCTION(this, subscriber);
+
     m_subscribers.push_back(subscriber);
   }
 
   void Unsubscribe(std::shared_ptr<Subscriber<T>> subscriber) {
+    LOG_FUNCTION(this, subscriber);
+
     m_subscribers.remove(subscriber);
   }
 
   void Notify(T &event) {
+    LOG_FUNCTION(this, event);
+
     if (m_enabled == false)
       return;
 
@@ -27,9 +37,17 @@ public:
     }
   }
 
-  void SetEnabled(bool enabled) { m_enabled = enabled; }
+  void SetEnabled(bool enabled) {
+    LOG_FUNCTION(this, enabled);
 
-  bool GetEnabled() const { return m_enabled; }
+    m_enabled = enabled;
+  }
+
+  bool GetEnabled() const {
+    LOG_FUNCTION(this);
+
+    return m_enabled;
+  }
 
 private:
   bool m_enabled;

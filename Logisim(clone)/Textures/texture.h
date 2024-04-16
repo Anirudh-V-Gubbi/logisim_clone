@@ -6,18 +6,34 @@
 #include <GL/glew.h>
 #include "stbImage.h"
 #include <utility.h>
-#include <Logger/logger.h>
+#include <Logger/log.h>
 
 enum class TextureFormats {
     JPG,
     PNG
 };
 
+inline std::ostream& operator<<(std::ostream& os, const TextureFormats& fmt) {
+    using f = TextureFormats;
+    switch(fmt){
+        case f::JPG:
+            os << "JPG";
+            break;
+        case f::PNG:
+            os << "PNG";
+            break;
+    }
+
+    return os;
+}
+
 class Texture {
 public:
     GLuint ID = 0;
     
     Texture(std::string imagePath, TextureFormats format, bool persistentData = false) {
+        LOG_FUNCTION(this);
+
         specs.reset(new ImageSpecs());
         m_textureName = imagePath.substr(imagePath.find('.'));
         this->generateTexture(getTextureFullPath(imagePath).c_str(), format);
@@ -35,17 +51,25 @@ public:
     // empty texture
     // -------------
     Texture() {
+        LOG_FUNCTION(this);
+
         specs = NULL;
     }
-    ~Texture() { }
+    ~Texture() {
+        LOG_FUNCTION(this);
+    }
     
     void Bind() {
+        LOG_FUNCTION(this);
+
         stbi_set_flip_vertically_on_load(true);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, ID);
     }
     
     int GetTexWidth() const {
+        LOG_FUNCTION(this);
+
         if(specs != nullptr) {
             return specs->width;
         }
@@ -54,6 +78,8 @@ public:
     }
     
     int GetTexHeight() const {
+        LOG_FUNCTION(this);
+
         if(specs != nullptr) {
             return specs->height;
         }
@@ -61,8 +87,9 @@ public:
         return -1;
     }
     
-    bool DeleteImageData()
-    {
+    bool DeleteImageData() {
+        LOG_FUNCTION(this);
+
         if(specs != nullptr && specs->data != nullptr) {
             delete specs->data;
             specs->data = nullptr;
@@ -71,6 +98,8 @@ public:
         
         return false;
     }
+
+    friend inline std::ostream& operator<<(std::ostream& os, const Texture& texture);
     
 private:
     struct ImageSpecs {
@@ -85,6 +114,8 @@ private:
     std::string m_textureName;
     
     void generateTexture(std::string path, TextureFormats format) {
+        LOG_FUNCTION(this, path, format);
+
         specs->data = stbi_load(path.c_str(), &specs->width, &specs->height, &specs->nrChannels, format == TextureFormats::PNG ? STBI_rgb_alpha : STBI_default);
         
         if(specs->data) {
@@ -104,13 +135,23 @@ private:
     }
 };
 
+inline std::ostream& operator<<(std::ostream& os, const Texture& texture) {
+    os << "Texture " << texture.ID;
+    
+    return os;
+}
+
 // empty texture
 // -------------
 class EmptyTexture : public Texture {
 public:
-    ~EmptyTexture() { }
+    ~EmptyTexture() {
+        LOG_FUNCTION(this);
+    }
     
     static EmptyTexture* GetInstance() {
+        LOG_FUNCTION_NO_ARGS();
+        
         if(s_instance == NULL) {
             s_instance = new EmptyTexture();
         }
@@ -119,7 +160,9 @@ public:
     }
 private:
     inline static EmptyTexture* s_instance = NULL;
-    EmptyTexture() {}
+    EmptyTexture() {
+        LOG_FUNCTION(this);
+    }
     
 };
 #endif

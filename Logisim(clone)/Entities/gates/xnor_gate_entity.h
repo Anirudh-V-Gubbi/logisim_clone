@@ -7,6 +7,8 @@ class XnorGateEntity : public GateEntity {
 public:
     XnorGateEntity(std::shared_ptr<Shader> shader, glm::vec3 position, glm::ivec2 gridPosition)
     : GateEntity(shader, *EmptyTexture::GetInstance(), position, gridPosition) {
+        LOG_FUNCTION(this, shader, position, gridPosition);
+
         if(gate == NULL) {
             gate = parseScriptToGate("entity_xnor_gate.txt");
             gate->texture.DeleteImageData();
@@ -15,13 +17,20 @@ public:
         GateEntity::InitializeInputs(*gate);
         GateEntity::InitializeOutput(*gate);
     }
-    ~XnorGateEntity() { }
+    
+    ~XnorGateEntity() {
+        LOG_FUNCTION(this);
+    }
 
     XnorGateEntity* GetInstance() const override {
+        LOG_FUNCTION(this);
+
         return (XnorGateEntity*)this;
     }
     
     SocketState LogicFunction() const override {
+        LOG_FUNCTION(this);
+
         using ss = SocketState;
         ss finalState = ss::UNINITIALIZED;
         
@@ -58,6 +67,8 @@ public:
     }
     
     const char* GetName() const override {
+        LOG_FUNCTION(this);
+
         return "Xnor Gate";
     }
     
