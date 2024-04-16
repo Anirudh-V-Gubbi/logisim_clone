@@ -7,6 +7,11 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin/$<CONFIGURATION>)
 
 option(ENABLE_LOGGING "Enables logging debug information onto the console" ON)
 
+# Set the level of the logger
+if(ENABLE_LOGGING)
+    set(LOGGER_LEVEL "0" CACHE STRING "Set the log level: \n0: Disabled\n1: INFO\n2: WARN\n3: ERR\n4: FUNC")
+endif()
+
 # Set default configuration to be Debug
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Choose the type of build" FORCE)
@@ -35,6 +40,7 @@ if(CMAKE_BUILD_TYPE MATCHES Debug)
     target_compile_definitions(Logisim_clone PUBLIC DEBUG)
     if(ENABLE_LOGGING)
     target_compile_definitions(Logisim_clone PUBLIC ENABLE_LOGGER)
+    target_compile_definitions(Logisim_clone PUBLIC LOG_LEVEL=${LOGGER_LEVEL})
     endif()
 elseif(CMAKE_BUILD_TYPE MATCHES Release)
     target_compile_definitions(Logisim_clone PUBLIC RELEASE)

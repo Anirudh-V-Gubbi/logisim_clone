@@ -34,10 +34,12 @@ public:
     void info(const Args&... args)
     {
         #ifdef ENABLE_LOGGER
+        #if LOG_LEVEL >= 1
         std::ostringstream oss;
         oss << "[INFO]" << " [" << getTime() << "] " << this->_name << ": ";
         log(oss, args...);
         std::cout << oss.str() << std::endl;
+        #endif
         #endif
     }
 
@@ -45,10 +47,12 @@ public:
     void warn(const Args&... args)
     {
         #ifdef ENABLE_LOGGER
+        #if LOG_LEVEL >= 2
         std::ostringstream oss;
         oss << "[WARN]" << " [" << getTime() << "] " << this->_name << ": ";
         log(oss, args...);
         std::cout << oss.str() << std::endl;
+        #endif
         #endif
     }
 
@@ -56,10 +60,12 @@ public:
     void error(const Args&... args)
     {
         #ifdef ENABLE_LOGGER
+        #if LOG_LEVEL >= 3
         std::ostringstream oss;
         oss << "[ERR]" << " [" << getTime() << "] " << this->_name << ": ";
         log(oss, args...);
         std::cout << oss.str() << std::endl;
+        #endif
         #endif
     }
 
@@ -67,10 +73,12 @@ public:
     void function(const Args&... args)
     {
         #ifdef ENABLE_LOGGER
+        #if LOG_LEVEL >= 4
         std::ostringstream oss;
         oss << "[FUNC]" << " [" << getTime() << "] " << this->_name << ": ";
         log(oss, args...);
         std::cout << oss.str() << std::endl;
+        #endif
         #endif
     }
     
