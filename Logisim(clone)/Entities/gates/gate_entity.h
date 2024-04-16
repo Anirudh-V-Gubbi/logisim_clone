@@ -89,7 +89,7 @@ protected:
     glm::ivec2 m_gridPosition;
     Direction m_direction;
     GateSockets m_sockets;
-    std::function<void(SocketState)> m_onInputChange;
+    std::shared_ptr<std::function<void(SocketState)>> m_onInputChange;
     
     // Protected constructor for the abstract class
     // --------------------------------------------
@@ -99,7 +99,9 @@ protected:
 
         if(m_VBO == 0 && m_VAO == 0 && m_EBO == 0)
             this->setup();
-        m_onInputChange = [this](SocketState newState) {this->OnInputChange(newState);};
+        m_onInputChange = std::make_shared<std::function<void(SocketState)>>([this](SocketState newState) {
+            this->OnInputChange(newState);
+        });
     }
 
     void InitializeTexture(Texture& texture) {
@@ -136,7 +138,7 @@ protected:
             
             m_sockets.m_inputs.push_back(std::make_shared<Socket>(position, absPosition,
                                             GlobalGrid::GetGrid()->GetSocketStateAt(position)));
-            m_sockets.m_inputs.back()->RegisterChangeCallback(&m_onInputChange);
+            m_sockets.m_inputs.back()->RegisterChangeCallback(m_onInputChange);
         }
         
         GlobalGrid::GetGrid()->AddSocketsToBoard(m_sockets.m_inputs);

@@ -15,7 +15,9 @@ public:
     WireEntity(std::shared_ptr<Shader> shader, glm::vec3 position) : Entity{shader, *EmptyTexture::GetInstance(), position} {
         LOG_FUNCTION(this, shader, position);
         this->setup();
-        m_onInputChange = [this](SocketState state) {this->OnInputChange(state);};
+        m_onInputChange = std::make_shared<std::function<void(SocketState)>>([this](SocketState newState) {
+            this->OnInputChange(newState);
+        });
     }
     ~WireEntity() {
         LOG_FUNCTION(this);
@@ -171,7 +173,7 @@ public:
             }
         }
         
-        socket->RegisterChangeCallback(&m_onInputChange);
+        socket->RegisterChangeCallback(m_onInputChange);
         m_sockets.push_back(socket);
         GlobalGrid::GetGrid()->AddSocketToBoard(m_sockets.back());
     }
@@ -191,11 +193,11 @@ private:
     unsigned int m_instanceVBO;
     DoublyLinkedList<std::shared_ptr<Socket>> m_sockets;
     std::vector<float> m_socketRotations;
-    std::function<void(SocketState)> m_onInputChange;
+    std::shared_ptr<std::function<void(SocketState)>> m_onInputChange;
     
     void setup() {
         LOG_FUNCTION(this);
-        
+
         if(VAO == 0 && EBO == 0 && VBO == 0) {
             // Vertex information and buffers setup
             // ------------------------------------

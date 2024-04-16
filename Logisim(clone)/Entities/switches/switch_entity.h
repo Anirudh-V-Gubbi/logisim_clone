@@ -83,7 +83,7 @@ protected:
     SwitchSockets m_sockets;
     Texture m_colorMapTexture;
     SocketState m_switchState;
-    std::function<void(SocketState)> m_onInputChange;
+    std::shared_ptr<std::function<void(SocketState)>> m_onInputChange;
     
     // Protected constructor for the abstract class
     // --------------------------------------------
@@ -98,7 +98,9 @@ protected:
     void InitializeSwitchEntity(SwitchFromScript& sswitch) {
         LOG_FUNCTION(this, sswitch.name);
 
-        m_onInputChange = [this](SocketState newState) {this->OnInputChange(newState);};
+        m_onInputChange = std::make_shared<std::function<void(SocketState)>>([this](SocketState newState) {
+            this->OnInputChange(newState);
+        });
         
         m_texture = sswitch.texture;
         m_colorMapTexture = sswitch.colorMapTexture;
@@ -131,7 +133,7 @@ protected:
             }
             
             m_sockets.m_sockets.push_back(std::make_shared<Socket>(position, absPosition, m_switchState));
-            m_sockets.m_sockets.back()->RegisterChangeCallback(&m_onInputChange);
+            m_sockets.m_sockets.back()->RegisterChangeCallback(m_onInputChange);
         }
         
         GlobalGrid::GetGrid()->AddSocketsToBoard(m_sockets.m_sockets);

@@ -5,6 +5,7 @@
 #include <Logger/log.h>
 
 #include <functional>
+#include <memory>
 
 enum class SocketState {
     ERROR,
@@ -95,7 +96,9 @@ public:
         }
     }
     
-    void RegisterChangeCallback(std::function<void(SocketState)>* entityCallback) {
+    void RegisterChangeCallback(std::shared_ptr<std::function<void(SocketState)>> entityCallback) {
+        LOG_FUNCTION(this);
+
         m_entityCallback = entityCallback;
     }
 
@@ -106,7 +109,7 @@ private:
     glm::vec2 m_absPosition;
     SocketState m_state;
     glm::vec3 m_color;
-    std::function<void(SocketState)>* m_entityCallback;
+    std::shared_ptr<std::function<void(SocketState)>> m_entityCallback;
 };
 
 inline std::ostream& operator<<(std::ostream& os, const Socket& socket) {
