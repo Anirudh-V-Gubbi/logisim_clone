@@ -3,17 +3,17 @@
 
 #include <glm/vec2.hpp>
 #include <glm/mat4x4.hpp>
-#include "../framebuffer.h"
-#include "../renderer.h"
-#include "../Shaders/shader.h"
-#include "../Logger/logger.h"
-#include "../Event/event.h"
-#include "../Event/application_event.h"
-#include "../Event/key_event.h"
-#include "../Event/mouse_event.h"
-#include "../Shaders/shader_manager.h"
-#include "../PubSub/subscriber.h"
-#include "../Event/event_handler.h"
+#include <framebuffer.h>
+#include <renderer.h>
+#include <Shaders/shader.h>
+#include <Logger/logger.h>
+#include <Event/event.h>
+#include <Event/application_event.h>
+#include <Event/key_event.h>
+#include <Event/mouse_event.h>
+#include <Shaders/shader_manager.h>
+#include <PubSub/subscriber.h>
+#include <Event/event_handler.h>
 
 #include <memory>
 

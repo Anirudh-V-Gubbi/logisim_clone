@@ -1,9 +1,9 @@
 #ifndef INPUT_SWITCH_H
 #define INPUT_SWITCH_H
 
-#include "../entity.h"
-#include "../../enitity_parser.h"
-#include "../sockets/switch_sockets.h"
+#include <Entities/entity.h>
+#include <enitity_parser.h>
+#include <Entities/sockets/switch_sockets.h>
 
 struct SwitchFromScript {
     const char* name;

@@ -1,8 +1,8 @@
 #ifndef EVENT_HANDLER_H
 #define EVENT_HANDLER_H
 
-#include "../Logger/logger.h"
-#include "../PubSub/publisher.h"
+#include <Logger/logger.h>
+#include <PubSub/publisher.h>
 #include "application_event.h"
 #include "key_event.h"
 #include "mouse_event.h"

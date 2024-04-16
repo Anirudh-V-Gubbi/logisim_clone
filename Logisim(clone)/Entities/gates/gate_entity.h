@@ -1,14 +1,14 @@
 #ifndef GATE_ENTITY_H
 #define GATE_ENTITY_H
 
-#include "../entity.h"
-#include "../../enitity_parser.h"
-#include "../entity_exception.h"
-#include "../sockets/gate_sockets.h"
-#include "../global_grid.h"
+#include <Entities/entity.h>
+#include <enitity_parser.h>
+#include <Entities/entity_exception.h>
+#include <Entities/sockets/gate_sockets.h>
+#include <Entities/global_grid.h>
+#include <utility.h>
 #include <vector>
 #include <map>
-#include "../../utility.h"
 
 struct GateFromScript {
     const char* name;
@@ -67,6 +67,7 @@ public:
     }
     
     void OnInputChange(SocketState newState) {
+        Logger::GetInstance()->info("ye");
         SocketState finalState = LogicFunction();
         
         if(m_sockets.m_outputs[0]->GetState() != finalState) {
@@ -90,6 +91,7 @@ protected:
     :m_direction{Direction::EAST}, m_gridPosition{gridPosition}, Entity(shader, texture, position) {
         if(m_VBO == 0 && m_VAO == 0 && m_EBO == 0)
             this->setup();
+        m_onInputChange = [this](SocketState newState) {this->OnInputChange(newState);};
     }
 
     void InitializeTexture(Texture& texture) {
@@ -97,7 +99,7 @@ protected:
     }
     
     void InitializeInputs(GateFromScript& gate) {
-        m_onInputChange = [this](SocketState newState) {this->OnInputChange(newState);};
+        
         for(auto& [x, y] : gate.inputOffsets) {
             glm::ivec2 position;
             glm::vec2 absPosition;

@@ -24,7 +24,7 @@ find_package(GLEW REQUIRED)
 add_executable(Logisim_clone "Logisim(clone)/main.cpp")
 
 # Configure include search paths
-target_include_directories(Logisim_clone PRIVATE "include/" "Logisim(clone)/*")
+target_include_directories(Logisim_clone PRIVATE "include/" "Logisim(clone)/")
 
 # Add all the source files to the target
 file(GLOB_RECURSE HEADER_FILES "Logisim(clone)/*")

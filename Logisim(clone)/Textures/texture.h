@@ -5,8 +5,8 @@
 
 #include <GL/glew.h>
 #include "stbImage.h"
-#include "../utility.h"
-#include "../Logger/logger.h"
+#include <utility.h>
+#include <Logger/logger.h>
 
 enum class TextureFormats {
     JPG,

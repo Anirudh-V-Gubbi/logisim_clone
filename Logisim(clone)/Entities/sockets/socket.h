@@ -1,7 +1,7 @@
 #ifndef SOCKET_H
 #define SOCKET_H
 
-#include "../../Shaders/shader_manager.h"
+#include <Shaders/shader_manager.h>
 
 #include <functional>
 

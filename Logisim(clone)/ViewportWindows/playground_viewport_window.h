@@ -2,18 +2,19 @@
 #define PLAYGROUND_VIEWPORT_WINDOW_H
 
 #include "viewport_window.h"
-#include "../Entities/global_grid.h"
-#include "../Entities/gates/and_gate_entity.h"
-#include "../Entities/gates/not_gate_entity.h"
-#include "../Entities/gates/nand_gate_entity.h"
-#include "../Entities/gates/or_gate_entity.h"
-#include "../Entities/gates/nor_gate_entity.h"
-#include "../Entities/gates/xor_gate_entity.h"
-#include "../Entities/gates/xnor_gate_entity.h"
-#include "../Entities/wires/wire_entity.h"
-#include "../Event/event_handler.h"
-#include "../Entities/switches/input_switch_entity.h"
-#include "../Entities/switches/output_switch_entity.h"
+#include <Entities/global_grid.h>
+#include <Entities/gates/and_gate_entity.h>
+#include <Entities/gates/not_gate_entity.h>
+#include <Entities/gates/nand_gate_entity.h>
+#include <Entities/gates/or_gate_entity.h>
+#include <Entities/gates/nor_gate_entity.h>
+#include <Entities/gates/xor_gate_entity.h>
+#include <Entities/gates/xnor_gate_entity.h>
+#include <Entities/wires/wire_entity.h>
+#include <Entities/switches/input_switch_entity.h>
+#include <Entities/switches/output_switch_entity.h>
+#include <Shaders/shader_manager.h>
+#include <Logger/logger.h>
 
 #include <map>
 #include <cmath>

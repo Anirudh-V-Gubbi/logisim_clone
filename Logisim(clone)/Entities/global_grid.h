@@ -2,7 +2,7 @@
 #define GLOBAL_GRID_H
 
 #include "entity.h"
-#include "sockets/socket.h"
+#include <Entities/sockets/socket.h>
 #include <glm/vec2.hpp>
 #include <map>
 #include <queue>
@@ -124,6 +124,11 @@ public:
         }
         
         return SocketState::UNINITIALIZED;
+    }
+
+    Socket& GetSocketAt(glm::ivec2 gridPosition) const {
+        auto it = socketBoard.find(gridPosition);
+        return *(it->second[0]);
     }
     
     void PushStateChangeNotification(Socket& socket) {

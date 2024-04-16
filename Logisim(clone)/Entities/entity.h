@@ -5,9 +5,9 @@
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include <glm/mat4x4.hpp>
-#include "../Shaders/shader.h"
-#include "../Textures/texture.h"
-#include "../Logger/logger.h"
+#include <Shaders/shader.h>
+#include <Textures/texture.h>
+#include <Logger/logger.h>
 
 #include <iostream>
 #include <memory>

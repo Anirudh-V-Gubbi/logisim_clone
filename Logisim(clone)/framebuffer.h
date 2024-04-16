@@ -2,7 +2,7 @@
 #define FRAMEBUFFER_H
 
 #include <GL/glew.h>
-#include "Logger/logger.h"
+#include <Logger/logger.h>
 
 class FrameBuffer {
 public:

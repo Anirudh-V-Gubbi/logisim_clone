@@ -4,19 +4,19 @@
 #include <GLFW/glfw3.h>
 #include <glm/vec2.hpp>
 
-#include "Shaders/shader.h"
-#include "Textures/texture.h"
-#include "ViewportWindows/viewport_window.h"
-#include "ViewportWindows/playground_viewport_window.h"
-#include "ViewportWindows/toolbar_viewport_window.h"
-#include "ViewportWindows/projectspace_viewport_window.h"
-#include "Logger/logger.h"
-#include "Entities/global_grid.h"
-#include "Event/key_event.h"
-#include "Event/application_event.h"
-#include "Event/mouse_event.h"
-#include "Event/event_handler.h"
-#include "Shaders/shader_manager.h"
+#include <Shaders/shader.h>
+#include <Textures/texture.h>
+#include <ViewportWindows/viewport_window.h>
+#include <ViewportWindows/playground_viewport_window.h>
+#include <ViewportWindows/toolbar_viewport_window.h>
+#include <ViewportWindows/projectspace_viewport_window.h>
+#include <Logger/logger.h>
+#include <Entities/global_grid.h>
+#include <Event/key_event.h>
+#include <Event/application_event.h>
+#include <Event/mouse_event.h>
+#include <Event/event_handler.h>
+#include <Shaders/shader_manager.h>
 
 #include <iostream>
 #include <memory>

@@ -9,8 +9,8 @@
 #include <GL/glew.h>
 #include <glm/mat4x4.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "../Logger/logger.h"
-#include "../utility.h"
+#include <Logger/logger.h>
+#include <utility.h>
 
 class Shader {
 public:
