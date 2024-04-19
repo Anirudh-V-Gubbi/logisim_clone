@@ -6,7 +6,7 @@
 #include <sstream>
 #include <map>
 #define INVALID_ATTRIBUTE Logger::GetInstance()->error(std::string(entityFileName + "[Line " + std::to_string(line) + "]: Invalid attribute").c_str())
-#define INVALID_SYNTAX(x) Logger::GetInstance()->error(std::string(entityFileName + "[Invalid syntax]: x").c_str());
+#define INVALID_SYNTAX(x) Logger::GetInstance()->error(std::string(entityFileName + "[Invalid syntax]: " + x).c_str());
 
 const std::string ENTITY_FOLDER = RESOURCE_PATH "entities/";
 const char* START_TAG = "START";
